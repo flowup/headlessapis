@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "v1/user_api.proto",
+    "title": "v1/client_api.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userOrderList"
+              "$ref": "#/definitions/v1OrderList"
             }
           }
         },
@@ -59,7 +59,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userOrder"
+              "$ref": "#/definitions/v1Order"
             }
           }
         },
@@ -81,7 +81,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/userOrder"
+              "$ref": "#/definitions/v1Order"
             }
           }
         ],
@@ -97,7 +97,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/userProductList"
+              "$ref": "#/definitions/v1ProductList"
             }
           }
         },
@@ -116,7 +116,7 @@
     }
   },
   "definitions": {
-    "userOrder": {
+    "v1Order": {
       "type": "object",
       "properties": {
         "orderId": {
@@ -130,10 +130,10 @@
         }
       }
     },
-    "userOrderList": {
+    "v1OrderList": {
       "type": "object"
     },
-    "userProductList": {
+    "v1ProductList": {
       "type": "object"
     }
   }

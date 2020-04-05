@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package admin;
+package v1;
 
-option go_package = "github.com/flowup/headless";
+option go_package = "github.com/flowup/headless/pkg/admin/v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";

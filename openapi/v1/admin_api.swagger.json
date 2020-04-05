@@ -23,7 +23,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminCompanyList"
+              "$ref": "#/definitions/v1CompanyList"
             }
           }
         },
@@ -38,7 +38,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminCompany"
+              "$ref": "#/definitions/v1Company"
             }
           }
         },
@@ -48,7 +48,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminCompany"
+              "$ref": "#/definitions/v1Company"
             }
           }
         ],
@@ -65,7 +65,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminCustomerList"
+              "$ref": "#/definitions/v1CustomerList"
             }
           }
         },
@@ -88,7 +88,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminCustomer"
+              "$ref": "#/definitions/v1Customer"
             }
           }
         },
@@ -104,7 +104,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminCustomer"
+              "$ref": "#/definitions/v1Customer"
             }
           }
         ],
@@ -121,7 +121,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminOrderList"
+              "$ref": "#/definitions/v1OrderList"
             }
           }
         },
@@ -158,7 +158,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminProviderList"
+              "$ref": "#/definitions/v1ProviderList"
             }
           }
         },
@@ -181,7 +181,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminProvider"
+              "$ref": "#/definitions/v1Provider"
             }
           }
         },
@@ -197,7 +197,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminProvider"
+              "$ref": "#/definitions/v1Provider"
             }
           }
         ],
@@ -214,7 +214,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminProductSchema"
+              "$ref": "#/definitions/v1ProductSchema"
             }
           }
         },
@@ -230,7 +230,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminProductSchema"
+              "$ref": "#/definitions/v1ProductSchema"
             }
           }
         ],
@@ -247,7 +247,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminStore"
+              "$ref": "#/definitions/v1Store"
             }
           }
         },
@@ -264,7 +264,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminStore"
+              "$ref": "#/definitions/v1Store"
             }
           }
         ],
@@ -281,7 +281,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminOrder"
+              "$ref": "#/definitions/v1Order"
             }
           }
         },
@@ -303,7 +303,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminOrder"
+              "$ref": "#/definitions/v1Order"
             }
           }
         ],
@@ -320,7 +320,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminOrder"
+              "$ref": "#/definitions/v1Order"
             }
           }
         },
@@ -357,7 +357,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminUserList"
+              "$ref": "#/definitions/v1UserList"
             }
           }
         },
@@ -388,7 +388,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminUser"
+              "$ref": "#/definitions/v1User"
             }
           }
         },
@@ -404,7 +404,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminUser"
+              "$ref": "#/definitions/v1User"
             }
           }
         ],
@@ -421,7 +421,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminCompany"
+              "$ref": "#/definitions/v1Company"
             }
           }
         },
@@ -431,7 +431,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminCompany"
+              "$ref": "#/definitions/v1Company"
             }
           }
         ],
@@ -448,7 +448,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminProductSchema"
+              "$ref": "#/definitions/v1ProductSchema"
             }
           }
         },
@@ -464,7 +464,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminProductSchema"
+              "$ref": "#/definitions/v1ProductSchema"
             }
           }
         ],
@@ -481,7 +481,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminStore"
+              "$ref": "#/definitions/v1Store"
             }
           }
         },
@@ -498,7 +498,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminStore"
+              "$ref": "#/definitions/v1Store"
             }
           }
         ],
@@ -515,7 +515,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/adminUser"
+              "$ref": "#/definitions/v1User"
             }
           }
         },
@@ -531,7 +531,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/adminUser"
+              "$ref": "#/definitions/v1User"
             }
           }
         ],
@@ -542,7 +542,7 @@
     }
   },
   "definitions": {
-    "adminCompany": {
+    "v1Company": {
       "type": "object",
       "properties": {
         "companyId": {
@@ -555,18 +555,18 @@
         }
       }
     },
-    "adminCompanyList": {
+    "v1CompanyList": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/adminCompany"
+            "$ref": "#/definitions/v1Company"
           }
         }
       }
     },
-    "adminCustomer": {
+    "v1Customer": {
       "type": "object",
       "properties": {
         "customerId": {
@@ -577,10 +577,10 @@
         }
       }
     },
-    "adminCustomerList": {
+    "v1CustomerList": {
       "type": "object"
     },
-    "adminOrder": {
+    "v1Order": {
       "type": "object",
       "properties": {
         "orderId": {
@@ -594,18 +594,18 @@
         }
       }
     },
-    "adminOrderList": {
+    "v1OrderList": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/adminOrder"
+            "$ref": "#/definitions/v1Order"
           }
         }
       }
     },
-    "adminProductSchema": {
+    "v1ProductSchema": {
       "type": "object",
       "properties": {
         "productSchemaId": {
@@ -632,7 +632,7 @@
         }
       }
     },
-    "adminProvider": {
+    "v1Provider": {
       "type": "object",
       "properties": {
         "providerId": {
@@ -643,10 +643,10 @@
         }
       }
     },
-    "adminProviderList": {
+    "v1ProviderList": {
       "type": "object"
     },
-    "adminStore": {
+    "v1Store": {
       "type": "object",
       "properties": {
         "storeId": {
@@ -664,7 +664,7 @@
         }
       }
     },
-    "adminUser": {
+    "v1User": {
       "type": "object",
       "properties": {
         "id": {
@@ -688,13 +688,13 @@
         }
       }
     },
-    "adminUserList": {
+    "v1UserList": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/adminUser"
+            "$ref": "#/definitions/v1User"
           }
         }
       }

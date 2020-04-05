@@ -2,11 +2,11 @@
 // source: v1/admin_api.proto
 
 /*
-Package headless is a reverse proxy.
+Package v1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package headless
+package v1
 
 import (
 	"context"

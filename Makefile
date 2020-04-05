@@ -7,7 +7,7 @@ grpc:
 		--grpc-gateway_out=logtostderr=true,allow_patch_feature=false,paths=source_relative:pkg/admin \
 		--swagger_out=logtostderr=true:openapi
 	protoc -Iproto -I3rdparty \
-    		proto/v1/user_api.proto \
+    		proto/v1/client_api.proto \
     		--gogoslick_out=plugins=grpc,paths=source_relative:pkg/client \
     		--grpc-gateway_out=logtostderr=true,allow_patch_feature=false,paths=source_relative:pkg/client \
     		--swagger_out=logtostderr=true:openapi

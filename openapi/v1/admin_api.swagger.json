@@ -1,0 +1,703 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "v1/admin_api.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/companies": {
+      "get": {
+        "summary": "GetCompanies returns a list of companies the user has access to",
+        "operationId": "GetCompanies",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminCompanyList"
+            }
+          }
+        },
+        "tags": [
+          "CompanyService"
+        ]
+      },
+      "post": {
+        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
+        "operationId": "CreateCompany",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminCompany"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminCompany"
+            }
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      }
+    },
+    "/companies/{companyId}/customers": {
+      "get": {
+        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
+        "operationId": "GetCustomers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminCustomerList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CustomerService"
+        ]
+      },
+      "post": {
+        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
+        "operationId": "CreateCustomer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminCustomer"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminCustomer"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerService"
+        ]
+      }
+    },
+    "/companies/{companyId}/orders": {
+      "get": {
+        "summary": "GetCompanies returns a list of companies the user has access to",
+        "operationId": "GetOrders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminOrderList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/companies/{companyId}/providers": {
+      "get": {
+        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
+        "operationId": "GetProviders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminProviderList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProviderService"
+        ]
+      },
+      "post": {
+        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
+        "operationId": "CreateProvider",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminProvider"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminProvider"
+            }
+          }
+        ],
+        "tags": [
+          "ProviderService"
+        ]
+      }
+    },
+    "/companies/{companyId}/schemas": {
+      "post": {
+        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
+        "operationId": "CreateProductSchema",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminProductSchema"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminProductSchema"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
+    "/companies/{companyId}/stores": {
+      "post": {
+        "summary": "Create store creates the store for the particular company and returns\nthe store object back to the caller",
+        "operationId": "CreateStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminStore"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "description": "[Required] reference to the company id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminStore"
+            }
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      }
+    },
+    "/companies/{companyId}/stores/{storeId}/orders": {
+      "post": {
+        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
+        "operationId": "CreateOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminOrder"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminOrder"
+            }
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/companies/{companyId}/stores/{storeId}/orders/{orderId}": {
+      "delete": {
+        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
+        "operationId": "CancelOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminOrder"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/companies/{companyId}/users": {
+      "get": {
+        "summary": "GetUsers returns all users present in the company",
+        "operationId": "GetUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminUserList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "description": "[Required] companyId can be set only once and is unchangeable during lifetime",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "[Required] name of the company can be customized by the user, however, the id\nwill stay unchanged.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      },
+      "post": {
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the company",
+        "operationId": "InviteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminUser"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminUser"
+            }
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      }
+    },
+    "/dry/companies": {
+      "post": {
+        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
+        "operationId": "CreateCompanyDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminCompany"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminCompany"
+            }
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      }
+    },
+    "/dry/companies/{companyId}/schemas": {
+      "post": {
+        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
+        "operationId": "CreateProductSchemaDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminProductSchema"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminProductSchema"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
+    "/dry/companies/{companyId}/stores": {
+      "post": {
+        "summary": "CreateStoreDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the store\nfor the particular company",
+        "operationId": "CreateStoreDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminStore"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "description": "[Required] reference to the company id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminStore"
+            }
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      }
+    },
+    "/dry/companies/{companyId}/users": {
+      "post": {
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "InviteUserDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/adminUser"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/adminUser"
+            }
+          }
+        ],
+        "tags": [
+          "CompanyService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "adminCompany": {
+      "type": "object",
+      "properties": {
+        "companyId": {
+          "type": "string",
+          "title": "[Required] companyId can be set only once and is unchangeable during lifetime"
+        },
+        "name": {
+          "type": "string",
+          "title": "[Required] name of the company can be customized by the user, however, the id\nwill stay unchanged"
+        }
+      }
+    },
+    "adminCompanyList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/adminCompany"
+          }
+        }
+      }
+    },
+    "adminCustomer": {
+      "type": "object",
+      "properties": {
+        "customerId": {
+          "type": "string"
+        },
+        "companyId": {
+          "type": "string"
+        }
+      }
+    },
+    "adminCustomerList": {
+      "type": "object"
+    },
+    "adminOrder": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string"
+        },
+        "companyId": {
+          "type": "string"
+        },
+        "storeId": {
+          "type": "string"
+        }
+      }
+    },
+    "adminOrderList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/adminOrder"
+          }
+        }
+      }
+    },
+    "adminProductSchema": {
+      "type": "object",
+      "properties": {
+        "productSchemaId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "companyId": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "attributes are custom key-value pairs provided for the product"
+        }
+      }
+    },
+    "adminProvider": {
+      "type": "object",
+      "properties": {
+        "providerId": {
+          "type": "string"
+        },
+        "companyId": {
+          "type": "string"
+        }
+      }
+    },
+    "adminProviderList": {
+      "type": "object"
+    },
+    "adminStore": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "companyId": {
+          "type": "string",
+          "title": "[Required] reference to the company id"
+        }
+      }
+    },
+    "adminUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "invitedById": {
+          "type": "string",
+          "title": "id of the user this user was invited by into the system"
+        },
+        "companyId": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        }
+      }
+    },
+    "adminUserList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/adminUser"
+          }
+        }
+      }
+    }
+  }
+}

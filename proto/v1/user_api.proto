@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/flowup/headless";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service IntentoryService {
+    rpc GetProducts(ProductFilter) returns (ProductList) {
+        option (google.api.http) = {
+            get: "/stores/{storeId}/products"
+        };
+    }
+}
+
+message Product {
+    string storeId = 11;
+}
+
+message ProductFilter {
+    string storeId = 11;
+}
+
+message ProductList {}
+
+service OrderService {
+    // SubmitOrder submits the order to the system and creates it if it's possible,
+    // otherwise returns errors why the creation failed
+    rpc SubmitOrder (Order) returns (Order) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/stores/{storeId}/orders"
+            body: "*"
+        };
+    }
+
+    // GetOrders returns all orders that the user has access to
+    rpc GetOrders (OrderFilter) returns (OrderList) {
+        option (google.api.http) = {
+            get: "/companies/{companyId}/orders"
+        };
+    }
+}
+
+message Order {
+    string orderId = 1;
+
+    string companyId = 10;
+    string storeId = 2;
+}
+
+message OrderList {
+
+}
+
+message OrderFilter {
+    string orderId = 1;
+
+    string companyId = 10;
+    string storeId = 11;
+}

@@ -1,0 +1,281 @@
+syntax = "proto3";
+
+package admin;
+
+option go_package = "github.com/flowup/headless";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service CompanyService {
+    // CreateCompanyDry runs validation on the server side and returns
+    // errors that need to be corrected to successfully create the company
+    rpc CreateCompanyDry (Company) returns (Company) {
+        option (google.api.http) = {
+            post: "/dry/companies"
+            body: "*"
+        };
+    }
+
+    // CreateCompany creates a company in the database and returns the object
+    // back with populated data
+    rpc CreateCompany (Company) returns (Company) {
+        option (google.api.http) = {
+            post: "/companies"
+            body: "*"
+        };
+    }
+
+    // GetCompanies returns a list of companies the user has access to
+    rpc GetCompanies (google.protobuf.Empty) returns (CompanyList) {
+        option (google.api.http) = {
+            get: "/companies"
+        };
+    }
+
+    // InviteUserDry validates the provided user for existence. correct email,
+    // and other required fields by user invitation process
+    rpc InviteUserDry (User) returns (User) {
+        option (google.api.http) = {
+            post: "/dry/companies/{companyId}/users"
+            body: "*"
+        };
+    }
+
+    // InviteUser creates a user account for the user in case it didn't exist before.
+    // Otherwise it invites the user into the company
+    rpc InviteUser (User) returns (User) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/users"
+            body: "*"
+        };
+    }
+
+    // GetUsers returns all users present in the company
+    rpc GetUsers (Company) returns (UserList) {
+        option (google.api.http) = {
+            get: "/companies/{companyId}/users"
+        };
+    }
+
+    // CreateStoreDry runs validation on the server side and returns
+    // errors that need to be corrected to successfully create the store
+    // for the particular company
+    rpc CreateStoreDry (Store) returns (Store) {
+        option (google.api.http) = {
+            post: "/dry/companies/{companyId}/stores"
+            body: "*"
+        };
+    }
+
+    // Create store creates the store for the particular company and returns
+    // the store object back to the caller
+    rpc CreateStore (Store) returns (Store) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/stores"
+            body: "*"
+        };
+    }
+}
+
+message Company {
+    // [Required] companyId can be set only once and is unchangeable during lifetime
+    string companyId = 1;
+
+    // [Required] name of the company can be customized by the user, however, the id
+    // will stay unchanged
+    string name = 2;
+}
+
+message CompanyList {
+    repeated Company data = 1;
+}
+
+message Store {
+    string storeId = 1;
+    string name = 2;
+    string location = 3;
+
+    // [Required] reference to the company id
+    string companyId = 10;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 4;
+
+    // id of the user this user was invited by into the system
+    string invitedById = 5;
+
+    string companyId = 10;
+
+    string thumbnail = 50;
+}
+
+message UserList {
+    repeated User data = 1;
+}
+
+service InventoryService {
+    // CreateProductSchemaDry validates provided product schema and returns a list
+    // of errors or the product schema on success
+    rpc CreateProductSchemaDry (ProductSchema) returns (ProductSchema) {
+        option (google.api.http) = {
+            post: "/dry/companies/{companyId}/schemas"
+            body: "*"
+        };
+    }
+
+    // CreateProductSchema creates the product schema in the system
+    rpc CreateProductSchema (ProductSchema) returns (ProductSchema) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/schemas"
+            body: "*"
+        };
+    }
+}
+
+message ProductSchema {
+    string productSchemaId = 1;
+    string name = 2;
+
+    string companyId = 10;
+
+    map<string, string> labels = 20;
+
+    // attributes are custom key-value pairs provided for the product
+    map<string, string> attributes = 100;
+}
+
+message Product {
+    string productId = 1;
+    ProductSchema productSchema = 2;
+
+    string companyId = 10;
+    string storeId = 11;
+    string providerId = 12;
+
+    map<string, string> labels = 20;
+
+    // attributes are custom key-value pairs provided for the product
+    map<string, string> attributes = 100;
+}
+
+service WarehouseService {
+
+}
+
+message Warehouse {
+
+}
+
+message WarehouseFilter {
+
+}
+
+message WarehouseList {
+
+}
+
+service OrderService {
+    // CreateOrder creates an order for the particular user in the store
+    rpc CreateOrder (Order) returns (Order) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/stores/{storeId}/orders"
+            body: "*"
+        };
+    }
+
+    rpc CancelOrder (Order) returns (Order) {
+        option (google.api.http) = {
+            delete: "/companies/{companyId}/stores/{storeId}/orders/{orderId}"
+        };
+    }
+
+    // GetOrders returns all orders that the user has access to
+    rpc GetOrders (OrderFilter) returns (OrderList) {
+        option (google.api.http) = {
+            get: "/companies/{companyId}/orders"
+        };
+    }
+}
+
+message Order {
+    string orderId = 1;
+
+    string companyId = 10;
+    string storeId = 2;
+}
+
+message OrderList {
+    repeated Order data = 1;
+}
+
+message OrderFilter {
+    string orderId = 1;
+
+    string companyId = 10;
+    string storeId = 11;
+}
+
+service ProviderService {
+    // CreateOrder creates an order for the particular user in the store
+    rpc CreateProvider (Provider) returns (Provider) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/providers"
+            body: "*"
+        };
+    }
+
+    // GetProviders returns all providers that the user has access to
+    rpc GetProviders (ProviderFilter) returns (ProviderList) {
+        option (google.api.http) = {
+            get: "/companies/{companyId}/providers"
+        };
+    }
+}
+
+message Provider {
+    string providerId = 1;
+
+    string companyId = 10;
+}
+
+message ProviderFilter {
+    string companyId = 10;
+}
+
+message ProviderList {
+}
+
+service CustomerService {
+    // CreateOrder creates a customer for the particular user in the store
+    rpc CreateCustomer (Customer) returns (Customer) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/customers"
+            body: "*"
+        };
+    }
+
+    // GetCustomers returns all customers that the user has access to
+    rpc GetCustomers (CustomerFilter) returns (CustomerList) {
+        option (google.api.http) = {
+            get: "/companies/{companyId}/customers"
+        };
+    }
+}
+
+message Customer {
+    string customerId = 1;
+
+    string companyId = 10;
+}
+
+message CustomerFilter {
+    string companyId = 10;
+}
+
+message CustomerList {
+
+}

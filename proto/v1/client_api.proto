@@ -7,8 +7,16 @@ option go_package = "github.com/flowup/headless/pkg/client/v1";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
+service CustomerService {
+
+}
+
+message Customer {
+    string customerId = 1;
+}
+
 service IntentoryService {
-    rpc GetProducts(ProductFilter) returns (ProductList) {
+    rpc ListProducts(ProductFilter) returns (ProductList) {
         option (google.api.http) = {
             get: "/stores/{storeId}/products"
         };
@@ -16,38 +24,77 @@ service IntentoryService {
 }
 
 message Product {
+    string productId = 1;
+    string name = 2;
+
     string storeId = 11;
+
+    map<string, string> labels = 20;
+
+    // attributes are custom key-value pairs provided for the product
+    map<string, string> attributes = 100;
 }
 
 message ProductFilter {
+    string productId = 1;
+    string name = 2;
+
     string storeId = 11;
 }
 
-message ProductList {}
+message ProductList {
+    repeated Product data = 1;
+}
 
 service OrderService {
-    // SubmitOrder submits the order to the system and creates it if it's possible,
-    // otherwise returns errors why the creation failed
-    rpc SubmitOrder (Order) returns (Order) {
+    rpc AddToOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/stores/{storeId}/orders"
+            post: "/stores/{storeId}/orders/{orderId}/items/add"
             body: "*"
         };
     }
 
-    // GetOrders returns all orders that the user has access to
-    rpc GetOrders (OrderFilter) returns (OrderList) {
+    rpc RemoveFromOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            get: "/companies/{companyId}/orders"
+            post: "/stores/{storeId}/orders/{orderId}/items/remove"
+            body: "*"
+        };
+    }
+
+    rpc VerifyOrder (Order) returns (Order) {
+
+    }
+
+    // SubmitOrder submits the order to the system and creates it if it's possible,
+    // otherwise returns errors why the creation failed
+    rpc SubmitOrder (Order) returns (Order) {
+        option (google.api.http) = {
+            post: "/stores/{storeId}/orders"
+            body: "*"
+        };
+    }
+
+    // ListOrders returns all orders that the client has access to
+    rpc ListOrders (OrderFilter) returns (OrderList) {
+        option (google.api.http) = {
+            get: "/stores/{storeId}/orders"
         };
     }
 }
 
 message Order {
     string orderId = 1;
+    repeated OrderItem items = 2;
 
-    string companyId = 10;
-    string storeId = 2;
+    string storeId = 11;
+}
+
+message OrderItem {
+    Product product = 1;
+    int32 count = 2;
+
+    string storeId = 11;
+    string orderId = 12;
 }
 
 message OrderList {
@@ -57,6 +104,5 @@ message OrderList {
 message OrderFilter {
     string orderId = 1;
 
-    string companyId = 10;
     string storeId = 11;
 }

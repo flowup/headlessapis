@@ -349,6 +349,39 @@
         ]
       }
     },
+    "/companies/{companyId}/upload": {
+      "post": {
+        "summary": "GetCompanies returns a list of companies the user has access to",
+        "operationId": "CreateUpload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadMeta"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UploadMeta"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
     "/companies/{companyId}/users": {
       "get": {
         "summary": "GetUsers returns all users present in the company",
@@ -614,6 +647,10 @@
         "name": {
           "type": "string"
         },
+        "createdBy": {
+          "$ref": "#/definitions/v1User",
+          "title": "createdBy is a reference to the user that created this product schema"
+        },
         "companyId": {
           "type": "string"
         },
@@ -661,6 +698,28 @@
         "companyId": {
           "type": "string",
           "title": "[Required] reference to the company id"
+        }
+      }
+    },
+    "v1UploadMeta": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "title": "[Required] fileName is searchable throughout the system"
+        },
+        "link": {
+          "type": "string",
+          "title": "[Output Only] this is being provided by the system after the file is uploaded"
+        },
+        "companyId": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },

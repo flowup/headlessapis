@@ -134,11 +134,22 @@ service InventoryService {
             body: "*"
         };
     }
+
+    // CreateUpload creates an upload link for the company gallery
+    rpc CreateUpload (UploadMeta) returns (UploadMeta) {
+        option (google.api.http) = {
+            post: "/companies/{companyId}/upload"
+            body: "*"
+        };
+    }
 }
 
 message ProductSchema {
     string productSchemaId = 1;
     string name = 2;
+
+    // createdBy is a reference to the user that created this product schema
+    User createdBy = 3;
 
     string companyId = 10;
 
@@ -160,6 +171,18 @@ message Product {
 
     // attributes are custom key-value pairs provided for the product
     map<string, string> attributes = 100;
+}
+
+message UploadMeta {
+    // [Required] fileName is searchable throughout the system
+    string fileName = 1;
+
+    // [Output Only] this is being provided by the system after the file is uploaded
+    string link = 2;
+
+    string companyId = 10;
+
+    map<string, string> labels = 20;
 }
 
 service WarehouseService {

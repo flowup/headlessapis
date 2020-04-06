@@ -15,10 +15,10 @@
     "application/json"
   ],
   "paths": {
-    "/companies/{companyId}/orders": {
+    "/stores/{storeId}/orders": {
       "get": {
-        "summary": "GetOrders returns all orders that the user has access to",
-        "operationId": "GetOrders",
+        "summary": "ListOrders returns all orders that the client has access to",
+        "operationId": "ListOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -29,7 +29,7 @@
         },
         "parameters": [
           {
-            "name": "companyId",
+            "name": "storeId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -39,21 +39,14 @@
             "in": "query",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
           "OrderService"
         ]
-      }
-    },
-    "/companies/{companyId}/stores/{storeId}/orders": {
+      },
       "post": {
+        "summary": "SubmitOrder submits the order to the system and creates it if it's possible,\notherwise returns errors why the creation failed",
         "operationId": "SubmitOrder",
         "responses": {
           "200": {
@@ -64,12 +57,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "storeId",
             "in": "path",
@@ -90,9 +77,85 @@
         ]
       }
     },
+    "/stores/{storeId}/orders/{orderId}/items/add": {
+      "post": {
+        "operationId": "AddToOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1OrderItem"
+            }
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/stores/{storeId}/orders/{orderId}/items/remove": {
+      "post": {
+        "operationId": "RemoveFromOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1OrderItem"
+            }
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
     "/stores/{storeId}/products": {
       "get": {
-        "operationId": "GetProducts",
+        "operationId": "ListProducts",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -106,6 +169,18 @@
             "name": "storeId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
@@ -122,10 +197,31 @@
         "orderId": {
           "type": "string"
         },
-        "companyId": {
-          "type": "string"
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
         },
         "storeId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1OrderItem": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "$ref": "#/definitions/v1Product"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "storeId": {
+          "type": "string"
+        },
+        "orderId": {
           "type": "string"
         }
       }
@@ -133,8 +229,43 @@
     "v1OrderList": {
       "type": "object"
     },
+    "v1Product": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "storeId": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "attributes are custom key-value pairs provided for the product"
+        }
+      }
+    },
     "v1ProductList": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Product"
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,16 @@
+{
+  "name": "headless-apiclient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FlowUp, s.r.o.",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/common": "^9.1.0",
+    "@angular/core": "^9.1.0",
+    "rxjs": "^6.5.5"
+  }
+}

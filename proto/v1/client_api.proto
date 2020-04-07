@@ -2,23 +2,48 @@ syntax = "proto3";
 
 package v1;
 
-option go_package = "github.com/flowup/headless/pkg/client/v1";
+option go_package = "github.com/flowup/headless/go-sdk/client/v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-service CustomerService {
+service AuthService {
+    rpc SignInWithPassword (EmailPassword) returns (Customer) {
+        option (google.api.http) = {
+            post: "/accounts:signIn"
+            body: "*"
+        };
+    }
 
+    rpc SignUpWithPassword (EmailPassword) returns (Customer) {
+        option (google.api.http) = {
+            post: "/accounts:signUp"
+            body: "*"
+        };
+    }
+}
+
+message EmailPassword {
+    string email = 1;
+    string password = 2;
 }
 
 message Customer {
     string customerId = 1;
+    string name = 2;
+    string thumbnail = 3;
 }
 
-service IntentoryService {
-    rpc ListProducts(ProductFilter) returns (ProductList) {
+service InventoryService {
+    rpc ListProducts (ProductFilter) returns (ProductList) {
         option (google.api.http) = {
-            get: "/stores/{storeId}/products"
+            get: "/products"
+        };
+    }
+
+    rpc GetProduct(ProductFilter) returns (Product) {
+        option (google.api.http) = {
+            get: "/products/{productId}"
         };
     }
 }
@@ -38,8 +63,6 @@ message Product {
 message ProductFilter {
     string productId = 1;
     string name = 2;
-
-    string storeId = 11;
 }
 
 message ProductList {
@@ -47,29 +70,35 @@ message ProductList {
 }
 
 service OrderService {
-    rpc AddToOrder (OrderItem) returns (Order) {
+    // GetActiveOrder returns the current order that the client has active.
+    // In case there's no active order, an empty order is returned
+    rpc GetActiveOrder (google.protobuf.Empty) returns (Order) {
         option (google.api.http) = {
-            post: "/stores/{storeId}/orders/{orderId}/items/add"
+            get: "/orders"
+        };
+    }
+
+    // AddItemToOrder adds an item to the currently active order
+    rpc AddItemToOrder (OrderItem) returns (Order) {
+        option (google.api.http) = {
+            post: "/orders/{orderId}/items:add"
             body: "*"
         };
     }
 
-    rpc RemoveFromOrder (OrderItem) returns (Order) {
+    // RemoveItemFromOrder removes an item from the currently active order
+    rpc RemoveItemFromOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            post: "/stores/{storeId}/orders/{orderId}/items/remove"
+            post: "/orders/{orderId}/items:remove"
             body: "*"
         };
-    }
-
-    rpc VerifyOrder (Order) returns (Order) {
-
     }
 
     // SubmitOrder submits the order to the system and creates it if it's possible,
     // otherwise returns errors why the creation failed
     rpc SubmitOrder (Order) returns (Order) {
         option (google.api.http) = {
-            post: "/stores/{storeId}/orders"
+            post: "/orders"
             body: "*"
         };
     }
@@ -77,7 +106,7 @@ service OrderService {
     // ListOrders returns all orders that the client has access to
     rpc ListOrders (OrderFilter) returns (OrderList) {
         option (google.api.http) = {
-            get: "/stores/{storeId}/orders"
+            get: "/orders"
         };
     }
 }
@@ -86,23 +115,20 @@ message Order {
     string orderId = 1;
     repeated OrderItem items = 2;
 
-    string storeId = 11;
+    string status = 3;
 }
 
 message OrderItem {
     Product product = 1;
     int32 count = 2;
 
-    string storeId = 11;
-    string orderId = 12;
+    string orderId = 10;
 }
 
 message OrderList {
-
+    repeated Order items = 1;
 }
 
 message OrderFilter {
     string orderId = 1;
-
-    string storeId = 11;
 }

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { DefaultHttpOptions, HttpOptions } from './index';
+import { DefaultHttpOptions, HttpOptions } from './';
 import { USE_DOMAIN, USE_HTTP_OPTIONS, OrderServiceAPIClient } from './order-service-api-client.service';
 
 import * as models from '../../models';
@@ -24,7 +24,6 @@ export class GuardedOrderServiceAPIClient extends OrderServiceAPIClient {
 
   listOrders(
     args: {
-      storeId: string,
       orderId?: string,
     },
     requestHttpOptions?: HttpOptions
@@ -35,7 +34,6 @@ export class GuardedOrderServiceAPIClient extends OrderServiceAPIClient {
 
   submitOrder(
     args: {
-      storeId: string,
       body: models.V1Order,
     },
     requestHttpOptions?: HttpOptions
@@ -44,27 +42,25 @@ export class GuardedOrderServiceAPIClient extends OrderServiceAPIClient {
       .pipe(tap((res: any) => guards.isV1Order(res) || console.error(`TypeGuard for response 'V1Order' caught inconsistency.`, res)));
   }
 
-  addToOrder(
+  addItemToOrder(
     args: {
-      storeId: string,
       orderId: string,
       body: models.V1OrderItem,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    return super.addToOrder(args, requestHttpOptions)
+    return super.addItemToOrder(args, requestHttpOptions)
       .pipe(tap((res: any) => guards.isV1Order(res) || console.error(`TypeGuard for response 'V1Order' caught inconsistency.`, res)));
   }
 
-  removeFromOrder(
+  removeItemFromOrder(
     args: {
-      storeId: string,
       orderId: string,
       body: models.V1OrderItem,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    return super.removeFromOrder(args, requestHttpOptions)
+    return super.removeItemFromOrder(args, requestHttpOptions)
       .pipe(tap((res: any) => guards.isV1Order(res) || console.error(`TypeGuard for response 'V1Order' caught inconsistency.`, res)));
   }
 

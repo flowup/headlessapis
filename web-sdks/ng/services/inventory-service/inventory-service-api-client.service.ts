@@ -3,12 +3,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { DefaultHttpOptions, HttpOptions, IntentoryServiceAPIClientInterface } from './index';
+import { DefaultHttpOptions, HttpOptions, InventoryServiceAPIClientInterface } from './';
 
 import * as models from '../../models';
 
-export const USE_DOMAIN = new InjectionToken<string>('IntentoryServiceAPIClient_USE_DOMAIN');
-export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('IntentoryServiceAPIClient_USE_HTTP_OPTIONS');
+export const USE_DOMAIN = new InjectionToken<string>('InventoryServiceAPIClient_USE_DOMAIN');
+export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('InventoryServiceAPIClient_USE_HTTP_OPTIONS');
 
 type APIHttpOptions = HttpOptions & {
   headers: HttpHeaders;
@@ -20,7 +20,7 @@ type APIHttpOptions = HttpOptions & {
  * Created with https://github.com/flowup/api-client-generator
  */
 @Injectable()
-export class IntentoryServiceAPIClient implements IntentoryServiceAPIClientInterface {
+export class InventoryServiceAPIClient implements InventoryServiceAPIClientInterface {
 
   readonly options: APIHttpOptions;
 
@@ -47,13 +47,12 @@ export class IntentoryServiceAPIClient implements IntentoryServiceAPIClientInter
    */
   listProducts(
     args: {
-      storeId: string,
       productId?: string,
       name?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1ProductList> {
-    const path = `/stores/${args.storeId}/products`;
+    const path = `/products`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -66,6 +65,28 @@ export class IntentoryServiceAPIClient implements IntentoryServiceAPIClientInter
       options.params = options.params.set('name', String(args.name));
     }
     return this.sendRequest<models.V1ProductList>('GET', path, options);
+  }
+
+  /**
+   * Response generated for [ 200 ] HTTP response code.
+   */
+  getProduct(
+    args: {
+      productId: string,
+      name?: string,
+    },
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.V1Product> {
+    const path = `/products/${args.productId}`;
+    const options: APIHttpOptions = {
+      ...this.options,
+      ...requestHttpOptions,
+    };
+
+    if ('name' in args) {
+      options.params = options.params.set('name', String(args.name));
+    }
+    return this.sendRequest<models.V1Product>('GET', path, options);
   }
 
   private sendRequest<T>(method: string, path: string, options: HttpOptions, body?: any): Observable<T> {

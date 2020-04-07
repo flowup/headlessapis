@@ -1,10 +1,10 @@
 /* tslint:disable */
 import {
   V1OrderItem,
-} from './index';
+} from '.';
 
 export interface V1Order {
   items?: V1OrderItem[];
   orderId?: string;
-  storeId?: string;
+  status?: string;
 }

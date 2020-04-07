@@ -15,7 +15,59 @@
     "application/json"
   ],
   "paths": {
-    "/stores/{storeId}/orders": {
+    "/accounts:signIn": {
+      "post": {
+        "operationId": "SignInWithPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Customer"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1EmailPassword"
+            }
+          }
+        ],
+        "tags": [
+          "AuthService"
+        ]
+      }
+    },
+    "/accounts:signUp": {
+      "post": {
+        "operationId": "SignUpWithPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Customer"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1EmailPassword"
+            }
+          }
+        ],
+        "tags": [
+          "AuthService"
+        ]
+      }
+    },
+    "/orders": {
       "get": {
         "summary": "ListOrders returns all orders that the client has access to",
         "operationId": "ListOrders",
@@ -28,12 +80,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "orderId",
             "in": "query",
@@ -58,12 +104,6 @@
         },
         "parameters": [
           {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -77,9 +117,9 @@
         ]
       }
     },
-    "/stores/{storeId}/orders/{orderId}/items/add": {
+    "/orders/{orderId}/items:add": {
       "post": {
-        "operationId": "AddToOrder",
+        "operationId": "AddItemToOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -89,12 +129,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "orderId",
             "in": "path",
@@ -115,9 +149,10 @@
         ]
       }
     },
-    "/stores/{storeId}/orders/{orderId}/items/remove": {
+    "/orders/{orderId}/items:remove": {
       "post": {
-        "operationId": "RemoveFromOrder",
+        "summary": "RemoveItemFromOrder removes an item from the currently active order",
+        "operationId": "RemoveItemFromOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -127,12 +162,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "orderId",
             "in": "path",
@@ -153,7 +182,7 @@
         ]
       }
     },
-    "/stores/{storeId}/products": {
+    "/products": {
       "get": {
         "operationId": "ListProducts",
         "responses": {
@@ -165,12 +194,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "productId",
             "in": "query",
@@ -185,12 +208,67 @@
           }
         ],
         "tags": [
-          "IntentoryService"
+          "InventoryService"
+        ]
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "operationId": "GetProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Product"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InventoryService"
         ]
       }
     }
   },
   "definitions": {
+    "v1Customer": {
+      "type": "object",
+      "properties": {
+        "customerId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        }
+      }
+    },
+    "v1EmailPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
     "v1Order": {
       "type": "object",
       "properties": {
@@ -203,7 +281,7 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "storeId": {
+        "status": {
           "type": "string"
         }
       }
@@ -218,16 +296,21 @@
           "type": "integer",
           "format": "int32"
         },
-        "storeId": {
-          "type": "string"
-        },
         "orderId": {
           "type": "string"
         }
       }
     },
     "v1OrderList": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Order"
+          }
+        }
+      }
     },
     "v1Product": {
       "type": "object",

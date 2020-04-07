@@ -14,6 +14,34 @@ return arg != null && typeof arg.lastModified === 'number' && typeof arg.name ==
 
 /* generated type guards */
 
+export function isV1Customer(arg: any): arg is models.V1Customer {
+  return (
+  arg != null &&
+  typeof arg === 'object' &&
+    // customerId?: string
+    ( typeof arg.customerId === 'undefined' || typeof arg.customerId === 'string' ) &&
+    // name?: string
+    ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
+    // thumbnail?: string
+    ( typeof arg.thumbnail === 'undefined' || typeof arg.thumbnail === 'string' ) &&
+
+  true
+  );
+  }
+
+export function isV1EmailPassword(arg: any): arg is models.V1EmailPassword {
+  return (
+  arg != null &&
+  typeof arg === 'object' &&
+    // email?: string
+    ( typeof arg.email === 'undefined' || typeof arg.email === 'string' ) &&
+    // password?: string
+    ( typeof arg.password === 'undefined' || typeof arg.password === 'string' ) &&
+
+  true
+  );
+  }
+
 export function isV1Order(arg: any): arg is models.V1Order {
   return (
   arg != null &&
@@ -22,8 +50,8 @@ export function isV1Order(arg: any): arg is models.V1Order {
     ( typeof arg.items === 'undefined' || (Array.isArray(arg.items) && arg.items.every((item: unknown) => isV1OrderItem(item))) ) &&
     // orderId?: string
     ( typeof arg.orderId === 'undefined' || typeof arg.orderId === 'string' ) &&
-    // storeId?: string
-    ( typeof arg.storeId === 'undefined' || typeof arg.storeId === 'string' ) &&
+    // status?: string
+    ( typeof arg.status === 'undefined' || typeof arg.status === 'string' ) &&
 
   true
   );
@@ -39,8 +67,6 @@ export function isV1OrderItem(arg: any): arg is models.V1OrderItem {
     ( typeof arg.orderId === 'undefined' || typeof arg.orderId === 'string' ) &&
     // product?: V1Product
     ( typeof arg.product === 'undefined' || isV1Product(arg.product) ) &&
-    // storeId?: string
-    ( typeof arg.storeId === 'undefined' || typeof arg.storeId === 'string' ) &&
 
   true
   );
@@ -50,6 +76,8 @@ export function isV1OrderList(arg: any): arg is models.V1OrderList {
   return (
   arg != null &&
   typeof arg === 'object' &&
+    // items?: V1Order[]
+    ( typeof arg.items === 'undefined' || (Array.isArray(arg.items) && arg.items.every((item: unknown) => isV1Order(item))) ) &&
 
   true
   );

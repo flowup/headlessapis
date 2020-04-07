@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { DefaultHttpOptions, HttpOptions } from './index';
-import { USE_DOMAIN, USE_HTTP_OPTIONS, IntentoryServiceAPIClient } from './intentory-service-api-client.service';
+import { DefaultHttpOptions, HttpOptions } from './';
+import { USE_DOMAIN, USE_HTTP_OPTIONS, InventoryServiceAPIClient } from './inventory-service-api-client.service';
 
 import * as models from '../../models';
 import * as guards from '../../guards';
@@ -14,7 +14,7 @@ import * as guards from '../../guards';
  * Created with https://github.com/flowup/api-client-generator
  */
 @Injectable()
-export class GuardedIntentoryServiceAPIClient extends IntentoryServiceAPIClient {
+export class GuardedInventoryServiceAPIClient extends InventoryServiceAPIClient {
 
   constructor(readonly httpClient: HttpClient,
               @Optional() @Inject(USE_DOMAIN) domain?: string,
@@ -24,7 +24,6 @@ export class GuardedIntentoryServiceAPIClient extends IntentoryServiceAPIClient 
 
   listProducts(
     args: {
-      storeId: string,
       productId?: string,
       name?: string,
     },
@@ -32,6 +31,17 @@ export class GuardedIntentoryServiceAPIClient extends IntentoryServiceAPIClient 
   ): Observable<models.V1ProductList> {
     return super.listProducts(args, requestHttpOptions)
       .pipe(tap((res: any) => guards.isV1ProductList(res) || console.error(`TypeGuard for response 'V1ProductList' caught inconsistency.`, res)));
+  }
+
+  getProduct(
+    args: {
+      productId: string,
+      name?: string,
+    },
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.V1Product> {
+    return super.getProduct(args, requestHttpOptions)
+      .pipe(tap((res: any) => guards.isV1Product(res) || console.error(`TypeGuard for response 'V1Product' caught inconsistency.`, res)));
   }
 
 }

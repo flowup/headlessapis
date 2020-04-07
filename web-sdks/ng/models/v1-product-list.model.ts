@@ -1,7 +1,7 @@
 /* tslint:disable */
 import {
   V1Product,
-} from './index';
+} from '.';
 
 export interface V1ProductList {
   data?: V1Product[];

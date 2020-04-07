@@ -3,12 +3,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { DefaultHttpOptions, HttpOptions, OrderServiceAPIClientInterface } from './';
+import { DefaultHttpOptions, HttpOptions, AuthServiceAPIClientInterface } from './';
 
 import * as models from '../../models';
 
-export const USE_DOMAIN = new InjectionToken<string>('OrderServiceAPIClient_USE_DOMAIN');
-export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('OrderServiceAPIClient_USE_HTTP_OPTIONS');
+export const USE_DOMAIN = new InjectionToken<string>('AuthServiceAPIClient_USE_DOMAIN');
+export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('AuthServiceAPIClient_USE_HTTP_OPTIONS');
 
 type APIHttpOptions = HttpOptions & {
   headers: HttpHeaders;
@@ -20,7 +20,7 @@ type APIHttpOptions = HttpOptions & {
  * Created with https://github.com/flowup/api-client-generator
  */
 @Injectable()
-export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
+export class AuthServiceAPIClient implements AuthServiceAPIClientInterface {
 
   readonly options: APIHttpOptions;
 
@@ -45,78 +45,37 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  listOrders(
+  signInWithPassword(
     args: {
-      orderId?: string,
+      body: models.V1EmailPassword,
     },
     requestHttpOptions?: HttpOptions
-  ): Observable<models.V1OrderList> {
-    const path = `/orders`;
+  ): Observable<models.V1Customer> {
+    const path = `/accounts:signIn`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
     };
 
-    if ('orderId' in args) {
-      options.params = options.params.set('orderId', String(args.orderId));
-    }
-    return this.sendRequest<models.V1OrderList>('GET', path, options);
+    return this.sendRequest<models.V1Customer>('POST', path, options, JSON.stringify(args.body));
   }
 
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  submitOrder(
+  signUpWithPassword(
     args: {
-      body: models.V1Order,
+      body: models.V1EmailPassword,
     },
     requestHttpOptions?: HttpOptions
-  ): Observable<models.V1Order> {
-    const path = `/orders`;
+  ): Observable<models.V1Customer> {
+    const path = `/accounts:signUp`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
     };
 
-    return this.sendRequest<models.V1Order>('POST', path, options, JSON.stringify(args.body));
-  }
-
-  /**
-   * Response generated for [ 200 ] HTTP response code.
-   */
-  addItemToOrder(
-    args: {
-      orderId: string,
-      body: models.V1OrderItem,
-    },
-    requestHttpOptions?: HttpOptions
-  ): Observable<models.V1Order> {
-    const path = `/orders/${args.orderId}/items:add`;
-    const options: APIHttpOptions = {
-      ...this.options,
-      ...requestHttpOptions,
-    };
-
-    return this.sendRequest<models.V1Order>('POST', path, options, JSON.stringify(args.body));
-  }
-
-  /**
-   * Response generated for [ 200 ] HTTP response code.
-   */
-  removeItemFromOrder(
-    args: {
-      orderId: string,
-      body: models.V1OrderItem,
-    },
-    requestHttpOptions?: HttpOptions
-  ): Observable<models.V1Order> {
-    const path = `/orders/${args.orderId}/items:remove`;
-    const options: APIHttpOptions = {
-      ...this.options,
-      ...requestHttpOptions,
-    };
-
-    return this.sendRequest<models.V1Order>('POST', path, options, JSON.stringify(args.body));
+    return this.sendRequest<models.V1Customer>('POST', path, options, JSON.stringify(args.body));
   }
 
   private sendRequest<T>(method: string, path: string, options: HttpOptions, body?: any): Observable<T> {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { Observable } from 'rxjs';
-import { HttpOptions } from './index';
+import { HttpOptions } from './';
 import * as models from '../../models';
 
 export interface OrderServiceAPIClientInterface {
@@ -11,7 +11,6 @@ export interface OrderServiceAPIClientInterface {
    */
   listOrders(
     args: {
-      storeId: string,
       orderId?: string,
     },
     requestHttpOptions?: HttpOptions
@@ -22,7 +21,6 @@ export interface OrderServiceAPIClientInterface {
    */
   submitOrder(
     args: {
-      storeId: string,
       body: models.V1Order,
     },
     requestHttpOptions?: HttpOptions
@@ -31,9 +29,8 @@ export interface OrderServiceAPIClientInterface {
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  addToOrder(
+  addItemToOrder(
     args: {
-      storeId: string,
       orderId: string,
       body: models.V1OrderItem,
     },
@@ -43,9 +40,8 @@ export interface OrderServiceAPIClientInterface {
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  removeFromOrder(
+  removeItemFromOrder(
     args: {
-      storeId: string,
       orderId: string,
       body: models.V1OrderItem,
     },

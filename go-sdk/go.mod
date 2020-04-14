@@ -1,4 +1,4 @@
-module github.com/flowup/headless/pkg
+module github.com/flowup/headlessapis/go-sdk
 
 go 1.14
 

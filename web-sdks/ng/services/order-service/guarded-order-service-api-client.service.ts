@@ -64,4 +64,11 @@ export class GuardedOrderServiceAPIClient extends OrderServiceAPIClient {
       .pipe(tap((res: any) => guards.isV1Order(res) || console.error(`TypeGuard for response 'V1Order' caught inconsistency.`, res)));
   }
 
+  getActiveOrder(
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.V1Order> {
+    return super.getActiveOrder(requestHttpOptions)
+      .pipe(tap((res: any) => guards.isV1Order(res) || console.error(`TypeGuard for response 'V1Order' caught inconsistency.`, res)));
+  }
+
 }

@@ -119,6 +119,21 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     return this.sendRequest<models.V1Order>('POST', path, options, JSON.stringify(args.body));
   }
 
+  /**
+   * Response generated for [ 200 ] HTTP response code.
+   */
+  getActiveOrder(
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.V1Order> {
+    const path = `/orders:active`;
+    const options: APIHttpOptions = {
+      ...this.options,
+      ...requestHttpOptions,
+    };
+
+    return this.sendRequest<models.V1Order>('GET', path, options);
+  }
+
   private sendRequest<T>(method: string, path: string, options: HttpOptions, body?: any): Observable<T> {
     switch (method) {
       case 'DELETE':

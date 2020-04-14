@@ -11,11 +11,8 @@ import (
 	empty "github.com/golang/protobuf/ptypes/empty"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
-	math_bits "math/bits"
 	reflect "reflect"
 	strings "strings"
 )
@@ -29,99 +26,99 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
-type Company struct {
-	// [Required] companyId can be set only once and is unchangeable during lifetime
-	CompanyId string `protobuf:"bytes,1,opt,name=companyId,proto3" json:"companyId,omitempty"`
-	// [Required] name of the company can be customized by the user, however, the id
+type Merchant struct {
+	// [Required] merchantId can be set only once and is unchangeable during lifetime
+	MerchantId string `protobuf:"bytes,1,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
+	// [Required] name of the merchant can be customized by the user, however, the id
 	// will stay unchanged
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 }
 
-func (m *Company) Reset()      { *m = Company{} }
-func (*Company) ProtoMessage() {}
-func (*Company) Descriptor() ([]byte, []int) {
+func (m *Merchant) Reset()      { *m = Merchant{} }
+func (*Merchant) ProtoMessage() {}
+func (*Merchant) Descriptor() ([]byte, []int) {
 	return fileDescriptor_667592b98ca79aba, []int{0}
 }
-func (m *Company) XXX_Unmarshal(b []byte) error {
+func (m *Merchant) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Company) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Merchant) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Company.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Merchant.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *Company) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Company.Merge(m, src)
+func (m *Merchant) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Merchant.Merge(m, src)
 }
-func (m *Company) XXX_Size() int {
+func (m *Merchant) XXX_Size() int {
 	return m.Size()
 }
-func (m *Company) XXX_DiscardUnknown() {
-	xxx_messageInfo_Company.DiscardUnknown(m)
+func (m *Merchant) XXX_DiscardUnknown() {
+	xxx_messageInfo_Merchant.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Company proto.InternalMessageInfo
+var xxx_messageInfo_Merchant proto.InternalMessageInfo
 
-func (m *Company) GetCompanyId() string {
+func (m *Merchant) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
 
-func (m *Company) GetName() string {
+func (m *Merchant) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-type CompanyList struct {
-	Items []*Company `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+type MerchantList struct {
+	Items []*Merchant `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 }
 
-func (m *CompanyList) Reset()      { *m = CompanyList{} }
-func (*CompanyList) ProtoMessage() {}
-func (*CompanyList) Descriptor() ([]byte, []int) {
+func (m *MerchantList) Reset()      { *m = MerchantList{} }
+func (*MerchantList) ProtoMessage() {}
+func (*MerchantList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_667592b98ca79aba, []int{1}
 }
-func (m *CompanyList) XXX_Unmarshal(b []byte) error {
+func (m *MerchantList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CompanyList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MerchantList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CompanyList.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MerchantList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
 		return b[:n], nil
 	}
 }
-func (m *CompanyList) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CompanyList.Merge(m, src)
+func (m *MerchantList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MerchantList.Merge(m, src)
 }
-func (m *CompanyList) XXX_Size() int {
+func (m *MerchantList) XXX_Size() int {
 	return m.Size()
 }
-func (m *CompanyList) XXX_DiscardUnknown() {
-	xxx_messageInfo_CompanyList.DiscardUnknown(m)
+func (m *MerchantList) XXX_DiscardUnknown() {
+	xxx_messageInfo_MerchantList.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CompanyList proto.InternalMessageInfo
+var xxx_messageInfo_MerchantList proto.InternalMessageInfo
 
-func (m *CompanyList) GetItems() []*Company {
+func (m *MerchantList) GetItems() []*Merchant {
 	if m != nil {
 		return m.Items
 	}
@@ -132,8 +129,8 @@ type Store struct {
 	StoreId  string `protobuf:"bytes,1,opt,name=storeId,proto3" json:"storeId,omitempty"`
 	Name     string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Location string `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
-	// [Required] reference to the company id
-	CompanyId string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	// [Required] reference to the merchant id
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 }
 
 func (m *Store) Reset()      { *m = Store{} }
@@ -149,7 +146,7 @@ func (m *Store) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Store.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -189,9 +186,9 @@ func (m *Store) GetLocation() string {
 	return ""
 }
 
-func (m *Store) GetCompanyId() string {
+func (m *Store) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -202,7 +199,7 @@ type User struct {
 	Email string `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
 	// id of the user this user was invited by into the system
 	InvitedById string `protobuf:"bytes,5,opt,name=invitedById,proto3" json:"invitedById,omitempty"`
-	CompanyId   string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	MerchantId  string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 	Thumbnail   string `protobuf:"bytes,50,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
 }
 
@@ -219,7 +216,7 @@ func (m *User) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_User.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -266,9 +263,9 @@ func (m *User) GetInvitedById() string {
 	return ""
 }
 
-func (m *User) GetCompanyId() string {
+func (m *User) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -297,7 +294,7 @@ func (m *UserList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_UserList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -327,9 +324,9 @@ type ProductSchema struct {
 	ProductSchemaId string `protobuf:"bytes,1,opt,name=productSchemaId,proto3" json:"productSchemaId,omitempty"`
 	Name            string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// createdBy is a reference to the user that created this product schema
-	CreatedBy *User             `protobuf:"bytes,3,opt,name=createdBy,proto3" json:"createdBy,omitempty"`
-	CompanyId string            `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
-	Labels    map[string]string `protobuf:"bytes,20,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	CreatedBy  *User             `protobuf:"bytes,3,opt,name=createdBy,proto3" json:"createdBy,omitempty"`
+	MerchantId string            `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
+	Labels     map[string]string `protobuf:"bytes,20,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// attributes are custom key-value pairs provided for the product
 	Attributes map[string]string `protobuf:"bytes,100,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
@@ -347,7 +344,7 @@ func (m *ProductSchema) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_ProductSchema.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -387,9 +384,9 @@ func (m *ProductSchema) GetCreatedBy() *User {
 	return nil
 }
 
-func (m *ProductSchema) GetCompanyId() string {
+func (m *ProductSchema) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -411,7 +408,7 @@ func (m *ProductSchema) GetAttributes() map[string]string {
 type Product struct {
 	ProductId     string            `protobuf:"bytes,1,opt,name=productId,proto3" json:"productId,omitempty"`
 	ProductSchema *ProductSchema    `protobuf:"bytes,2,opt,name=productSchema,proto3" json:"productSchema,omitempty"`
-	CompanyId     string            `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	MerchantId    string            `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 	StoreId       string            `protobuf:"bytes,11,opt,name=storeId,proto3" json:"storeId,omitempty"`
 	ProviderId    string            `protobuf:"bytes,12,opt,name=providerId,proto3" json:"providerId,omitempty"`
 	Labels        map[string]string `protobuf:"bytes,20,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
@@ -432,7 +429,7 @@ func (m *Product) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Product.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -465,9 +462,9 @@ func (m *Product) GetProductSchema() *ProductSchema {
 	return nil
 }
 
-func (m *Product) GetCompanyId() string {
+func (m *Product) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -504,9 +501,9 @@ type UploadMeta struct {
 	// [Required] fileName is searchable throughout the system
 	FileName string `protobuf:"bytes,1,opt,name=fileName,proto3" json:"fileName,omitempty"`
 	// [Output Only] this is being provided by the system after the file is uploaded
-	Link      string            `protobuf:"bytes,2,opt,name=link,proto3" json:"link,omitempty"`
-	CompanyId string            `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
-	Labels    map[string]string `protobuf:"bytes,20,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Link       string            `protobuf:"bytes,2,opt,name=link,proto3" json:"link,omitempty"`
+	MerchantId string            `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
+	Labels     map[string]string `protobuf:"bytes,20,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *UploadMeta) Reset()      { *m = UploadMeta{} }
@@ -522,7 +519,7 @@ func (m *UploadMeta) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_UploadMeta.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -555,9 +552,9 @@ func (m *UploadMeta) GetLink() string {
 	return ""
 }
 
-func (m *UploadMeta) GetCompanyId() string {
+func (m *UploadMeta) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -585,7 +582,7 @@ func (m *Warehouse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Warehouse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -620,7 +617,7 @@ func (m *WarehouseFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return xxx_messageInfo_WarehouseFilter.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -656,7 +653,7 @@ func (m *WarehouseList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_WarehouseList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -683,9 +680,9 @@ func (m *WarehouseList) GetItems() []*Warehouse {
 }
 
 type Order struct {
-	OrderId   string `protobuf:"bytes,1,opt,name=orderId,proto3" json:"orderId,omitempty"`
-	CompanyId string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
-	StoreId   string `protobuf:"bytes,2,opt,name=storeId,proto3" json:"storeId,omitempty"`
+	OrderId    string `protobuf:"bytes,1,opt,name=orderId,proto3" json:"orderId,omitempty"`
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
+	StoreId    string `protobuf:"bytes,2,opt,name=storeId,proto3" json:"storeId,omitempty"`
 }
 
 func (m *Order) Reset()      { *m = Order{} }
@@ -701,7 +698,7 @@ func (m *Order) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Order.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -727,9 +724,9 @@ func (m *Order) GetOrderId() string {
 	return ""
 }
 
-func (m *Order) GetCompanyId() string {
+func (m *Order) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -758,7 +755,7 @@ func (m *OrderList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_OrderList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -785,9 +782,9 @@ func (m *OrderList) GetItems() []*Order {
 }
 
 type OrderFilter struct {
-	OrderId   string `protobuf:"bytes,1,opt,name=orderId,proto3" json:"orderId,omitempty"`
-	CompanyId string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
-	StoreId   string `protobuf:"bytes,11,opt,name=storeId,proto3" json:"storeId,omitempty"`
+	OrderId    string `protobuf:"bytes,1,opt,name=orderId,proto3" json:"orderId,omitempty"`
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
+	StoreId    string `protobuf:"bytes,11,opt,name=storeId,proto3" json:"storeId,omitempty"`
 }
 
 func (m *OrderFilter) Reset()      { *m = OrderFilter{} }
@@ -803,7 +800,7 @@ func (m *OrderFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_OrderFilter.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -829,9 +826,9 @@ func (m *OrderFilter) GetOrderId() string {
 	return ""
 }
 
-func (m *OrderFilter) GetCompanyId() string {
+func (m *OrderFilter) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -845,7 +842,7 @@ func (m *OrderFilter) GetStoreId() string {
 
 type Provider struct {
 	ProviderId string `protobuf:"bytes,1,opt,name=providerId,proto3" json:"providerId,omitempty"`
-	CompanyId  string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 }
 
 func (m *Provider) Reset()      { *m = Provider{} }
@@ -861,7 +858,7 @@ func (m *Provider) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Provider.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -887,15 +884,15 @@ func (m *Provider) GetProviderId() string {
 	return ""
 }
 
-func (m *Provider) GetCompanyId() string {
+func (m *Provider) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
 
 type ProviderFilter struct {
-	CompanyId string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 }
 
 func (m *ProviderFilter) Reset()      { *m = ProviderFilter{} }
@@ -911,7 +908,7 @@ func (m *ProviderFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return xxx_messageInfo_ProviderFilter.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -930,9 +927,9 @@ func (m *ProviderFilter) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ProviderFilter proto.InternalMessageInfo
 
-func (m *ProviderFilter) GetCompanyId() string {
+func (m *ProviderFilter) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -953,7 +950,7 @@ func (m *ProviderList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_ProviderList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -974,7 +971,7 @@ var xxx_messageInfo_ProviderList proto.InternalMessageInfo
 
 type Customer struct {
 	CustomerId string `protobuf:"bytes,1,opt,name=customerId,proto3" json:"customerId,omitempty"`
-	CompanyId  string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 }
 
 func (m *Customer) Reset()      { *m = Customer{} }
@@ -990,7 +987,7 @@ func (m *Customer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Customer.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1016,15 +1013,15 @@ func (m *Customer) GetCustomerId() string {
 	return ""
 }
 
-func (m *Customer) GetCompanyId() string {
+func (m *Customer) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
 
 type CustomerFilter struct {
-	CompanyId string `protobuf:"bytes,10,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
 }
 
 func (m *CustomerFilter) Reset()      { *m = CustomerFilter{} }
@@ -1040,7 +1037,7 @@ func (m *CustomerFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return xxx_messageInfo_CustomerFilter.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1059,9 +1056,9 @@ func (m *CustomerFilter) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CustomerFilter proto.InternalMessageInfo
 
-func (m *CustomerFilter) GetCompanyId() string {
+func (m *CustomerFilter) GetMerchantId() string {
 	if m != nil {
-		return m.CompanyId
+		return m.MerchantId
 	}
 	return ""
 }
@@ -1082,7 +1079,7 @@ func (m *CustomerList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 		return xxx_messageInfo_CustomerList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1102,8 +1099,8 @@ func (m *CustomerList) XXX_DiscardUnknown() {
 var xxx_messageInfo_CustomerList proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*Company)(nil), "v1.Company")
-	proto.RegisterType((*CompanyList)(nil), "v1.CompanyList")
+	proto.RegisterType((*Merchant)(nil), "v1.Merchant")
+	proto.RegisterType((*MerchantList)(nil), "v1.MerchantList")
 	proto.RegisterType((*Store)(nil), "v1.Store")
 	proto.RegisterType((*User)(nil), "v1.User")
 	proto.RegisterType((*UserList)(nil), "v1.UserList")
@@ -1132,97 +1129,98 @@ func init() {
 func init() { proto.RegisterFile("v1/admin_api.proto", fileDescriptor_667592b98ca79aba) }
 
 var fileDescriptor_667592b98ca79aba = []byte{
-	// 1279 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x57, 0xcf, 0x6f, 0x1b, 0x45,
-	0x14, 0xf6, 0x3a, 0x49, 0x1b, 0x3f, 0xff, 0x4a, 0xa7, 0xa5, 0x98, 0x6d, 0xba, 0x4d, 0xa6, 0xb4,
-	0x0d, 0xa1, 0xf5, 0x12, 0x17, 0x44, 0x9b, 0x0a, 0xa9, 0x6d, 0x28, 0x21, 0x6a, 0x0b, 0x51, 0x42,
-	0x05, 0xe5, 0xd0, 0xb2, 0xf6, 0x4e, 0x92, 0x55, 0xd6, 0xbb, 0xd6, 0xee, 0xda, 0xc8, 0x8a, 0x22,
-	0x21, 0x2e, 0x5c, 0x91, 0xb8, 0x23, 0x8e, 0xf0, 0x77, 0x70, 0x01, 0x89, 0x43, 0x24, 0x2e, 0x3d,
-	0x12, 0x87, 0x03, 0xc7, 0xde, 0xb8, 0xa2, 0x79, 0xb3, 0xb3, 0xde, 0xb5, 0x5d, 0x6f, 0x2a, 0x38,
-	0x70, 0x9b, 0xf7, 0x66, 0xe6, 0x7b, 0xef, 0xfb, 0x66, 0xdf, 0x7b, 0x36, 0x90, 0xce, 0x92, 0x6e,
-	0x98, 0x4d, 0xcb, 0x79, 0x6a, 0xb4, 0xac, 0x6a, 0xcb, 0x73, 0x03, 0x97, 0x64, 0x3b, 0x4b, 0xea,
-	0xec, 0xb6, 0xeb, 0x6e, 0xdb, 0x4c, 0x37, 0x5a, 0x96, 0x6e, 0x38, 0x8e, 0x1b, 0x18, 0x81, 0xe5,
-	0x3a, 0xbe, 0x38, 0xa1, 0x9e, 0x0b, 0x77, 0xd1, 0xaa, 0xb7, 0xb7, 0x74, 0xd6, 0x6c, 0x05, 0x5d,
-	0xb1, 0x49, 0x6f, 0xc1, 0xc9, 0x15, 0xb7, 0xd9, 0x32, 0x9c, 0x2e, 0x99, 0x85, 0x5c, 0x43, 0x2c,
-	0xd7, 0xcc, 0x8a, 0x32, 0xa7, 0x2c, 0xe4, 0x36, 0xfa, 0x0e, 0x42, 0x60, 0xd2, 0x31, 0x9a, 0xac,
-	0x92, 0xc5, 0x0d, 0x5c, 0xd3, 0xb7, 0x20, 0x1f, 0x5e, 0x7e, 0x60, 0xf9, 0x01, 0x99, 0x87, 0x29,
-	0x2b, 0x60, 0x4d, 0xbf, 0xa2, 0xcc, 0x4d, 0x2c, 0xe4, 0x6b, 0xf9, 0x6a, 0x67, 0xa9, 0x1a, 0xee,
-	0x6f, 0x88, 0x1d, 0xea, 0xc2, 0xd4, 0x66, 0xe0, 0x7a, 0x8c, 0x54, 0xe0, 0xa4, 0xcf, 0x17, 0x51,
-	0x28, 0x69, 0x8e, 0x0a, 0x44, 0x54, 0x98, 0xb6, 0xdd, 0x06, 0xb2, 0xaa, 0x4c, 0xa0, 0x3f, 0xb2,
-	0x93, 0x69, 0xc3, 0x40, 0xda, 0xf4, 0x7b, 0x05, 0x26, 0x1f, 0xf9, 0xcc, 0x23, 0x25, 0xc8, 0x5a,
-	0x32, 0x56, 0xd6, 0x1a, 0x1d, 0xe6, 0x0c, 0x4c, 0xb1, 0xa6, 0x61, 0xd9, 0x95, 0x49, 0x74, 0x0a,
-	0x83, 0xcc, 0x41, 0xde, 0x72, 0x3a, 0x56, 0xc0, 0xcc, 0xbb, 0x3c, 0xc4, 0x14, 0xee, 0xc5, 0x5d,
-	0xe3, 0x53, 0xe0, 0xbb, 0xc1, 0x4e, 0xbb, 0x59, 0x77, 0x38, 0x72, 0x4d, 0xec, 0x46, 0x0e, 0xba,
-	0x08, 0xd3, 0x3c, 0x3f, 0x14, 0x50, 0x4b, 0x0a, 0x38, 0xcd, 0x05, 0xe4, 0x9b, 0x52, 0xbd, 0x6f,
-	0x26, 0xa0, 0xb8, 0xee, 0xb9, 0x66, 0xbb, 0x11, 0x6c, 0x36, 0x76, 0x58, 0xd3, 0x20, 0x0b, 0x50,
-	0x6e, 0xc5, 0x1d, 0x91, 0x9c, 0x83, 0xee, 0x91, 0x7c, 0x2f, 0x43, 0xae, 0xe1, 0x31, 0x03, 0x69,
-	0xa0, 0xae, 0xf1, 0x98, 0xfd, 0xad, 0x14, 0x7e, 0xef, 0xc0, 0x09, 0xdb, 0xa8, 0x33, 0xdb, 0xaf,
-	0x9c, 0xc1, 0xb4, 0xcf, 0x73, 0x88, 0x44, 0x9a, 0xd5, 0x07, 0xb8, 0x7f, 0xcf, 0x09, 0xbc, 0xee,
-	0x46, 0x78, 0x98, 0xdc, 0x01, 0x30, 0x82, 0xc0, 0xb3, 0xea, 0xed, 0x80, 0xf9, 0x15, 0x13, 0xaf,
-	0xce, 0x0f, 0x5f, 0xbd, 0x13, 0x9d, 0x11, 0xd7, 0x63, 0x97, 0xd4, 0x9b, 0x90, 0x8f, 0x21, 0x93,
-	0x19, 0x98, 0xd8, 0x65, 0xdd, 0x50, 0x00, 0xbe, 0xe4, 0x0f, 0xda, 0x31, 0xec, 0xb6, 0x64, 0x2d,
-	0x8c, 0xe5, 0xec, 0x0d, 0x45, 0x7d, 0x0f, 0xca, 0x03, 0xc8, 0x2f, 0x73, 0x9d, 0xfe, 0x30, 0x01,
-	0x27, 0xc3, 0x3c, 0xb9, 0x3a, 0xa1, 0xd8, 0xfd, 0xba, 0x89, 0x1c, 0xe4, 0x5d, 0x28, 0x26, 0x9e,
-	0x02, 0xb1, 0xf2, 0xb5, 0x53, 0x43, 0x4c, 0x37, 0x92, 0xe7, 0x52, 0x44, 0x8f, 0xd5, 0x4f, 0x3e,
-	0x59, 0x3f, 0x1a, 0x40, 0xcb, 0x73, 0x3b, 0x96, 0xc9, 0xbc, 0x35, 0xb3, 0x52, 0xc0, 0xcd, 0x98,
-	0x87, 0xe8, 0x03, 0xcf, 0xf5, 0x6a, 0x2c, 0x93, 0x91, 0x0f, 0x75, 0x6b, 0xc4, 0x43, 0x9d, 0x8b,
-	0x5f, 0xfa, 0x7f, 0x3e, 0xd1, 0xaf, 0x0a, 0xc0, 0xa3, 0x96, 0xed, 0x1a, 0xe6, 0x43, 0x16, 0x18,
-	0xbc, 0x85, 0x6c, 0x59, 0x36, 0xfb, 0x88, 0xd7, 0x80, 0xb8, 0x1f, 0xd9, 0xbc, 0x36, 0x6c, 0xcb,
-	0xd9, 0x95, 0xb5, 0xc1, 0xd7, 0x29, 0xf2, 0xd7, 0x06, 0x44, 0x54, 0xb1, 0x6c, 0xa2, 0x68, 0xa3,
-	0x74, 0xfc, 0x17, 0x52, 0xd0, 0x3c, 0xe4, 0x3e, 0x35, 0x3c, 0xb6, 0xe3, 0xb6, 0x7d, 0x46, 0x4f,
-	0x41, 0x39, 0x32, 0x3e, 0xb0, 0xec, 0x80, 0x79, 0xf4, 0x6d, 0x28, 0x46, 0x2e, 0xec, 0x24, 0x17,
-	0x93, 0x9d, 0xa4, 0xc8, 0xd3, 0x8b, 0x4e, 0xc8, 0x76, 0xf2, 0x18, 0xa6, 0x3e, 0xf6, 0x4c, 0xe6,
-	0xf1, 0x8f, 0xc9, 0xf5, 0xc4, 0xf7, 0x12, 0x36, 0xe3, 0xd0, 0x3c, 0xfe, 0x47, 0x98, 0x4d, 0x7c,
-	0x84, 0xf4, 0x2a, 0xe4, 0x10, 0x1a, 0x93, 0xb9, 0x90, 0x4c, 0x26, 0xc7, 0x93, 0xc1, 0x5d, 0x99,
-	0xc8, 0x53, 0xc8, 0xa3, 0x2d, 0xd8, 0xfc, 0x17, 0xe9, 0x24, 0x6b, 0x82, 0x7e, 0x08, 0xd3, 0xeb,
-	0x61, 0x05, 0x0c, 0xd4, 0x87, 0x32, 0x54, 0x1f, 0xe3, 0xe7, 0x49, 0x15, 0x4a, 0x12, 0x29, 0xcc,
-	0x76, 0xfc, 0xf9, 0x12, 0x14, 0xe4, 0x79, 0xae, 0x05, 0xcf, 0x64, 0xa5, 0xed, 0x07, 0x6e, 0x53,
-	0x64, 0xd2, 0x08, 0xd7, 0xfd, 0x4c, 0xfa, 0x9e, 0xf4, 0x4c, 0x24, 0xd2, 0x71, 0x33, 0x91, 0xe7,
-	0x79, 0x26, 0xb5, 0xbf, 0x27, 0xa1, 0x14, 0x4e, 0xe7, 0x4d, 0xe6, 0x75, 0xac, 0x06, 0x23, 0xab,
-	0x30, 0xb3, 0x82, 0x4d, 0x3f, 0xf4, 0xbf, 0xef, 0x75, 0x49, 0x7c, 0x8a, 0xab, 0x71, 0x83, 0xbe,
-	0xf6, 0xf5, 0xef, 0x7f, 0x7e, 0x97, 0x3d, 0x4d, 0x4b, 0xba, 0xe9, 0x75, 0x75, 0x11, 0xc8, 0x62,
-	0xfe, 0xb2, 0xb2, 0x48, 0x6e, 0x43, 0x31, 0x01, 0x34, 0x06, 0xe5, 0x15, 0x44, 0x29, 0x53, 0x48,
-	0x22, 0xdc, 0x87, 0xc2, 0x2a, 0x0b, 0x56, 0xa4, 0x8b, 0x9c, 0xad, 0x8a, 0x5f, 0x31, 0x55, 0xf9,
-	0x2b, 0xa6, 0x7a, 0x8f, 0xff, 0x8a, 0x51, 0xcb, 0x31, 0x2c, 0x14, 0x98, 0x20, 0x5e, 0x81, 0xc4,
-	0xf0, 0xc8, 0x3a, 0x14, 0xd7, 0x70, 0x5c, 0xf3, 0xc1, 0xc6, 0x49, 0x45, 0x53, 0x4e, 0x8d, 0x56,
-	0xf4, 0x4d, 0xbc, 0x78, 0x89, 0xce, 0x25, 0xe9, 0xe8, 0x7b, 0x91, 0x84, 0xfb, 0x7a, 0xdb, 0x67,
-	0x1e, 0xa6, 0xb7, 0x06, 0xd0, 0x47, 0x1c, 0x09, 0x77, 0x05, 0xe1, 0xe6, 0xe9, 0x6c, 0x1a, 0xd4,
-	0x7d, 0x98, 0x5e, 0x65, 0x01, 0xbf, 0xe3, 0x27, 0x65, 0x2a, 0x48, 0x2c, 0xe4, 0xf5, 0x3a, 0xe2,
-	0x69, 0x64, 0x2c, 0x1e, 0xf9, 0x04, 0x4a, 0x42, 0x78, 0xfc, 0x95, 0xc5, 0xa9, 0x62, 0xb5, 0xa1,
-	0xa5, 0xf6, 0x97, 0xf4, 0x2a, 0xa2, 0x5d, 0xa6, 0xf3, 0x63, 0xc8, 0x62, 0xf1, 0x60, 0x8a, 0x0f,
-	0x21, 0x1f, 0x43, 0x7d, 0x01, 0xe4, 0x02, 0x42, 0x52, 0x7a, 0x3e, 0x0d, 0xae, 0xf6, 0x73, 0x16,
-	0x66, 0xd6, 0x9c, 0x0e, 0x73, 0x02, 0xd7, 0x8b, 0xbe, 0xbd, 0x26, 0x9c, 0x15, 0x31, 0x12, 0x43,
-	0x91, 0x33, 0x18, 0x1e, 0x95, 0xea, 0xb0, 0x8b, 0x5e, 0xc3, 0xf0, 0x57, 0x28, 0x1d, 0xc7, 0x08,
-	0x8f, 0x22, 0xa5, 0x2d, 0x38, 0x3d, 0x22, 0xdc, 0x31, 0x63, 0xbd, 0x81, 0xb1, 0x2e, 0x52, 0x2d,
-	0x3d, 0xce, 0x67, 0x50, 0x10, 0x71, 0xc4, 0x70, 0x20, 0xa5, 0xe4, 0xa0, 0x50, 0x07, 0xec, 0x54,
-	0x15, 0xdb, 0x78, 0x94, 0xab, 0x48, 0x60, 0x26, 0xea, 0xe8, 0xa1, 0x88, 0xb5, 0x9f, 0xb2, 0x50,
-	0xc0, 0x4e, 0x2a, 0x55, 0x7d, 0x22, 0x5f, 0x4e, 0x34, 0xfa, 0x7e, 0xeb, 0x55, 0xfb, 0x4b, 0x7a,
-	0x13, 0x63, 0x5e, 0xa7, 0xd5, 0xb1, 0x2f, 0xa7, 0xef, 0x85, 0xdd, 0x74, 0x5f, 0xc7, 0x76, 0x8c,
-	0xf4, 0x18, 0xe4, 0x57, 0x0c, 0xa7, 0xc1, 0xec, 0x71, 0xf8, 0xb7, 0x11, 0x7f, 0x79, 0xf1, 0xc6,
-	0xcb, 0xe1, 0xeb, 0x7b, 0x61, 0xdb, 0xdf, 0x27, 0x1b, 0x90, 0x5b, 0x65, 0x01, 0xa2, 0xf9, 0xa4,
-	0x1c, 0x21, 0x8b, 0xbe, 0xa7, 0x16, 0x23, 0x07, 0x56, 0xca, 0x25, 0x0c, 0x77, 0x81, 0xbc, 0x48,
-	0x42, 0x81, 0x5e, 0xfb, 0x4d, 0x81, 0xb2, 0x6c, 0xcd, 0x52, 0xae, 0xc7, 0xb2, 0x7c, 0xa2, 0x69,
-	0x51, 0x08, 0x5f, 0x1f, 0x2d, 0x35, 0x61, 0xc5, 0x3a, 0xc6, 0xe8, 0x40, 0x72, 0xa8, 0xa0, 0x52,
-	0x4f, 0xb0, 0xa1, 0xc9, 0xbb, 0x3e, 0x21, 0x71, 0xa8, 0x90, 0xc8, 0x4c, 0xdc, 0x87, 0x5c, 0xc2,
-	0xcf, 0x81, 0xa4, 0x86, 0x40, 0x3a, 0xb2, 0xbf, 0x0f, 0xd1, 0x89, 0x46, 0x0e, 0x12, 0x90, 0x96,
-	0x9a, 0xb0, 0x52, 0xe9, 0xc8, 0xc9, 0x14, 0xa3, 0x23, 0xef, 0x86, 0x74, 0x92, 0xf3, 0x48, 0xd0,
-	0x89, 0xcf, 0x9c, 0x54, 0x3a, 0x51, 0x88, 0xbb, 0x5f, 0x1c, 0x1c, 0x6a, 0x99, 0x67, 0x87, 0x5a,
-	0xe6, 0xf9, 0xa1, 0xa6, 0x7c, 0xd5, 0xd3, 0x94, 0x1f, 0x7b, 0x9a, 0xf2, 0x4b, 0x4f, 0x53, 0x0e,
-	0x7a, 0x9a, 0xf2, 0x47, 0x4f, 0x53, 0xfe, 0xea, 0x69, 0x99, 0xe7, 0x3d, 0x4d, 0xf9, 0xf6, 0x48,
-	0xcb, 0x1c, 0x1c, 0x69, 0x99, 0x67, 0x47, 0x5a, 0xe6, 0xf3, 0xc5, 0x6d, 0x2b, 0xd8, 0x69, 0xd7,
-	0xab, 0x0d, 0xb7, 0xa9, 0x6f, 0xd9, 0xee, 0x97, 0xed, 0x96, 0xbe, 0xc3, 0x0c, 0xd3, 0x66, 0xbe,
-	0xaf, 0x6f, 0xbb, 0xd7, 0x7c, 0x73, 0x57, 0xfc, 0x7f, 0xd6, 0x3b, 0x4b, 0xf5, 0x13, 0x38, 0x49,
-	0xae, 0xff, 0x13, 0x00, 0x00, 0xff, 0xff, 0x56, 0x07, 0x70, 0xeb, 0x55, 0x0f, 0x00, 0x00,
+	// 1282 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x57, 0x4f, 0x6f, 0x1b, 0x55,
+	0x10, 0xf7, 0x3a, 0x75, 0x6b, 0x8f, 0xff, 0xa5, 0xaf, 0xa5, 0x98, 0x6d, 0xbb, 0x4d, 0x5f, 0x21,
+	0x84, 0xa8, 0xf5, 0x12, 0x53, 0x04, 0x4d, 0x05, 0x52, 0x1a, 0x4a, 0x94, 0x28, 0x29, 0x25, 0x51,
+	0x84, 0x28, 0x87, 0xb0, 0xf6, 0xbe, 0xc4, 0xab, 0xac, 0x77, 0xcd, 0xee, 0xda, 0xc8, 0x8a, 0x22,
+	0x21, 0x24, 0x0e, 0xdc, 0x90, 0xf8, 0x02, 0x88, 0x13, 0x07, 0x3e, 0x07, 0x42, 0x42, 0x42, 0x91,
+	0xb8, 0xf4, 0x48, 0x1c, 0x0e, 0x1c, 0xfb, 0x11, 0xd0, 0x9b, 0xdd, 0xb7, 0xde, 0xb5, 0x1d, 0x6f,
+	0x22, 0x38, 0x70, 0x7b, 0x33, 0xef, 0xcd, 0x6f, 0xe6, 0x37, 0xef, 0xcd, 0xcc, 0x2e, 0x90, 0xee,
+	0x82, 0xaa, 0xe9, 0x2d, 0xc3, 0xda, 0xd1, 0xda, 0x46, 0xb5, 0xed, 0xd8, 0x9e, 0x4d, 0xd2, 0xdd,
+	0x05, 0xf9, 0xc6, 0x9e, 0x6d, 0xef, 0x99, 0x4c, 0xd5, 0xda, 0x86, 0xaa, 0x59, 0x96, 0xed, 0x69,
+	0x9e, 0x61, 0x5b, 0xae, 0x7f, 0x42, 0xbe, 0x1e, 0xec, 0xa2, 0x54, 0xef, 0xec, 0xaa, 0xac, 0xd5,
+	0xf6, 0x7a, 0xfe, 0x26, 0x7d, 0x1f, 0xb2, 0x1b, 0xcc, 0x69, 0x34, 0x35, 0xcb, 0x23, 0x0a, 0x40,
+	0x2b, 0x58, 0xaf, 0xea, 0x15, 0x69, 0x46, 0x9a, 0xcb, 0x6d, 0x46, 0x34, 0x84, 0xc0, 0x05, 0x4b,
+	0x6b, 0xb1, 0x4a, 0x1a, 0x77, 0x70, 0x4d, 0x6b, 0x50, 0x10, 0xf6, 0xeb, 0x86, 0xeb, 0x11, 0x0a,
+	0x19, 0xc3, 0x63, 0x2d, 0xb7, 0x22, 0xcd, 0x4c, 0xcd, 0xe5, 0x6b, 0x85, 0x6a, 0x77, 0xa1, 0x2a,
+	0x0e, 0x6c, 0xfa, 0x5b, 0xf4, 0x0b, 0xc8, 0x6c, 0x79, 0xb6, 0xc3, 0x48, 0x05, 0x2e, 0xb9, 0x7c,
+	0x11, 0x7a, 0x13, 0xe2, 0x38, 0x57, 0x44, 0x86, 0xac, 0x69, 0x37, 0x90, 0x5a, 0x65, 0x0a, 0xf5,
+	0xa1, 0x3c, 0x14, 0x3a, 0x0c, 0x87, 0x4e, 0x7f, 0x90, 0xe0, 0xc2, 0xb6, 0xcb, 0x1c, 0x52, 0x82,
+	0xb4, 0x21, 0xbc, 0xa5, 0x8d, 0xf1, 0x8e, 0xae, 0x42, 0x86, 0xb5, 0x34, 0xc3, 0xac, 0x5c, 0x40,
+	0xa5, 0x2f, 0x90, 0x19, 0xc8, 0x1b, 0x56, 0xd7, 0xf0, 0x98, 0xfe, 0xa8, 0xb7, 0xaa, 0x57, 0x32,
+	0xb8, 0x17, 0x55, 0x25, 0x05, 0x41, 0x6e, 0x40, 0xce, 0x6b, 0x76, 0x5a, 0x75, 0x8b, 0x63, 0xd7,
+	0x70, 0x7b, 0xa0, 0xa0, 0xf3, 0x90, 0xe5, 0x11, 0x62, 0x16, 0x95, 0x78, 0x16, 0xb3, 0x3c, 0x8b,
+	0x7c, 0x53, 0x64, 0xf0, 0xdb, 0x29, 0x28, 0x3e, 0x75, 0x6c, 0xbd, 0xd3, 0xf0, 0xb6, 0x1a, 0x4d,
+	0xd6, 0xd2, 0xc8, 0x1c, 0x94, 0xdb, 0x51, 0x45, 0x98, 0xd2, 0x61, 0xf5, 0x58, 0xc6, 0xb3, 0x90,
+	0x6b, 0x38, 0x4c, 0x43, 0x22, 0x98, 0xdb, 0xa8, 0xcf, 0xc1, 0x56, 0x22, 0xc3, 0xb7, 0xe1, 0xa2,
+	0xa9, 0xd5, 0x99, 0xe9, 0x56, 0xae, 0x62, 0xe0, 0x37, 0x39, 0x48, 0x2c, 0xd0, 0xea, 0x3a, 0xee,
+	0x3f, 0xb6, 0x3c, 0xa7, 0xb7, 0x19, 0x1c, 0x26, 0x4b, 0x00, 0x9a, 0xe7, 0x39, 0x46, 0xbd, 0xe3,
+	0x31, 0xb7, 0xa2, 0xa3, 0xe9, 0xed, 0x51, 0xd3, 0xa5, 0xf0, 0x8c, 0x6f, 0x1e, 0x31, 0x92, 0x1f,
+	0x40, 0x3e, 0x82, 0x4c, 0xa6, 0x61, 0x6a, 0x9f, 0xf5, 0x82, 0x14, 0xf0, 0x25, 0xbf, 0xd4, 0xae,
+	0x66, 0x76, 0x04, 0x6f, 0x5f, 0x58, 0x4c, 0xbf, 0x2b, 0xc9, 0xef, 0x41, 0x79, 0x08, 0xf9, 0x3c,
+	0xe6, 0xf4, 0xc7, 0x29, 0xb8, 0x14, 0xc4, 0xc9, 0x6f, 0x38, 0x48, 0x77, 0x98, 0xff, 0x81, 0x82,
+	0xbc, 0x03, 0xc5, 0xd8, 0x65, 0x20, 0x56, 0xbe, 0x76, 0x79, 0x84, 0xe9, 0x66, 0xfc, 0x5c, 0x62,
+	0xda, 0x23, 0x75, 0x94, 0x8f, 0xd7, 0x91, 0x02, 0xd0, 0x76, 0xec, 0xae, 0xa1, 0x33, 0x67, 0x55,
+	0xaf, 0x14, 0x7c, 0xcb, 0x81, 0x86, 0xa8, 0x43, 0x17, 0xf6, 0x72, 0x24, 0x96, 0xb1, 0x57, 0xf5,
+	0x70, 0xcc, 0x55, 0x5d, 0x8f, 0x1a, 0xfd, 0x3f, 0x2f, 0xe9, 0x37, 0x09, 0x60, 0xbb, 0x6d, 0xda,
+	0x9a, 0xbe, 0xc1, 0x3c, 0x8d, 0xb7, 0x92, 0x5d, 0xc3, 0x64, 0x4f, 0x78, 0x1d, 0xf8, 0xf6, 0xa1,
+	0xcc, 0xeb, 0xc3, 0x34, 0xac, 0x7d, 0x51, 0x1f, 0x7c, 0x9d, 0x78, 0x01, 0xb5, 0xa1, 0x34, 0xca,
+	0x58, 0x3c, 0xa1, 0xbf, 0x71, 0x99, 0xfc, 0x17, 0xc9, 0xa0, 0x79, 0xc8, 0x7d, 0xa2, 0x39, 0xac,
+	0x69, 0x77, 0x5c, 0x46, 0x2f, 0x43, 0x39, 0x14, 0x3e, 0x34, 0x4c, 0x8f, 0x39, 0xf4, 0x3e, 0x14,
+	0x43, 0x15, 0xf6, 0x93, 0x3b, 0xf1, 0x7e, 0x52, 0xe4, 0xe1, 0x85, 0x27, 0x44, 0x53, 0xf9, 0x0c,
+	0x32, 0x1f, 0x39, 0x3a, 0x73, 0xf8, 0x73, 0xb2, 0x1d, 0xff, 0xc5, 0x04, 0x6d, 0x39, 0x10, 0xcf,
+	0xf3, 0x10, 0xd3, 0xb1, 0x87, 0x48, 0xef, 0x42, 0x0e, 0xc1, 0x31, 0x9c, 0x5b, 0xf1, 0x70, 0x72,
+	0x3c, 0x1c, 0xdc, 0x15, 0xa1, 0x68, 0x90, 0x47, 0xd9, 0xe7, 0xf3, 0xdf, 0x04, 0x14, 0xaf, 0x0c,
+	0xba, 0x06, 0xd9, 0xa7, 0x41, 0x1d, 0x0c, 0x55, 0x89, 0x34, 0x52, 0x25, 0x49, 0xd3, 0xe5, 0x4d,
+	0x28, 0x09, 0xac, 0x20, 0xe2, 0x24, 0x8b, 0x12, 0x14, 0x84, 0x05, 0xcf, 0x08, 0x8f, 0x66, 0xb9,
+	0xe3, 0x7a, 0x76, 0xcb, 0xb7, 0x6d, 0x04, 0xeb, 0x41, 0x34, 0x03, 0xcd, 0x59, 0xa2, 0x11, 0x58,
+	0x67, 0x8f, 0x46, 0x58, 0xf0, 0x68, 0x6a, 0xdf, 0x64, 0xa0, 0x2c, 0x86, 0xf6, 0x16, 0x73, 0xba,
+	0x46, 0x83, 0x91, 0x35, 0xb8, 0xbc, 0x8c, 0x73, 0x40, 0x6c, 0x7c, 0xe0, 0xf4, 0x48, 0x6c, 0xbc,
+	0xcb, 0x31, 0x89, 0xbe, 0xf2, 0xf5, 0x1f, 0x7f, 0x7d, 0x9f, 0xbe, 0x42, 0x4b, 0xaa, 0xee, 0xf4,
+	0x54, 0xe1, 0xcd, 0x5d, 0x94, 0xe6, 0xc9, 0x32, 0x94, 0xe2, 0x58, 0x13, 0x81, 0x5e, 0x42, 0xa0,
+	0x32, 0x85, 0x38, 0xc8, 0x3a, 0x14, 0x56, 0x98, 0x27, 0x4e, 0xb9, 0xe4, 0x5a, 0xd5, 0xff, 0xce,
+	0xa9, 0x8a, 0xef, 0x9c, 0xea, 0x63, 0xfe, 0x9d, 0x23, 0x4f, 0x47, 0xc1, 0x30, 0xd9, 0x04, 0x01,
+	0x0b, 0x24, 0x02, 0x48, 0x3e, 0x86, 0xe2, 0x2a, 0x8e, 0x72, 0x3e, 0xf2, 0x38, 0xb5, 0x70, 0xfe,
+	0xc9, 0xe1, 0x8a, 0xde, 0x45, 0xc3, 0x59, 0x7a, 0x3b, 0x4e, 0x49, 0x3d, 0x18, 0xe4, 0xf2, 0x50,
+	0xed, 0xb8, 0xcc, 0xc1, 0x00, 0xd7, 0x00, 0x06, 0x90, 0x63, 0xf1, 0xe6, 0x10, 0x8f, 0xd2, 0x9b,
+	0x89, 0x58, 0x1b, 0x90, 0x5d, 0x61, 0x1e, 0x37, 0x72, 0xc7, 0xe5, 0x4a, 0x7c, 0x38, 0xd0, 0xd7,
+	0x10, 0xf1, 0x16, 0x99, 0x8c, 0x48, 0xb6, 0xc5, 0x05, 0xe0, 0x77, 0x18, 0xa7, 0x8b, 0x35, 0x88,
+	0x92, 0x3c, 0x58, 0xd2, 0x7b, 0x08, 0xf7, 0x3a, 0xa5, 0x93, 0x08, 0x63, 0x45, 0x61, 0x94, 0x4f,
+	0x20, 0x1f, 0x81, 0x3d, 0x05, 0xf3, 0x0d, 0xc4, 0xbc, 0x43, 0x95, 0x44, 0xbc, 0xda, 0x2f, 0x69,
+	0x98, 0x5e, 0xb5, 0xba, 0xcc, 0xf2, 0x6c, 0xa7, 0x27, 0x1e, 0xa2, 0x05, 0xd7, 0x7c, 0x27, 0xb1,
+	0x91, 0xc9, 0x39, 0x8c, 0x0e, 0x52, 0x79, 0x54, 0x45, 0xab, 0xe8, 0x7f, 0x8e, 0xde, 0x99, 0xc8,
+	0x09, 0xcf, 0x22, 0xa9, 0x3d, 0xb8, 0x32, 0xc6, 0xdf, 0x19, 0x9d, 0xcd, 0xa3, 0xb3, 0x57, 0xe9,
+	0xad, 0x33, 0x38, 0xfa, 0x14, 0x0a, 0xbe, 0x23, 0x7f, 0x70, 0x90, 0x52, 0x7c, 0x88, 0xc8, 0x43,
+	0x72, 0x72, 0x22, 0x3b, 0x78, 0x96, 0x27, 0x92, 0xc0, 0x74, 0xd8, 0xee, 0x83, 0x3c, 0xd6, 0x7e,
+	0x4e, 0x43, 0x01, 0x9b, 0xac, 0x48, 0xec, 0x8e, 0xb8, 0x3d, 0x7f, 0x0a, 0x0c, 0xba, 0xb2, 0x3c,
+	0x58, 0xd2, 0x45, 0x74, 0x7a, 0x9f, 0xaa, 0x93, 0x6f, 0x4f, 0x3d, 0x08, 0xfa, 0xec, 0xa1, 0x8a,
+	0xad, 0x1a, 0x09, 0xee, 0x42, 0x7e, 0x59, 0xb3, 0x1a, 0xcc, 0x9c, 0xe4, 0x60, 0x09, 0x1d, 0x3c,
+	0x9c, 0x7f, 0x70, 0x4e, 0x07, 0xea, 0x41, 0x30, 0x13, 0x0e, 0xc9, 0x16, 0xe4, 0x56, 0x98, 0x87,
+	0x70, 0x2e, 0x29, 0x87, 0xd0, 0x7e, 0x33, 0x94, 0x8b, 0xa1, 0x02, 0x2b, 0x66, 0x16, 0xfd, 0xcd,
+	0x90, 0x53, 0xb3, 0xe8, 0xc3, 0xd7, 0x7e, 0x97, 0xa0, 0x2c, 0x5a, 0xb6, 0xc8, 0xd8, 0x33, 0x51,
+	0x46, 0xe1, 0x24, 0x29, 0x04, 0x4f, 0x00, 0x25, 0x39, 0x26, 0x45, 0xba, 0xc7, 0x29, 0x9e, 0xc4,
+	0xc4, 0xc1, 0x64, 0xed, 0x60, 0x7b, 0x13, 0xc6, 0x2e, 0x21, 0x51, 0xac, 0x80, 0xca, 0x74, 0x54,
+	0x87, 0x6c, 0x82, 0x37, 0x41, 0x92, 0x7d, 0x20, 0x21, 0xd1, 0xf5, 0x47, 0x08, 0x85, 0xc3, 0x08,
+	0x29, 0x08, 0x49, 0x8e, 0x49, 0xc9, 0x84, 0xc4, 0xd0, 0x8a, 0x10, 0x12, 0xc6, 0x01, 0xa1, 0xf8,
+	0xa0, 0xf2, 0x09, 0x45, 0x47, 0x51, 0x32, 0xa1, 0xd0, 0xc7, 0xa3, 0xcf, 0x8f, 0x8e, 0x95, 0xd4,
+	0xf3, 0x63, 0x25, 0xf5, 0xe2, 0x58, 0x91, 0xbe, 0xea, 0x2b, 0xd2, 0x4f, 0x7d, 0x45, 0xfa, 0xb5,
+	0xaf, 0x48, 0x47, 0x7d, 0x45, 0xfa, 0xb3, 0xaf, 0x48, 0x7f, 0xf7, 0x95, 0xd4, 0x8b, 0xbe, 0x22,
+	0x7d, 0x77, 0xa2, 0xa4, 0x8e, 0x4e, 0x94, 0xd4, 0xf3, 0x13, 0x25, 0xf5, 0x6c, 0x7e, 0xcf, 0xf0,
+	0x9a, 0x9d, 0x7a, 0xb5, 0x61, 0xb7, 0xd4, 0x5d, 0xd3, 0xfe, 0xb2, 0xd3, 0x56, 0x9b, 0x4c, 0xd3,
+	0x4d, 0xe6, 0xba, 0xea, 0x9e, 0x7d, 0xcf, 0xd5, 0xf7, 0xfd, 0x5f, 0x6e, 0xb5, 0xbb, 0x50, 0xbf,
+	0x88, 0xa3, 0xe5, 0xad, 0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0xaf, 0xf7, 0xc4, 0x31, 0x88, 0x0f,
+	0x00, 0x00,
 }
 
-func (this *Company) Equal(that interface{}) bool {
+func (this *Merchant) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Company)
+	that1, ok := that.(*Merchant)
 	if !ok {
-		that2, ok := that.(Company)
+		that2, ok := that.(Merchant)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1234,7 +1232,7 @@ func (this *Company) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if this.Name != that1.Name {
@@ -1242,14 +1240,14 @@ func (this *Company) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *CompanyList) Equal(that interface{}) bool {
+func (this *MerchantList) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*CompanyList)
+	that1, ok := that.(*MerchantList)
 	if !ok {
-		that2, ok := that.(CompanyList)
+		that2, ok := that.(MerchantList)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1299,7 +1297,7 @@ func (this *Store) Equal(that interface{}) bool {
 	if this.Location != that1.Location {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	return true
@@ -1335,7 +1333,7 @@ func (this *User) Equal(that interface{}) bool {
 	if this.InvitedById != that1.InvitedById {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if this.Thumbnail != that1.Thumbnail {
@@ -1400,7 +1398,7 @@ func (this *ProductSchema) Equal(that interface{}) bool {
 	if !this.CreatedBy.Equal(that1.CreatedBy) {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if len(this.Labels) != len(that1.Labels) {
@@ -1446,7 +1444,7 @@ func (this *Product) Equal(that interface{}) bool {
 	if !this.ProductSchema.Equal(that1.ProductSchema) {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if this.StoreId != that1.StoreId {
@@ -1498,7 +1496,7 @@ func (this *UploadMeta) Equal(that interface{}) bool {
 	if this.Link != that1.Link {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if len(this.Labels) != len(that1.Labels) {
@@ -1604,7 +1602,7 @@ func (this *Order) Equal(that interface{}) bool {
 	if this.OrderId != that1.OrderId {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if this.StoreId != that1.StoreId {
@@ -1663,7 +1661,7 @@ func (this *OrderFilter) Equal(that interface{}) bool {
 	if this.OrderId != that1.OrderId {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	if this.StoreId != that1.StoreId {
@@ -1693,7 +1691,7 @@ func (this *Provider) Equal(that interface{}) bool {
 	if this.ProviderId != that1.ProviderId {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	return true
@@ -1717,7 +1715,7 @@ func (this *ProviderFilter) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	return true
@@ -1765,7 +1763,7 @@ func (this *Customer) Equal(that interface{}) bool {
 	if this.CustomerId != that1.CustomerId {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	return true
@@ -1789,7 +1787,7 @@ func (this *CustomerFilter) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.CompanyId != that1.CompanyId {
+	if this.MerchantId != that1.MerchantId {
 		return false
 	}
 	return true
@@ -1815,23 +1813,23 @@ func (this *CustomerList) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Company) GoString() string {
+func (this *Merchant) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 6)
-	s = append(s, "&v1.Company{")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "&v1.Merchant{")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *CompanyList) GoString() string {
+func (this *MerchantList) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 5)
-	s = append(s, "&v1.CompanyList{")
+	s = append(s, "&v1.MerchantList{")
 	if this.Items != nil {
 		s = append(s, "Items: "+fmt.Sprintf("%#v", this.Items)+",\n")
 	}
@@ -1847,7 +1845,7 @@ func (this *Store) GoString() string {
 	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "Location: "+fmt.Sprintf("%#v", this.Location)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -1861,7 +1859,7 @@ func (this *User) GoString() string {
 	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
 	s = append(s, "Email: "+fmt.Sprintf("%#v", this.Email)+",\n")
 	s = append(s, "InvitedById: "+fmt.Sprintf("%#v", this.InvitedById)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "Thumbnail: "+fmt.Sprintf("%#v", this.Thumbnail)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -1889,7 +1887,7 @@ func (this *ProductSchema) GoString() string {
 	if this.CreatedBy != nil {
 		s = append(s, "CreatedBy: "+fmt.Sprintf("%#v", this.CreatedBy)+",\n")
 	}
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	keysForLabels := make([]string, 0, len(this.Labels))
 	for k, _ := range this.Labels {
 		keysForLabels = append(keysForLabels, k)
@@ -1929,7 +1927,7 @@ func (this *Product) GoString() string {
 	if this.ProductSchema != nil {
 		s = append(s, "ProductSchema: "+fmt.Sprintf("%#v", this.ProductSchema)+",\n")
 	}
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
 	s = append(s, "ProviderId: "+fmt.Sprintf("%#v", this.ProviderId)+",\n")
 	keysForLabels := make([]string, 0, len(this.Labels))
@@ -1969,7 +1967,7 @@ func (this *UploadMeta) GoString() string {
 	s = append(s, "&v1.UploadMeta{")
 	s = append(s, "FileName: "+fmt.Sprintf("%#v", this.FileName)+",\n")
 	s = append(s, "Link: "+fmt.Sprintf("%#v", this.Link)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	keysForLabels := make([]string, 0, len(this.Labels))
 	for k, _ := range this.Labels {
 		keysForLabels = append(keysForLabels, k)
@@ -2023,7 +2021,7 @@ func (this *Order) GoString() string {
 	s := make([]string, 0, 7)
 	s = append(s, "&v1.Order{")
 	s = append(s, "OrderId: "+fmt.Sprintf("%#v", this.OrderId)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -2047,7 +2045,7 @@ func (this *OrderFilter) GoString() string {
 	s := make([]string, 0, 7)
 	s = append(s, "&v1.OrderFilter{")
 	s = append(s, "OrderId: "+fmt.Sprintf("%#v", this.OrderId)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -2059,7 +2057,7 @@ func (this *Provider) GoString() string {
 	s := make([]string, 0, 6)
 	s = append(s, "&v1.Provider{")
 	s = append(s, "ProviderId: "+fmt.Sprintf("%#v", this.ProviderId)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -2069,7 +2067,7 @@ func (this *ProviderFilter) GoString() string {
 	}
 	s := make([]string, 0, 5)
 	s = append(s, "&v1.ProviderFilter{")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -2089,7 +2087,7 @@ func (this *Customer) GoString() string {
 	s := make([]string, 0, 6)
 	s = append(s, "&v1.Customer{")
 	s = append(s, "CustomerId: "+fmt.Sprintf("%#v", this.CustomerId)+",\n")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -2099,7 +2097,7 @@ func (this *CustomerFilter) GoString() string {
 	}
 	s := make([]string, 0, 5)
 	s = append(s, "&v1.CustomerFilter{")
-	s = append(s, "CompanyId: "+fmt.Sprintf("%#v", this.CompanyId)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -2129,354 +2127,325 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// CompanyServiceClient is the client API for CompanyService service.
+// MerchantServiceClient is the client API for MerchantService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type CompanyServiceClient interface {
-	// CreateCompanyDry runs validation on the server side and returns
-	// errors that need to be corrected to successfully create the company
-	CreateCompanyDry(ctx context.Context, in *Company, opts ...grpc.CallOption) (*Company, error)
-	// CreateCompany creates a company in the database and returns the object
+type MerchantServiceClient interface {
+	// CreateMerchantDry runs validation on the server side and returns
+	// errors that need to be corrected to successfully create the merchant
+	CreateMerchantDry(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*Merchant, error)
+	// CreateMerchant creates a merchant in the database and returns the object
 	// back with populated data
-	CreateCompany(ctx context.Context, in *Company, opts ...grpc.CallOption) (*Company, error)
-	// GetCompanies returns a list of companies the user has access to
-	GetCompanies(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CompanyList, error)
+	CreateMerchant(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*Merchant, error)
+	// GetMerchants returns a list of merchants the user has access to
+	GetMerchants(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*MerchantList, error)
 	// InviteUserDry validates the provided user for existence. correct email,
 	// and other required fields by user invitation process
 	InviteUserDry(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 	// InviteUser creates a user account for the user in case it didn't exist before.
-	// Otherwise it invites the user into the company
+	// Otherwise it invites the user into the merchant
 	InviteUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
-	// GetUsers returns all users present in the company
-	GetUsers(ctx context.Context, in *Company, opts ...grpc.CallOption) (*UserList, error)
+	// GetUsers returns all users present in the merchant
+	GetUsers(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*UserList, error)
 	// CreateStoreDry runs validation on the server side and returns
 	// errors that need to be corrected to successfully create the store
-	// for the particular company
+	// for the particular merchant
 	CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error)
-	// Create store creates the store for the particular company and returns
+	// Create store creates the store for the particular merchant and returns
 	// the store object back to the caller
 	CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error)
 }
 
-type companyServiceClient struct {
+type merchantServiceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewCompanyServiceClient(cc *grpc.ClientConn) CompanyServiceClient {
-	return &companyServiceClient{cc}
+func NewMerchantServiceClient(cc *grpc.ClientConn) MerchantServiceClient {
+	return &merchantServiceClient{cc}
 }
 
-func (c *companyServiceClient) CreateCompanyDry(ctx context.Context, in *Company, opts ...grpc.CallOption) (*Company, error) {
-	out := new(Company)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/CreateCompanyDry", in, out, opts...)
+func (c *merchantServiceClient) CreateMerchantDry(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*Merchant, error) {
+	out := new(Merchant)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/CreateMerchantDry", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) CreateCompany(ctx context.Context, in *Company, opts ...grpc.CallOption) (*Company, error) {
-	out := new(Company)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/CreateCompany", in, out, opts...)
+func (c *merchantServiceClient) CreateMerchant(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*Merchant, error) {
+	out := new(Merchant)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/CreateMerchant", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) GetCompanies(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CompanyList, error) {
-	out := new(CompanyList)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/GetCompanies", in, out, opts...)
+func (c *merchantServiceClient) GetMerchants(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*MerchantList, error) {
+	out := new(MerchantList)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/GetMerchants", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) InviteUserDry(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+func (c *merchantServiceClient) InviteUserDry(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/InviteUserDry", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/InviteUserDry", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) InviteUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+func (c *merchantServiceClient) InviteUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/InviteUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/InviteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) GetUsers(ctx context.Context, in *Company, opts ...grpc.CallOption) (*UserList, error) {
+func (c *merchantServiceClient) GetUsers(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*UserList, error) {
 	out := new(UserList)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/GetUsers", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/GetUsers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
+func (c *merchantServiceClient) CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
 	out := new(Store)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/CreateStoreDry", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/CreateStoreDry", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *companyServiceClient) CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
+func (c *merchantServiceClient) CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
 	out := new(Store)
-	err := c.cc.Invoke(ctx, "/v1.CompanyService/CreateStore", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.MerchantService/CreateStore", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// CompanyServiceServer is the server API for CompanyService service.
-type CompanyServiceServer interface {
-	// CreateCompanyDry runs validation on the server side and returns
-	// errors that need to be corrected to successfully create the company
-	CreateCompanyDry(context.Context, *Company) (*Company, error)
-	// CreateCompany creates a company in the database and returns the object
+// MerchantServiceServer is the server API for MerchantService service.
+type MerchantServiceServer interface {
+	// CreateMerchantDry runs validation on the server side and returns
+	// errors that need to be corrected to successfully create the merchant
+	CreateMerchantDry(context.Context, *Merchant) (*Merchant, error)
+	// CreateMerchant creates a merchant in the database and returns the object
 	// back with populated data
-	CreateCompany(context.Context, *Company) (*Company, error)
-	// GetCompanies returns a list of companies the user has access to
-	GetCompanies(context.Context, *empty.Empty) (*CompanyList, error)
+	CreateMerchant(context.Context, *Merchant) (*Merchant, error)
+	// GetMerchants returns a list of merchants the user has access to
+	GetMerchants(context.Context, *empty.Empty) (*MerchantList, error)
 	// InviteUserDry validates the provided user for existence. correct email,
 	// and other required fields by user invitation process
 	InviteUserDry(context.Context, *User) (*User, error)
 	// InviteUser creates a user account for the user in case it didn't exist before.
-	// Otherwise it invites the user into the company
+	// Otherwise it invites the user into the merchant
 	InviteUser(context.Context, *User) (*User, error)
-	// GetUsers returns all users present in the company
-	GetUsers(context.Context, *Company) (*UserList, error)
+	// GetUsers returns all users present in the merchant
+	GetUsers(context.Context, *Merchant) (*UserList, error)
 	// CreateStoreDry runs validation on the server side and returns
 	// errors that need to be corrected to successfully create the store
-	// for the particular company
+	// for the particular merchant
 	CreateStoreDry(context.Context, *Store) (*Store, error)
-	// Create store creates the store for the particular company and returns
+	// Create store creates the store for the particular merchant and returns
 	// the store object back to the caller
 	CreateStore(context.Context, *Store) (*Store, error)
 }
 
-// UnimplementedCompanyServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedCompanyServiceServer struct {
+func RegisterMerchantServiceServer(s *grpc.Server, srv MerchantServiceServer) {
+	s.RegisterService(&_MerchantService_serviceDesc, srv)
 }
 
-func (*UnimplementedCompanyServiceServer) CreateCompanyDry(ctx context.Context, req *Company) (*Company, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateCompanyDry not implemented")
-}
-func (*UnimplementedCompanyServiceServer) CreateCompany(ctx context.Context, req *Company) (*Company, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateCompany not implemented")
-}
-func (*UnimplementedCompanyServiceServer) GetCompanies(ctx context.Context, req *empty.Empty) (*CompanyList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCompanies not implemented")
-}
-func (*UnimplementedCompanyServiceServer) InviteUserDry(ctx context.Context, req *User) (*User, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InviteUserDry not implemented")
-}
-func (*UnimplementedCompanyServiceServer) InviteUser(ctx context.Context, req *User) (*User, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InviteUser not implemented")
-}
-func (*UnimplementedCompanyServiceServer) GetUsers(ctx context.Context, req *Company) (*UserList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
-}
-func (*UnimplementedCompanyServiceServer) CreateStoreDry(ctx context.Context, req *Store) (*Store, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateStoreDry not implemented")
-}
-func (*UnimplementedCompanyServiceServer) CreateStore(ctx context.Context, req *Store) (*Store, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateStore not implemented")
-}
-
-func RegisterCompanyServiceServer(s *grpc.Server, srv CompanyServiceServer) {
-	s.RegisterService(&_CompanyService_serviceDesc, srv)
-}
-
-func _CompanyService_CreateCompanyDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Company)
+func _MerchantService_CreateMerchantDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Merchant)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).CreateCompanyDry(ctx, in)
+		return srv.(MerchantServiceServer).CreateMerchantDry(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/CreateCompanyDry",
+		FullMethod: "/v1.MerchantService/CreateMerchantDry",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).CreateCompanyDry(ctx, req.(*Company))
+		return srv.(MerchantServiceServer).CreateMerchantDry(ctx, req.(*Merchant))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_CreateCompany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Company)
+func _MerchantService_CreateMerchant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Merchant)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).CreateCompany(ctx, in)
+		return srv.(MerchantServiceServer).CreateMerchant(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/CreateCompany",
+		FullMethod: "/v1.MerchantService/CreateMerchant",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).CreateCompany(ctx, req.(*Company))
+		return srv.(MerchantServiceServer).CreateMerchant(ctx, req.(*Merchant))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_GetCompanies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MerchantService_GetMerchants_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(empty.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).GetCompanies(ctx, in)
+		return srv.(MerchantServiceServer).GetMerchants(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/GetCompanies",
+		FullMethod: "/v1.MerchantService/GetMerchants",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).GetCompanies(ctx, req.(*empty.Empty))
+		return srv.(MerchantServiceServer).GetMerchants(ctx, req.(*empty.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_InviteUserDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MerchantService_InviteUserDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).InviteUserDry(ctx, in)
+		return srv.(MerchantServiceServer).InviteUserDry(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/InviteUserDry",
+		FullMethod: "/v1.MerchantService/InviteUserDry",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).InviteUserDry(ctx, req.(*User))
+		return srv.(MerchantServiceServer).InviteUserDry(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_InviteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MerchantService_InviteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).InviteUser(ctx, in)
+		return srv.(MerchantServiceServer).InviteUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/InviteUser",
+		FullMethod: "/v1.MerchantService/InviteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).InviteUser(ctx, req.(*User))
+		return srv.(MerchantServiceServer).InviteUser(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Company)
+func _MerchantService_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Merchant)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).GetUsers(ctx, in)
+		return srv.(MerchantServiceServer).GetUsers(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/GetUsers",
+		FullMethod: "/v1.MerchantService/GetUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).GetUsers(ctx, req.(*Company))
+		return srv.(MerchantServiceServer).GetUsers(ctx, req.(*Merchant))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_CreateStoreDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MerchantService_CreateStoreDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Store)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).CreateStoreDry(ctx, in)
+		return srv.(MerchantServiceServer).CreateStoreDry(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/CreateStoreDry",
+		FullMethod: "/v1.MerchantService/CreateStoreDry",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).CreateStoreDry(ctx, req.(*Store))
+		return srv.(MerchantServiceServer).CreateStoreDry(ctx, req.(*Store))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CompanyService_CreateStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _MerchantService_CreateStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Store)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CompanyServiceServer).CreateStore(ctx, in)
+		return srv.(MerchantServiceServer).CreateStore(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.CompanyService/CreateStore",
+		FullMethod: "/v1.MerchantService/CreateStore",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CompanyServiceServer).CreateStore(ctx, req.(*Store))
+		return srv.(MerchantServiceServer).CreateStore(ctx, req.(*Store))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _CompanyService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "v1.CompanyService",
-	HandlerType: (*CompanyServiceServer)(nil),
+var _MerchantService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "v1.MerchantService",
+	HandlerType: (*MerchantServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateCompanyDry",
-			Handler:    _CompanyService_CreateCompanyDry_Handler,
+			MethodName: "CreateMerchantDry",
+			Handler:    _MerchantService_CreateMerchantDry_Handler,
 		},
 		{
-			MethodName: "CreateCompany",
-			Handler:    _CompanyService_CreateCompany_Handler,
+			MethodName: "CreateMerchant",
+			Handler:    _MerchantService_CreateMerchant_Handler,
 		},
 		{
-			MethodName: "GetCompanies",
-			Handler:    _CompanyService_GetCompanies_Handler,
+			MethodName: "GetMerchants",
+			Handler:    _MerchantService_GetMerchants_Handler,
 		},
 		{
 			MethodName: "InviteUserDry",
-			Handler:    _CompanyService_InviteUserDry_Handler,
+			Handler:    _MerchantService_InviteUserDry_Handler,
 		},
 		{
 			MethodName: "InviteUser",
-			Handler:    _CompanyService_InviteUser_Handler,
+			Handler:    _MerchantService_InviteUser_Handler,
 		},
 		{
 			MethodName: "GetUsers",
-			Handler:    _CompanyService_GetUsers_Handler,
+			Handler:    _MerchantService_GetUsers_Handler,
 		},
 		{
 			MethodName: "CreateStoreDry",
-			Handler:    _CompanyService_CreateStoreDry_Handler,
+			Handler:    _MerchantService_CreateStoreDry_Handler,
 		},
 		{
 			MethodName: "CreateStore",
-			Handler:    _CompanyService_CreateStore_Handler,
+			Handler:    _MerchantService_CreateStore_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2492,7 +2461,7 @@ type InventoryServiceClient interface {
 	CreateProductSchemaDry(ctx context.Context, in *ProductSchema, opts ...grpc.CallOption) (*ProductSchema, error)
 	// CreateProductSchema creates the product schema in the system
 	CreateProductSchema(ctx context.Context, in *ProductSchema, opts ...grpc.CallOption) (*ProductSchema, error)
-	// CreateUpload creates an upload link for the company gallery
+	// CreateUpload creates an upload link for the merchant gallery
 	CreateUpload(ctx context.Context, in *UploadMeta, opts ...grpc.CallOption) (*UploadMeta, error)
 }
 
@@ -2538,22 +2507,8 @@ type InventoryServiceServer interface {
 	CreateProductSchemaDry(context.Context, *ProductSchema) (*ProductSchema, error)
 	// CreateProductSchema creates the product schema in the system
 	CreateProductSchema(context.Context, *ProductSchema) (*ProductSchema, error)
-	// CreateUpload creates an upload link for the company gallery
+	// CreateUpload creates an upload link for the merchant gallery
 	CreateUpload(context.Context, *UploadMeta) (*UploadMeta, error)
-}
-
-// UnimplementedInventoryServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedInventoryServiceServer struct {
-}
-
-func (*UnimplementedInventoryServiceServer) CreateProductSchemaDry(ctx context.Context, req *ProductSchema) (*ProductSchema, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProductSchemaDry not implemented")
-}
-func (*UnimplementedInventoryServiceServer) CreateProductSchema(ctx context.Context, req *ProductSchema) (*ProductSchema, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProductSchema not implemented")
-}
-func (*UnimplementedInventoryServiceServer) CreateUpload(ctx context.Context, req *UploadMeta) (*UploadMeta, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateUpload not implemented")
 }
 
 func RegisterInventoryServiceServer(s *grpc.Server, srv InventoryServiceServer) {
@@ -2653,10 +2608,6 @@ func NewWarehouseServiceClient(cc *grpc.ClientConn) WarehouseServiceClient {
 type WarehouseServiceServer interface {
 }
 
-// UnimplementedWarehouseServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedWarehouseServiceServer struct {
-}
-
 func RegisterWarehouseServiceServer(s *grpc.Server, srv WarehouseServiceServer) {
 	s.RegisterService(&_WarehouseService_serviceDesc, srv)
 }
@@ -2722,20 +2673,6 @@ type OrderServiceServer interface {
 	CancelOrder(context.Context, *Order) (*Order, error)
 	// GetOrders returns all orders that the user has access to
 	GetOrders(context.Context, *OrderFilter) (*OrderList, error)
-}
-
-// UnimplementedOrderServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedOrderServiceServer struct {
-}
-
-func (*UnimplementedOrderServiceServer) CreateOrder(ctx context.Context, req *Order) (*Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateOrder not implemented")
-}
-func (*UnimplementedOrderServiceServer) CancelOrder(ctx context.Context, req *Order) (*Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CancelOrder not implemented")
-}
-func (*UnimplementedOrderServiceServer) GetOrders(ctx context.Context, req *OrderFilter) (*OrderList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrders not implemented")
 }
 
 func RegisterOrderServiceServer(s *grpc.Server, srv OrderServiceServer) {
@@ -2861,17 +2798,6 @@ type ProviderServiceServer interface {
 	GetProviders(context.Context, *ProviderFilter) (*ProviderList, error)
 }
 
-// UnimplementedProviderServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedProviderServiceServer struct {
-}
-
-func (*UnimplementedProviderServiceServer) CreateProvider(ctx context.Context, req *Provider) (*Provider, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProvider not implemented")
-}
-func (*UnimplementedProviderServiceServer) GetProviders(ctx context.Context, req *ProviderFilter) (*ProviderList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProviders not implemented")
-}
-
 func RegisterProviderServiceServer(s *grpc.Server, srv ProviderServiceServer) {
 	s.RegisterService(&_ProviderService_serviceDesc, srv)
 }
@@ -2973,17 +2899,6 @@ type CustomerServiceServer interface {
 	GetCustomers(context.Context, *CustomerFilter) (*CustomerList, error)
 }
 
-// UnimplementedCustomerServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedCustomerServiceServer struct {
-}
-
-func (*UnimplementedCustomerServiceServer) CreateCustomer(ctx context.Context, req *Customer) (*Customer, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateCustomer not implemented")
-}
-func (*UnimplementedCustomerServiceServer) GetCustomers(ctx context.Context, req *CustomerFilter) (*CustomerList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCustomers not implemented")
-}
-
 func RegisterCustomerServiceServer(s *grpc.Server, srv CustomerServiceServer) {
 	s.RegisterService(&_CustomerService_serviceDesc, srv)
 }
@@ -3041,84 +2956,70 @@ var _CustomerService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "v1/admin_api.proto",
 }
 
-func (m *Company) Marshal() (dAtA []byte, err error) {
+func (m *Merchant) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
 	return dAtA[:n], nil
 }
 
-func (m *Company) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Company) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *Merchant) MarshalTo(dAtA []byte) (int, error) {
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
+	if len(m.MerchantId) > 0 {
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	return i, nil
 }
 
-func (m *CompanyList) Marshal() (dAtA []byte, err error) {
+func (m *MerchantList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
 	return dAtA[:n], nil
 }
 
-func (m *CompanyList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CompanyList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+func (m *MerchantList) MarshalTo(dAtA []byte) (int, error) {
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintAdminApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Items {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Store) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3126,50 +3027,41 @@ func (m *Store) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Store) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Store) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.Location) > 0 {
-		i -= len(m.Location)
-		copy(dAtA[i:], m.Location)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Location)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.StoreId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
+		i += copy(dAtA[i:], m.StoreId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.StoreId) > 0 {
-		i -= len(m.StoreId)
-		copy(dAtA[i:], m.StoreId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Location) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Location)))
+		i += copy(dAtA[i:], m.Location)
 	}
-	return len(dAtA) - i, nil
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
+	}
+	return i, nil
 }
 
 func (m *User) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3177,66 +3069,55 @@ func (m *User) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *User) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Thumbnail) > 0 {
-		i -= len(m.Thumbnail)
-		copy(dAtA[i:], m.Thumbnail)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Thumbnail)))
-		i--
-		dAtA[i] = 0x3
-		i--
-		dAtA[i] = 0x92
-	}
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.InvitedById) > 0 {
-		i -= len(m.InvitedById)
-		copy(dAtA[i:], m.InvitedById)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.InvitedById)))
-		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Email) > 0 {
-		i -= len(m.Email)
-		copy(dAtA[i:], m.Email)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Email)))
-		i--
-		dAtA[i] = 0x22
+	if len(m.Id) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Id)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Email) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Email)))
+		i += copy(dAtA[i:], m.Email)
 	}
-	return len(dAtA) - i, nil
+	if len(m.InvitedById) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.InvitedById)))
+		i += copy(dAtA[i:], m.InvitedById)
+	}
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
+	}
+	if len(m.Thumbnail) > 0 {
+		dAtA[i] = 0x92
+		i++
+		dAtA[i] = 0x3
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Thumbnail)))
+		i += copy(dAtA[i:], m.Thumbnail)
+	}
+	return i, nil
 }
 
 func (m *UserList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3244,36 +3125,29 @@ func (m *UserList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *UserList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *UserList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintAdminApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Items {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ProductSchema) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3281,97 +3155,83 @@ func (m *ProductSchema) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ProductSchema) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ProductSchema) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Attributes) > 0 {
-		for k := range m.Attributes {
-			v := m.Attributes[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintAdminApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x6
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintAdminApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if m.CreatedBy != nil {
-		{
-			size, err := m.CreatedBy.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintAdminApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
+	if len(m.ProductSchemaId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProductSchemaId)))
+		i += copy(dAtA[i:], m.ProductSchemaId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.ProductSchemaId) > 0 {
-		i -= len(m.ProductSchemaId)
-		copy(dAtA[i:], m.ProductSchemaId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProductSchemaId)))
-		i--
-		dAtA[i] = 0xa
+	if m.CreatedBy != nil {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(m.CreatedBy.Size()))
+		n1, err := m.CreatedBy.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n1
 	}
-	return len(dAtA) - i, nil
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
+	}
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovAdminApi(uint64(len(k))) + 1 + len(v) + sovAdminApi(uint64(len(v)))
+			i = encodeVarintAdminApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.Attributes) > 0 {
+		for k, _ := range m.Attributes {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x6
+			i++
+			v := m.Attributes[k]
+			mapSize := 1 + len(k) + sovAdminApi(uint64(len(k))) + 1 + len(v) + sovAdminApi(uint64(len(v)))
+			i = encodeVarintAdminApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	return i, nil
 }
 
 func (m *Product) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3379,104 +3239,89 @@ func (m *Product) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Product) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Product) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Attributes) > 0 {
-		for k := range m.Attributes {
-			v := m.Attributes[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintAdminApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x6
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintAdminApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.ProviderId) > 0 {
-		i -= len(m.ProviderId)
-		copy(dAtA[i:], m.ProviderId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProviderId)))
-		i--
-		dAtA[i] = 0x62
-	}
-	if len(m.StoreId) > 0 {
-		i -= len(m.StoreId)
-		copy(dAtA[i:], m.StoreId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
-		i--
-		dAtA[i] = 0x5a
-	}
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
+	if len(m.ProductId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProductId)))
+		i += copy(dAtA[i:], m.ProductId)
 	}
 	if m.ProductSchema != nil {
-		{
-			size, err := m.ProductSchema.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintAdminApi(dAtA, i, uint64(size))
-		}
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(m.ProductSchema.Size()))
+		n2, err := m.ProductSchema.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n2
 	}
-	if len(m.ProductId) > 0 {
-		i -= len(m.ProductId)
-		copy(dAtA[i:], m.ProductId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProductId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.StoreId) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
+		i += copy(dAtA[i:], m.StoreId)
+	}
+	if len(m.ProviderId) > 0 {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProviderId)))
+		i += copy(dAtA[i:], m.ProviderId)
+	}
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovAdminApi(uint64(len(k))) + 1 + len(v) + sovAdminApi(uint64(len(v)))
+			i = encodeVarintAdminApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.Attributes) > 0 {
+		for k, _ := range m.Attributes {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x6
+			i++
+			v := m.Attributes[k]
+			mapSize := 1 + len(k) + sovAdminApi(uint64(len(k))) + 1 + len(v) + sovAdminApi(uint64(len(v)))
+			i = encodeVarintAdminApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	return i, nil
 }
 
 func (m *UploadMeta) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3484,64 +3329,54 @@ func (m *UploadMeta) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *UploadMeta) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *UploadMeta) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintAdminApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
+	if len(m.FileName) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.FileName)))
+		i += copy(dAtA[i:], m.FileName)
 	}
 	if len(m.Link) > 0 {
-		i -= len(m.Link)
-		copy(dAtA[i:], m.Link)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Link)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Link)))
+		i += copy(dAtA[i:], m.Link)
 	}
-	if len(m.FileName) > 0 {
-		i -= len(m.FileName)
-		copy(dAtA[i:], m.FileName)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.FileName)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovAdminApi(uint64(len(k))) + 1 + len(v) + sovAdminApi(uint64(len(v)))
+			i = encodeVarintAdminApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	return i, nil
 }
 
 func (m *Warehouse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3549,22 +3384,17 @@ func (m *Warehouse) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Warehouse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Warehouse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *WarehouseFilter) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3572,22 +3402,17 @@ func (m *WarehouseFilter) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *WarehouseFilter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *WarehouseFilter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *WarehouseList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3595,36 +3420,29 @@ func (m *WarehouseList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *WarehouseList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *WarehouseList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintAdminApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Items {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Order) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3632,43 +3450,35 @@ func (m *Order) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Order) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Order) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
+	if len(m.OrderId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.OrderId)))
+		i += copy(dAtA[i:], m.OrderId)
 	}
 	if len(m.StoreId) > 0 {
-		i -= len(m.StoreId)
-		copy(dAtA[i:], m.StoreId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
+		i += copy(dAtA[i:], m.StoreId)
 	}
-	if len(m.OrderId) > 0 {
-		i -= len(m.OrderId)
-		copy(dAtA[i:], m.OrderId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.OrderId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrderList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3676,36 +3486,29 @@ func (m *OrderList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrderList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrderList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintAdminApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Items {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintAdminApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrderFilter) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3713,43 +3516,35 @@ func (m *OrderFilter) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrderFilter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrderFilter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.StoreId) > 0 {
-		i -= len(m.StoreId)
-		copy(dAtA[i:], m.StoreId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
-		i--
-		dAtA[i] = 0x5a
-	}
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
-	}
 	if len(m.OrderId) > 0 {
-		i -= len(m.OrderId)
-		copy(dAtA[i:], m.OrderId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.OrderId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.OrderId)))
+		i += copy(dAtA[i:], m.OrderId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
+	}
+	if len(m.StoreId) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
+		i += copy(dAtA[i:], m.StoreId)
+	}
+	return i, nil
 }
 
 func (m *Provider) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3757,36 +3552,29 @@ func (m *Provider) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Provider) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Provider) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
-	}
 	if len(m.ProviderId) > 0 {
-		i -= len(m.ProviderId)
-		copy(dAtA[i:], m.ProviderId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProviderId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ProviderId)))
+		i += copy(dAtA[i:], m.ProviderId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
+	}
+	return i, nil
 }
 
 func (m *ProviderFilter) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3794,29 +3582,23 @@ func (m *ProviderFilter) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ProviderFilter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ProviderFilter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
+	if len(m.MerchantId) > 0 {
 		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *ProviderList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3824,22 +3606,17 @@ func (m *ProviderList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ProviderList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ProviderList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Customer) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3847,36 +3624,29 @@ func (m *Customer) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Customer) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Customer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
-		dAtA[i] = 0x52
-	}
 	if len(m.CustomerId) > 0 {
-		i -= len(m.CustomerId)
-		copy(dAtA[i:], m.CustomerId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CustomerId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CustomerId)))
+		i += copy(dAtA[i:], m.CustomerId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.MerchantId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
+	}
+	return i, nil
 }
 
 func (m *CustomerFilter) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3884,29 +3654,23 @@ func (m *CustomerFilter) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CustomerFilter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CustomerFilter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.CompanyId) > 0 {
-		i -= len(m.CompanyId)
-		copy(dAtA[i:], m.CompanyId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CompanyId)))
-		i--
+	if len(m.MerchantId) > 0 {
 		dAtA[i] = 0x52
+		i++
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i += copy(dAtA[i:], m.MerchantId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *CustomerList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -3914,36 +3678,29 @@ func (m *CustomerList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *CustomerList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *CustomerList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func encodeVarintAdminApi(dAtA []byte, offset int, v uint64) int {
-	offset -= sovAdminApi(v)
-	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return base
+	return offset + 1
 }
-func (m *Company) Size() (n int) {
+func (m *Merchant) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -3954,7 +3711,7 @@ func (m *Company) Size() (n int) {
 	return n
 }
 
-func (m *CompanyList) Size() (n int) {
+func (m *MerchantList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3987,7 +3744,7 @@ func (m *Store) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4016,7 +3773,7 @@ func (m *User) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4060,7 +3817,7 @@ func (m *ProductSchema) Size() (n int) {
 		l = m.CreatedBy.Size()
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4097,7 +3854,7 @@ func (m *Product) Size() (n int) {
 		l = m.ProductSchema.Size()
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4142,7 +3899,7 @@ func (m *UploadMeta) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4204,7 +3961,7 @@ func (m *Order) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4236,7 +3993,7 @@ func (m *OrderFilter) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4257,7 +4014,7 @@ func (m *Provider) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4270,7 +4027,7 @@ func (m *ProviderFilter) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4296,7 +4053,7 @@ func (m *Customer) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4309,7 +4066,7 @@ func (m *CustomerFilter) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.CompanyId)
+	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
@@ -4326,33 +4083,35 @@ func (m *CustomerList) Size() (n int) {
 }
 
 func sovAdminApi(x uint64) (n int) {
-	return (math_bits.Len64(x|1) + 6) / 7
+	for {
+		n++
+		x >>= 7
+		if x == 0 {
+			break
+		}
+	}
+	return n
 }
 func sozAdminApi(x uint64) (n int) {
 	return sovAdminApi(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (this *Company) String() string {
+func (this *Merchant) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&Company{`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+	s := strings.Join([]string{`&Merchant{`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *CompanyList) String() string {
+func (this *MerchantList) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForItems := "[]*Company{"
-	for _, f := range this.Items {
-		repeatedStringForItems += strings.Replace(f.String(), "Company", "Company", 1) + ","
-	}
-	repeatedStringForItems += "}"
-	s := strings.Join([]string{`&CompanyList{`,
-		`Items:` + repeatedStringForItems + `,`,
+	s := strings.Join([]string{`&MerchantList{`,
+		`Items:` + strings.Replace(fmt.Sprintf("%v", this.Items), "Merchant", "Merchant", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4365,7 +4124,7 @@ func (this *Store) String() string {
 		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Location:` + fmt.Sprintf("%v", this.Location) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4379,7 +4138,7 @@ func (this *User) String() string {
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Email:` + fmt.Sprintf("%v", this.Email) + `,`,
 		`InvitedById:` + fmt.Sprintf("%v", this.InvitedById) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`Thumbnail:` + fmt.Sprintf("%v", this.Thumbnail) + `,`,
 		`}`,
 	}, "")
@@ -4389,13 +4148,8 @@ func (this *UserList) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForItems := "[]*User{"
-	for _, f := range this.Items {
-		repeatedStringForItems += strings.Replace(f.String(), "User", "User", 1) + ","
-	}
-	repeatedStringForItems += "}"
 	s := strings.Join([]string{`&UserList{`,
-		`Items:` + repeatedStringForItems + `,`,
+		`Items:` + strings.Replace(fmt.Sprintf("%v", this.Items), "User", "User", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4427,8 +4181,8 @@ func (this *ProductSchema) String() string {
 	s := strings.Join([]string{`&ProductSchema{`,
 		`ProductSchemaId:` + fmt.Sprintf("%v", this.ProductSchemaId) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
-		`CreatedBy:` + strings.Replace(this.CreatedBy.String(), "User", "User", 1) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`CreatedBy:` + strings.Replace(fmt.Sprintf("%v", this.CreatedBy), "User", "User", 1) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`Labels:` + mapStringForLabels + `,`,
 		`Attributes:` + mapStringForAttributes + `,`,
 		`}`,
@@ -4461,8 +4215,8 @@ func (this *Product) String() string {
 	mapStringForAttributes += "}"
 	s := strings.Join([]string{`&Product{`,
 		`ProductId:` + fmt.Sprintf("%v", this.ProductId) + `,`,
-		`ProductSchema:` + strings.Replace(this.ProductSchema.String(), "ProductSchema", "ProductSchema", 1) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`ProductSchema:` + strings.Replace(fmt.Sprintf("%v", this.ProductSchema), "ProductSchema", "ProductSchema", 1) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
 		`ProviderId:` + fmt.Sprintf("%v", this.ProviderId) + `,`,
 		`Labels:` + mapStringForLabels + `,`,
@@ -4488,7 +4242,7 @@ func (this *UploadMeta) String() string {
 	s := strings.Join([]string{`&UploadMeta{`,
 		`FileName:` + fmt.Sprintf("%v", this.FileName) + `,`,
 		`Link:` + fmt.Sprintf("%v", this.Link) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`Labels:` + mapStringForLabels + `,`,
 		`}`,
 	}, "")
@@ -4516,13 +4270,8 @@ func (this *WarehouseList) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForItems := "[]*Warehouse{"
-	for _, f := range this.Items {
-		repeatedStringForItems += strings.Replace(f.String(), "Warehouse", "Warehouse", 1) + ","
-	}
-	repeatedStringForItems += "}"
 	s := strings.Join([]string{`&WarehouseList{`,
-		`Items:` + repeatedStringForItems + `,`,
+		`Items:` + strings.Replace(fmt.Sprintf("%v", this.Items), "Warehouse", "Warehouse", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4534,7 +4283,7 @@ func (this *Order) String() string {
 	s := strings.Join([]string{`&Order{`,
 		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
 		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4543,13 +4292,8 @@ func (this *OrderList) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForItems := "[]*Order{"
-	for _, f := range this.Items {
-		repeatedStringForItems += strings.Replace(f.String(), "Order", "Order", 1) + ","
-	}
-	repeatedStringForItems += "}"
 	s := strings.Join([]string{`&OrderList{`,
-		`Items:` + repeatedStringForItems + `,`,
+		`Items:` + strings.Replace(fmt.Sprintf("%v", this.Items), "Order", "Order", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4560,7 +4304,7 @@ func (this *OrderFilter) String() string {
 	}
 	s := strings.Join([]string{`&OrderFilter{`,
 		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
 		`}`,
 	}, "")
@@ -4572,7 +4316,7 @@ func (this *Provider) String() string {
 	}
 	s := strings.Join([]string{`&Provider{`,
 		`ProviderId:` + fmt.Sprintf("%v", this.ProviderId) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4582,7 +4326,7 @@ func (this *ProviderFilter) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&ProviderFilter{`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4602,7 +4346,7 @@ func (this *Customer) String() string {
 	}
 	s := strings.Join([]string{`&Customer{`,
 		`CustomerId:` + fmt.Sprintf("%v", this.CustomerId) + `,`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4612,7 +4356,7 @@ func (this *CustomerFilter) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&CustomerFilter{`,
-		`CompanyId:` + fmt.Sprintf("%v", this.CompanyId) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4634,7 +4378,7 @@ func valueToStringAdminApi(v interface{}) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-func (m *Company) Unmarshal(dAtA []byte) error {
+func (m *Merchant) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4657,15 +4401,15 @@ func (m *Company) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Company: wiretype end group for non-group")
+			return fmt.Errorf("proto: Merchant: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Company: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Merchant: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4693,7 +4437,7 @@ func (m *Company) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -4751,7 +4495,7 @@ func (m *Company) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CompanyList) Unmarshal(dAtA []byte) error {
+func (m *MerchantList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4774,10 +4518,10 @@ func (m *CompanyList) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CompanyList: wiretype end group for non-group")
+			return fmt.Errorf("proto: MerchantList: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CompanyList: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MerchantList: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4809,7 +4553,7 @@ func (m *CompanyList) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Items = append(m.Items, &Company{})
+			m.Items = append(m.Items, &Merchant{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -4965,7 +4709,7 @@ func (m *Store) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -4993,7 +4737,7 @@ func (m *Store) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -5178,7 +4922,7 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5206,7 +4950,7 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 50:
 			if wireType != 2 {
@@ -5482,7 +5226,7 @@ func (m *ProductSchema) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5510,7 +5254,7 @@ func (m *ProductSchema) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 20:
 			if wireType != 2 {
@@ -5889,7 +5633,7 @@ func (m *Product) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -5917,7 +5661,7 @@ func (m *Product) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 11:
 			if wireType != 2 {
@@ -6356,7 +6100,7 @@ func (m *UploadMeta) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6384,7 +6128,7 @@ func (m *UploadMeta) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 20:
 			if wireType != 2 {
@@ -6825,7 +6569,7 @@ func (m *Order) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -6853,7 +6597,7 @@ func (m *Order) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -7029,7 +6773,7 @@ func (m *OrderFilter) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -7057,7 +6801,7 @@ func (m *OrderFilter) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 11:
 			if wireType != 2 {
@@ -7178,7 +6922,7 @@ func (m *Provider) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -7206,7 +6950,7 @@ func (m *Provider) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -7263,7 +7007,7 @@ func (m *ProviderFilter) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -7291,7 +7035,7 @@ func (m *ProviderFilter) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -7433,7 +7177,7 @@ func (m *Customer) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -7461,7 +7205,7 @@ func (m *Customer) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -7518,7 +7262,7 @@ func (m *CustomerFilter) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 10:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CompanyId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -7546,7 +7290,7 @@ func (m *CustomerFilter) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.CompanyId = string(dAtA[iNdEx:postIndex])
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -7628,7 +7372,6 @@ func (m *CustomerList) Unmarshal(dAtA []byte) error {
 func skipAdminApi(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
-	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -7660,8 +7403,10 @@ func skipAdminApi(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
+			return iNdEx, nil
 		case 1:
 			iNdEx += 8
+			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -7682,30 +7427,55 @@ func skipAdminApi(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthAdminApi
 			}
 			iNdEx += length
-		case 3:
-			depth++
-		case 4:
-			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupAdminApi
+			if iNdEx < 0 {
+				return 0, ErrInvalidLengthAdminApi
 			}
-			depth--
+			return iNdEx, nil
+		case 3:
+			for {
+				var innerWire uint64
+				var start int = iNdEx
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return 0, ErrIntOverflowAdminApi
+					}
+					if iNdEx >= l {
+						return 0, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					innerWire |= (uint64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				innerWireType := int(innerWire & 0x7)
+				if innerWireType == 4 {
+					break
+				}
+				next, err := skipAdminApi(dAtA[start:])
+				if err != nil {
+					return 0, err
+				}
+				iNdEx = start + next
+				if iNdEx < 0 {
+					return 0, ErrInvalidLengthAdminApi
+				}
+			}
+			return iNdEx, nil
+		case 4:
+			return iNdEx, nil
 		case 5:
 			iNdEx += 4
+			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
-		if iNdEx < 0 {
-			return 0, ErrInvalidLengthAdminApi
-		}
-		if depth == 0 {
-			return iNdEx, nil
-		}
 	}
-	return 0, io.ErrUnexpectedEOF
+	panic("unreachable")
 }
 
 var (
-	ErrInvalidLengthAdminApi        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowAdminApi          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupAdminApi = fmt.Errorf("proto: unexpected end of group")
+	ErrInvalidLengthAdminApi = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowAdminApi   = fmt.Errorf("proto: integer overflow")
 )

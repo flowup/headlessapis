@@ -4,10 +4,6 @@
     "title": "v1/admin_api.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -15,30 +11,21 @@
     "application/json"
   ],
   "paths": {
-    "/companies": {
-      "get": {
-        "summary": "GetCompanies returns a list of companies the user has access to",
-        "operationId": "GetCompanies",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CompanyList"
-            }
-          }
-        },
-        "tags": [
-          "CompanyService"
-        ]
-      },
+    "/dry/merchants": {
       "post": {
-        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
-        "operationId": "CreateCompany",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateMerchantDry",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1Company"
+              "$ref": "#/definitions/v1Merchant"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -48,434 +35,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1Company"
+              "$ref": "#/definitions/v1Merchant"
             }
           }
         ],
         "tags": [
-          "CompanyService"
+          "MerchantService"
         ]
       }
     },
-    "/companies/{companyId}/customers": {
-      "get": {
-        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
-        "operationId": "GetCustomers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CustomerList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "CustomerService"
-        ]
-      },
+    "/dry/merchants/{merchantId}/schemas": {
       "post": {
-        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
-        "operationId": "CreateCustomer",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Customer"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Customer"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerService"
-        ]
-      }
-    },
-    "/companies/{companyId}/orders": {
-      "get": {
-        "summary": "GetCompanies returns a list of companies the user has access to",
-        "operationId": "GetOrders",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1OrderList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      }
-    },
-    "/companies/{companyId}/providers": {
-      "get": {
-        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
-        "operationId": "GetProviders",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ProviderList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ProviderService"
-        ]
-      },
-      "post": {
-        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
-        "operationId": "CreateProvider",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Provider"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Provider"
-            }
-          }
-        ],
-        "tags": [
-          "ProviderService"
-        ]
-      }
-    },
-    "/companies/{companyId}/schemas": {
-      "post": {
-        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
-        "operationId": "CreateProductSchema",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ProductSchema"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1ProductSchema"
-            }
-          }
-        ],
-        "tags": [
-          "InventoryService"
-        ]
-      }
-    },
-    "/companies/{companyId}/stores": {
-      "post": {
-        "summary": "Create store creates the store for the particular company and returns\nthe store object back to the caller",
-        "operationId": "CreateStore",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Store"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "description": "[Required] reference to the company id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Store"
-            }
-          }
-        ],
-        "tags": [
-          "CompanyService"
-        ]
-      }
-    },
-    "/companies/{companyId}/stores/{storeId}/orders": {
-      "post": {
-        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
-        "operationId": "CreateOrder",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      }
-    },
-    "/companies/{companyId}/stores/{storeId}/orders/{orderId}": {
-      "delete": {
-        "summary": "CreateCompany creates a company in the database and returns the object\nback with populated data",
-        "operationId": "CancelOrder",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      }
-    },
-    "/companies/{companyId}/upload": {
-      "post": {
-        "summary": "GetCompanies returns a list of companies the user has access to",
-        "operationId": "CreateUpload",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UploadMeta"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UploadMeta"
-            }
-          }
-        ],
-        "tags": [
-          "InventoryService"
-        ]
-      }
-    },
-    "/companies/{companyId}/users": {
-      "get": {
-        "summary": "GetUsers returns all users present in the company",
-        "operationId": "GetUsers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UserList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "description": "[Required] companyId can be set only once and is unchangeable during lifetime",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "description": "[Required] name of the company can be customized by the user, however, the id\nwill stay unchanged.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "CompanyService"
-        ]
-      },
-      "post": {
-        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the company",
-        "operationId": "InviteUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1User"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1User"
-            }
-          }
-        ],
-        "tags": [
-          "CompanyService"
-        ]
-      }
-    },
-    "/dry/companies": {
-      "post": {
-        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
-        "operationId": "CreateCompanyDry",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Company"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Company"
-            }
-          }
-        ],
-        "tags": [
-          "CompanyService"
-        ]
-      }
-    },
-    "/dry/companies/{companyId}/schemas": {
-      "post": {
-        "summary": "CreateCompanyDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the company",
+        "summary": "CreateProductSchemaDry validates provided product schema and returns a list\nof errors or the product schema on success",
         "operationId": "CreateProductSchemaDry",
         "responses": {
           "200": {
@@ -483,11 +54,17 @@
             "schema": {
               "$ref": "#/definitions/v1ProductSchema"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
           {
-            "name": "companyId",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -506,9 +83,9 @@
         ]
       }
     },
-    "/dry/companies/{companyId}/stores": {
+    "/dry/merchants/{merchantId}/stores": {
       "post": {
-        "summary": "CreateStoreDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the store\nfor the particular company",
+        "summary": "CreateStoreDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the store\nfor the particular merchant",
         "operationId": "CreateStoreDry",
         "responses": {
           "200": {
@@ -516,12 +93,18 @@
             "schema": {
               "$ref": "#/definitions/v1Store"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
           {
-            "name": "companyId",
-            "description": "[Required] reference to the company id",
+            "name": "merchantId",
+            "description": "[Required] reference to the merchant id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -536,11 +119,11 @@
           }
         ],
         "tags": [
-          "CompanyService"
+          "MerchantService"
         ]
       }
     },
-    "/dry/companies/{companyId}/users": {
+    "/dry/merchants/{merchantId}/users": {
       "post": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
         "operationId": "InviteUserDry",
@@ -550,11 +133,17 @@
             "schema": {
               "$ref": "#/definitions/v1User"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
           {
-            "name": "companyId",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -569,32 +158,552 @@
           }
         ],
         "tags": [
-          "CompanyService"
+          "MerchantService"
+        ]
+      }
+    },
+    "/merchants": {
+      "get": {
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "GetMerchants",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MerchantList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "MerchantService"
+        ]
+      },
+      "post": {
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "CreateMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Merchant"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Merchant"
+            }
+          }
+        ],
+        "tags": [
+          "MerchantService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/customers": {
+      "get": {
+        "summary": "GetProviders returns all providers that the user has access to",
+        "operationId": "GetCustomers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CustomerList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CustomerService"
+        ]
+      },
+      "post": {
+        "summary": "CreateOrder creates an order for the particular user in the store",
+        "operationId": "CreateCustomer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Customer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Customer"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/orders": {
+      "get": {
+        "operationId": "GetOrders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1OrderList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/providers": {
+      "get": {
+        "operationId": "GetProviders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProviderList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProviderService"
+        ]
+      },
+      "post": {
+        "summary": "CreateOrder creates an order for the particular user in the store",
+        "operationId": "CreateProvider",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Provider"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Provider"
+            }
+          }
+        ],
+        "tags": [
+          "ProviderService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/schemas": {
+      "post": {
+        "summary": "CreateProductSchema creates the product schema in the system",
+        "operationId": "CreateProductSchema",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProductSchema"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ProductSchema"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/stores": {
+      "post": {
+        "summary": "Create store creates the store for the particular merchant and returns\nthe store object back to the caller",
+        "operationId": "CreateStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Store"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "[Required] reference to the merchant id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Store"
+            }
+          }
+        ],
+        "tags": [
+          "MerchantService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/stores/{storeId}/orders": {
+      "post": {
+        "operationId": "CreateOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}": {
+      "delete": {
+        "operationId": "CancelOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/upload": {
+      "post": {
+        "summary": "CreateUpload creates an upload link for the merchant gallery",
+        "operationId": "CreateUpload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UploadMeta"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UploadMeta"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/users": {
+      "get": {
+        "summary": "GetUsers returns all users present in the merchant",
+        "operationId": "GetUsers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UserList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "[Required] merchantId can be set only once and is unchangeable during lifetime",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "[Required] name of the merchant can be customized by the user, however, the id\nwill stay unchanged.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MerchantService"
+        ]
+      },
+      "post": {
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "InviteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          }
+        ],
+        "tags": [
+          "MerchantService"
         ]
       }
     }
   },
   "definitions": {
-    "v1Company": {
+    "protobufAny": {
       "type": "object",
       "properties": {
-        "companyId": {
-          "type": "string",
-          "title": "[Required] companyId can be set only once and is unchangeable during lifetime"
+        "type_url": {
+          "type": "string"
         },
-        "name": {
+        "value": {
           "type": "string",
-          "title": "[Required] name of the company can be customized by the user, however, the id\nwill stay unchanged"
+          "format": "byte"
         }
       }
     },
-    "v1CompanyList": {
+    "runtimeError": {
       "type": "object",
       "properties": {
-        "items": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1Company"
+            "$ref": "#/definitions/protobufAny"
           }
         }
       }
@@ -605,7 +714,7 @@
         "customerId": {
           "type": "string"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string"
         }
       }
@@ -613,13 +722,37 @@
     "v1CustomerList": {
       "type": "object"
     },
+    "v1Merchant": {
+      "type": "object",
+      "properties": {
+        "merchantId": {
+          "type": "string",
+          "title": "[Required] merchantId can be set only once and is unchangeable during lifetime"
+        },
+        "name": {
+          "type": "string",
+          "title": "[Required] name of the merchant can be customized by the user, however, the id\nwill stay unchanged"
+        }
+      }
+    },
+    "v1MerchantList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Merchant"
+          }
+        }
+      }
+    },
     "v1Order": {
       "type": "object",
       "properties": {
         "orderId": {
           "type": "string"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string"
         },
         "storeId": {
@@ -651,7 +784,7 @@
           "$ref": "#/definitions/v1User",
           "title": "createdBy is a reference to the user that created this product schema"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string"
         },
         "labels": {
@@ -675,7 +808,7 @@
         "providerId": {
           "type": "string"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string"
         }
       }
@@ -695,9 +828,9 @@
         "location": {
           "type": "string"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string",
-          "title": "[Required] reference to the company id"
+          "title": "[Required] reference to the merchant id"
         }
       }
     },
@@ -712,7 +845,7 @@
           "type": "string",
           "title": "[Output Only] this is being provided by the system after the file is uploaded"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string"
         },
         "labels": {
@@ -739,7 +872,7 @@
           "type": "string",
           "title": "id of the user this user was invited by into the system"
         },
-        "companyId": {
+        "merchantId": {
           "type": "string"
         },
         "thumbnail": {

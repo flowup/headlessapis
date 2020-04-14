@@ -74,7 +74,7 @@ service OrderService {
     // In case there's no active order, an empty order is returned
     rpc GetActiveOrder (google.protobuf.Empty) returns (Order) {
         option (google.api.http) = {
-            get: "/orders"
+            get: "/orders:active"
         };
     }
 

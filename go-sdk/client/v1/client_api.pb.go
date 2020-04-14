@@ -11,11 +11,8 @@ import (
 	empty "github.com/golang/protobuf/ptypes/empty"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	io "io"
 	math "math"
-	math_bits "math/bits"
 	reflect "reflect"
 	strings "strings"
 )
@@ -29,7 +26,7 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 type EmailPassword struct {
 	Email    string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
@@ -49,7 +46,7 @@ func (m *EmailPassword) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_EmailPassword.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -101,7 +98,7 @@ func (m *Customer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Customer.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -163,7 +160,7 @@ func (m *Product) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Product.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -235,7 +232,7 @@ func (m *ProductFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return xxx_messageInfo_ProductFilter.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -285,7 +282,7 @@ func (m *ProductList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_ProductList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -330,7 +327,7 @@ func (m *Order) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_Order.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -389,7 +386,7 @@ func (m *OrderItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_OrderItem.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -446,7 +443,7 @@ func (m *OrderList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return xxx_messageInfo_OrderList.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -489,7 +486,7 @@ func (m *OrderFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return xxx_messageInfo_OrderFilter.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
+		n, err := m.MarshalTo(b)
 		if err != nil {
 			return nil, err
 		}
@@ -1057,17 +1054,6 @@ type AuthServiceServer interface {
 	SignUpWithPassword(context.Context, *EmailPassword) (*Customer, error)
 }
 
-// UnimplementedAuthServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedAuthServiceServer struct {
-}
-
-func (*UnimplementedAuthServiceServer) SignInWithPassword(ctx context.Context, req *EmailPassword) (*Customer, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignInWithPassword not implemented")
-}
-func (*UnimplementedAuthServiceServer) SignUpWithPassword(ctx context.Context, req *EmailPassword) (*Customer, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignUpWithPassword not implemented")
-}
-
 func RegisterAuthServiceServer(s *grpc.Server, srv AuthServiceServer) {
 	s.RegisterService(&_AuthService_serviceDesc, srv)
 }
@@ -1163,17 +1149,6 @@ func (c *inventoryServiceClient) GetProduct(ctx context.Context, in *ProductFilt
 type InventoryServiceServer interface {
 	ListProducts(context.Context, *ProductFilter) (*ProductList, error)
 	GetProduct(context.Context, *ProductFilter) (*Product, error)
-}
-
-// UnimplementedInventoryServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedInventoryServiceServer struct {
-}
-
-func (*UnimplementedInventoryServiceServer) ListProducts(ctx context.Context, req *ProductFilter) (*ProductList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListProducts not implemented")
-}
-func (*UnimplementedInventoryServiceServer) GetProduct(ctx context.Context, req *ProductFilter) (*Product, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
 }
 
 func RegisterInventoryServiceServer(s *grpc.Server, srv InventoryServiceServer) {
@@ -1320,26 +1295,6 @@ type OrderServiceServer interface {
 	ListOrders(context.Context, *OrderFilter) (*OrderList, error)
 }
 
-// UnimplementedOrderServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedOrderServiceServer struct {
-}
-
-func (*UnimplementedOrderServiceServer) GetActiveOrder(ctx context.Context, req *empty.Empty) (*Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetActiveOrder not implemented")
-}
-func (*UnimplementedOrderServiceServer) AddItemToOrder(ctx context.Context, req *OrderItem) (*Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddItemToOrder not implemented")
-}
-func (*UnimplementedOrderServiceServer) RemoveItemFromOrder(ctx context.Context, req *OrderItem) (*Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveItemFromOrder not implemented")
-}
-func (*UnimplementedOrderServiceServer) SubmitOrder(ctx context.Context, req *Order) (*Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubmitOrder not implemented")
-}
-func (*UnimplementedOrderServiceServer) ListOrders(ctx context.Context, req *OrderFilter) (*OrderList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrders not implemented")
-}
-
 func RegisterOrderServiceServer(s *grpc.Server, srv OrderServiceServer) {
 	s.RegisterService(&_OrderService_serviceDesc, srv)
 }
@@ -1466,7 +1421,7 @@ var _OrderService_serviceDesc = grpc.ServiceDesc{
 func (m *EmailPassword) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1474,36 +1429,29 @@ func (m *EmailPassword) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *EmailPassword) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *EmailPassword) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Password) > 0 {
-		i -= len(m.Password)
-		copy(dAtA[i:], m.Password)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Password)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.Email) > 0 {
-		i -= len(m.Email)
-		copy(dAtA[i:], m.Email)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Email)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Email)))
+		i += copy(dAtA[i:], m.Email)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Password) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Password)))
+		i += copy(dAtA[i:], m.Password)
+	}
+	return i, nil
 }
 
 func (m *Customer) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1511,43 +1459,35 @@ func (m *Customer) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Customer) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Customer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Thumbnail) > 0 {
-		i -= len(m.Thumbnail)
-		copy(dAtA[i:], m.Thumbnail)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Thumbnail)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.CustomerId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.CustomerId)))
+		i += copy(dAtA[i:], m.CustomerId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.CustomerId) > 0 {
-		i -= len(m.CustomerId)
-		copy(dAtA[i:], m.CustomerId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.CustomerId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Thumbnail) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Thumbnail)))
+		i += copy(dAtA[i:], m.Thumbnail)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Product) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1555,85 +1495,73 @@ func (m *Product) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Product) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Product) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Attributes) > 0 {
-		for k := range m.Attributes {
-			v := m.Attributes[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintClientApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintClientApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintClientApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x6
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.Labels) > 0 {
-		for k := range m.Labels {
-			v := m.Labels[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintClientApi(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintClientApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintClientApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x1
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.StoreId) > 0 {
-		i -= len(m.StoreId)
-		copy(dAtA[i:], m.StoreId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.StoreId)))
-		i--
-		dAtA[i] = 0x5a
+	if len(m.ProductId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.ProductId)))
+		i += copy(dAtA[i:], m.ProductId)
 	}
 	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Name)))
-		i--
 		dAtA[i] = 0x12
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
 	}
-	if len(m.ProductId) > 0 {
-		i -= len(m.ProductId)
-		copy(dAtA[i:], m.ProductId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.ProductId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.StoreId) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.StoreId)))
+		i += copy(dAtA[i:], m.StoreId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Labels) > 0 {
+		for k, _ := range m.Labels {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x1
+			i++
+			v := m.Labels[k]
+			mapSize := 1 + len(k) + sovClientApi(uint64(len(k))) + 1 + len(v) + sovClientApi(uint64(len(v)))
+			i = encodeVarintClientApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if len(m.Attributes) > 0 {
+		for k, _ := range m.Attributes {
+			dAtA[i] = 0xa2
+			i++
+			dAtA[i] = 0x6
+			i++
+			v := m.Attributes[k]
+			mapSize := 1 + len(k) + sovClientApi(uint64(len(k))) + 1 + len(v) + sovClientApi(uint64(len(v)))
+			i = encodeVarintClientApi(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	return i, nil
 }
 
 func (m *ProductFilter) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1641,36 +1569,29 @@ func (m *ProductFilter) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ProductFilter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ProductFilter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
 	if len(m.ProductId) > 0 {
-		i -= len(m.ProductId)
-		copy(dAtA[i:], m.ProductId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.ProductId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.ProductId)))
+		i += copy(dAtA[i:], m.ProductId)
 	}
-	return len(dAtA) - i, nil
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	return i, nil
 }
 
 func (m *ProductList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1678,36 +1599,29 @@ func (m *ProductList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *ProductList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *ProductList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Data) > 0 {
-		for iNdEx := len(m.Data) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Data[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintClientApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Data {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *Order) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1715,50 +1629,41 @@ func (m *Order) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *Order) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Order) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.Status) > 0 {
-		i -= len(m.Status)
-		copy(dAtA[i:], m.Status)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Status)))
-		i--
-		dAtA[i] = 0x1a
+	if len(m.OrderId) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.OrderId)))
+		i += copy(dAtA[i:], m.OrderId)
 	}
 	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintClientApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Items {
 			dAtA[i] = 0x12
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	if len(m.OrderId) > 0 {
-		i -= len(m.OrderId)
-		copy(dAtA[i:], m.OrderId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.OrderId)))
-		i--
-		dAtA[i] = 0xa
+	if len(m.Status) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.Status)))
+		i += copy(dAtA[i:], m.Status)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrderItem) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1766,46 +1671,38 @@ func (m *OrderItem) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrderItem) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrderItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
-	if len(m.OrderId) > 0 {
-		i -= len(m.OrderId)
-		copy(dAtA[i:], m.OrderId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.OrderId)))
-		i--
-		dAtA[i] = 0x52
+	if m.Product != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(m.Product.Size()))
+		n1, err := m.Product.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n1
 	}
 	if m.Count != 0 {
-		i = encodeVarintClientApi(dAtA, i, uint64(m.Count))
-		i--
 		dAtA[i] = 0x10
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(m.Count))
 	}
-	if m.Product != nil {
-		{
-			size, err := m.Product.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintClientApi(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0xa
+	if len(m.OrderId) > 0 {
+		dAtA[i] = 0x52
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.OrderId)))
+		i += copy(dAtA[i:], m.OrderId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrderList) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1813,36 +1710,29 @@ func (m *OrderList) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrderList) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrderList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.Items) > 0 {
-		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintClientApi(dAtA, i, uint64(size))
-			}
-			i--
+		for _, msg := range m.Items {
 			dAtA[i] = 0xa
+			i++
+			i = encodeVarintClientApi(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
 		}
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func (m *OrderFilter) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
@@ -1850,35 +1740,27 @@ func (m *OrderFilter) Marshal() (dAtA []byte, err error) {
 }
 
 func (m *OrderFilter) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *OrderFilter) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
+	var i int
 	_ = i
 	var l int
 	_ = l
 	if len(m.OrderId) > 0 {
-		i -= len(m.OrderId)
-		copy(dAtA[i:], m.OrderId)
-		i = encodeVarintClientApi(dAtA, i, uint64(len(m.OrderId)))
-		i--
 		dAtA[i] = 0xa
+		i++
+		i = encodeVarintClientApi(dAtA, i, uint64(len(m.OrderId)))
+		i += copy(dAtA[i:], m.OrderId)
 	}
-	return len(dAtA) - i, nil
+	return i, nil
 }
 
 func encodeVarintClientApi(dAtA []byte, offset int, v uint64) int {
-	offset -= sovClientApi(v)
-	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
 	dAtA[offset] = uint8(v)
-	return base
+	return offset + 1
 }
 func (m *EmailPassword) Size() (n int) {
 	if m == nil {
@@ -2059,7 +1941,14 @@ func (m *OrderFilter) Size() (n int) {
 }
 
 func sovClientApi(x uint64) (n int) {
-	return (math_bits.Len64(x|1) + 6) / 7
+	for {
+		n++
+		x >>= 7
+		if x == 0 {
+			break
+		}
+	}
+	return n
 }
 func sozClientApi(x uint64) (n int) {
 	return sovClientApi(uint64((x << 1) ^ uint64((int64(x) >> 63))))
@@ -2136,13 +2025,8 @@ func (this *ProductList) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForData := "[]*Product{"
-	for _, f := range this.Data {
-		repeatedStringForData += strings.Replace(f.String(), "Product", "Product", 1) + ","
-	}
-	repeatedStringForData += "}"
 	s := strings.Join([]string{`&ProductList{`,
-		`Data:` + repeatedStringForData + `,`,
+		`Data:` + strings.Replace(fmt.Sprintf("%v", this.Data), "Product", "Product", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2151,14 +2035,9 @@ func (this *Order) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForItems := "[]*OrderItem{"
-	for _, f := range this.Items {
-		repeatedStringForItems += strings.Replace(f.String(), "OrderItem", "OrderItem", 1) + ","
-	}
-	repeatedStringForItems += "}"
 	s := strings.Join([]string{`&Order{`,
 		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
-		`Items:` + repeatedStringForItems + `,`,
+		`Items:` + strings.Replace(fmt.Sprintf("%v", this.Items), "OrderItem", "OrderItem", 1) + `,`,
 		`Status:` + fmt.Sprintf("%v", this.Status) + `,`,
 		`}`,
 	}, "")
@@ -2169,7 +2048,7 @@ func (this *OrderItem) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&OrderItem{`,
-		`Product:` + strings.Replace(this.Product.String(), "Product", "Product", 1) + `,`,
+		`Product:` + strings.Replace(fmt.Sprintf("%v", this.Product), "Product", "Product", 1) + `,`,
 		`Count:` + fmt.Sprintf("%v", this.Count) + `,`,
 		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
 		`}`,
@@ -2180,13 +2059,8 @@ func (this *OrderList) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForItems := "[]*Order{"
-	for _, f := range this.Items {
-		repeatedStringForItems += strings.Replace(f.String(), "Order", "Order", 1) + ","
-	}
-	repeatedStringForItems += "}"
 	s := strings.Join([]string{`&OrderList{`,
-		`Items:` + repeatedStringForItems + `,`,
+		`Items:` + strings.Replace(fmt.Sprintf("%v", this.Items), "Order", "Order", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -3548,7 +3422,6 @@ func (m *OrderFilter) Unmarshal(dAtA []byte) error {
 func skipClientApi(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
-	depth := 0
 	for iNdEx < l {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
@@ -3580,8 +3453,10 @@ func skipClientApi(dAtA []byte) (n int, err error) {
 					break
 				}
 			}
+			return iNdEx, nil
 		case 1:
 			iNdEx += 8
+			return iNdEx, nil
 		case 2:
 			var length int
 			for shift := uint(0); ; shift += 7 {
@@ -3602,30 +3477,55 @@ func skipClientApi(dAtA []byte) (n int, err error) {
 				return 0, ErrInvalidLengthClientApi
 			}
 			iNdEx += length
-		case 3:
-			depth++
-		case 4:
-			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupClientApi
+			if iNdEx < 0 {
+				return 0, ErrInvalidLengthClientApi
 			}
-			depth--
+			return iNdEx, nil
+		case 3:
+			for {
+				var innerWire uint64
+				var start int = iNdEx
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return 0, ErrIntOverflowClientApi
+					}
+					if iNdEx >= l {
+						return 0, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					innerWire |= (uint64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				innerWireType := int(innerWire & 0x7)
+				if innerWireType == 4 {
+					break
+				}
+				next, err := skipClientApi(dAtA[start:])
+				if err != nil {
+					return 0, err
+				}
+				iNdEx = start + next
+				if iNdEx < 0 {
+					return 0, ErrInvalidLengthClientApi
+				}
+			}
+			return iNdEx, nil
+		case 4:
+			return iNdEx, nil
 		case 5:
 			iNdEx += 4
+			return iNdEx, nil
 		default:
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
-		if iNdEx < 0 {
-			return 0, ErrInvalidLengthClientApi
-		}
-		if depth == 0 {
-			return iNdEx, nil
-		}
 	}
-	return 0, io.ErrUnexpectedEOF
+	panic("unreachable")
 }
 
 var (
-	ErrInvalidLengthClientApi        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowClientApi          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupClientApi = fmt.Errorf("proto: unexpected end of group")
+	ErrInvalidLengthClientApi = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowClientApi   = fmt.Errorf("proto: integer overflow")
 )

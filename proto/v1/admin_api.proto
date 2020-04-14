@@ -7,29 +7,29 @@ option go_package = "github.com/flowup/headless/go-sdk/admin/v1";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
-service CompanyService {
-    // CreateCompanyDry runs validation on the server side and returns
-    // errors that need to be corrected to successfully create the company
-    rpc CreateCompanyDry (Company) returns (Company) {
+service MerchantService {
+    // CreateMerchantDry runs validation on the server side and returns
+    // errors that need to be corrected to successfully create the merchant
+    rpc CreateMerchantDry (Merchant) returns (Merchant) {
         option (google.api.http) = {
-            post: "/dry/companies"
+            post: "/dry/merchants"
             body: "*"
         };
     }
 
-    // CreateCompany creates a company in the database and returns the object
+    // CreateMerchant creates a merchant in the database and returns the object
     // back with populated data
-    rpc CreateCompany (Company) returns (Company) {
+    rpc CreateMerchant (Merchant) returns (Merchant) {
         option (google.api.http) = {
-            post: "/companies"
+            post: "/merchants"
             body: "*"
         };
     }
 
-    // GetCompanies returns a list of companies the user has access to
-    rpc GetCompanies (google.protobuf.Empty) returns (CompanyList) {
+    // GetMerchants returns a list of merchants the user has access to
+    rpc GetMerchants (google.protobuf.Empty) returns (MerchantList) {
         option (google.api.http) = {
-            get: "/companies"
+            get: "/merchants"
         };
     }
 
@@ -37,58 +37,58 @@ service CompanyService {
     // and other required fields by user invitation process
     rpc InviteUserDry (User) returns (User) {
         option (google.api.http) = {
-            post: "/dry/companies/{companyId}/users"
+            post: "/dry/merchants/{merchantId}/users"
             body: "*"
         };
     }
 
     // InviteUser creates a user account for the user in case it didn't exist before.
-    // Otherwise it invites the user into the company
+    // Otherwise it invites the user into the merchant
     rpc InviteUser (User) returns (User) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/users"
+            post: "/merchants/{merchantId}/users"
             body: "*"
         };
     }
 
-    // GetUsers returns all users present in the company
-    rpc GetUsers (Company) returns (UserList) {
+    // GetUsers returns all users present in the merchant
+    rpc GetUsers (Merchant) returns (UserList) {
         option (google.api.http) = {
-            get: "/companies/{companyId}/users"
+            get: "/merchants/{merchantId}/users"
         };
     }
 
     // CreateStoreDry runs validation on the server side and returns
     // errors that need to be corrected to successfully create the store
-    // for the particular company
+    // for the particular merchant
     rpc CreateStoreDry (Store) returns (Store) {
         option (google.api.http) = {
-            post: "/dry/companies/{companyId}/stores"
+            post: "/dry/merchants/{merchantId}/stores"
             body: "*"
         };
     }
 
-    // Create store creates the store for the particular company and returns
+    // Create store creates the store for the particular merchant and returns
     // the store object back to the caller
     rpc CreateStore (Store) returns (Store) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/stores"
+            post: "/merchants/{merchantId}/stores"
             body: "*"
         };
     }
 }
 
-message Company {
-    // [Required] companyId can be set only once and is unchangeable during lifetime
-    string companyId = 1;
+message Merchant {
+    // [Required] merchantId can be set only once and is unchangeable during lifetime
+    string merchantId = 1;
 
-    // [Required] name of the company can be customized by the user, however, the id
+    // [Required] name of the merchant can be customized by the user, however, the id
     // will stay unchanged
     string name = 2;
 }
 
-message CompanyList {
-    repeated Company items = 1;
+message MerchantList {
+    repeated Merchant items = 1;
 }
 
 message Store {
@@ -96,8 +96,8 @@ message Store {
     string name = 2;
     string location = 3;
 
-    // [Required] reference to the company id
-    string companyId = 10;
+    // [Required] reference to the merchant id
+    string merchantId = 10;
 }
 
 message User {
@@ -108,7 +108,7 @@ message User {
     // id of the user this user was invited by into the system
     string invitedById = 5;
 
-    string companyId = 10;
+    string merchantId = 10;
 
     string thumbnail = 50;
 }
@@ -122,7 +122,7 @@ service InventoryService {
     // of errors or the product schema on success
     rpc CreateProductSchemaDry (ProductSchema) returns (ProductSchema) {
         option (google.api.http) = {
-            post: "/dry/companies/{companyId}/schemas"
+            post: "/dry/merchants/{merchantId}/schemas"
             body: "*"
         };
     }
@@ -130,15 +130,15 @@ service InventoryService {
     // CreateProductSchema creates the product schema in the system
     rpc CreateProductSchema (ProductSchema) returns (ProductSchema) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/schemas"
+            post: "/merchants/{merchantId}/schemas"
             body: "*"
         };
     }
 
-    // CreateUpload creates an upload link for the company gallery
+    // CreateUpload creates an upload link for the merchant gallery
     rpc CreateUpload (UploadMeta) returns (UploadMeta) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/upload"
+            post: "/merchants/{merchantId}/upload"
             body: "*"
         };
     }
@@ -151,7 +151,7 @@ message ProductSchema {
     // createdBy is a reference to the user that created this product schema
     User createdBy = 3;
 
-    string companyId = 10;
+    string merchantId = 10;
 
     map<string, string> labels = 20;
 
@@ -163,7 +163,7 @@ message Product {
     string productId = 1;
     ProductSchema productSchema = 2;
 
-    string companyId = 10;
+    string merchantId = 10;
     string storeId = 11;
     string providerId = 12;
 
@@ -180,7 +180,7 @@ message UploadMeta {
     // [Output Only] this is being provided by the system after the file is uploaded
     string link = 2;
 
-    string companyId = 10;
+    string merchantId = 10;
 
     map<string, string> labels = 20;
 }
@@ -205,21 +205,21 @@ service OrderService {
     // CreateOrder creates an order for the particular user in the store
     rpc CreateOrder (Order) returns (Order) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/stores/{storeId}/orders"
+            post: "/merchants/{merchantId}/stores/{storeId}/orders"
             body: "*"
         };
     }
 
     rpc CancelOrder (Order) returns (Order) {
         option (google.api.http) = {
-            delete: "/companies/{companyId}/stores/{storeId}/orders/{orderId}"
+            delete: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
         };
     }
 
     // GetOrders returns all orders that the user has access to
     rpc GetOrders (OrderFilter) returns (OrderList) {
         option (google.api.http) = {
-            get: "/companies/{companyId}/orders"
+            get: "/merchants/{merchantId}/orders"
         };
     }
 }
@@ -227,7 +227,7 @@ service OrderService {
 message Order {
     string orderId = 1;
 
-    string companyId = 10;
+    string merchantId = 10;
     string storeId = 2;
 }
 
@@ -238,7 +238,7 @@ message OrderList {
 message OrderFilter {
     string orderId = 1;
 
-    string companyId = 10;
+    string merchantId = 10;
     string storeId = 11;
 }
 
@@ -246,7 +246,7 @@ service ProviderService {
     // CreateOrder creates an order for the particular user in the store
     rpc CreateProvider (Provider) returns (Provider) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/providers"
+            post: "/merchants/{merchantId}/providers"
             body: "*"
         };
     }
@@ -254,7 +254,7 @@ service ProviderService {
     // GetProviders returns all providers that the user has access to
     rpc GetProviders (ProviderFilter) returns (ProviderList) {
         option (google.api.http) = {
-            get: "/companies/{companyId}/providers"
+            get: "/merchants/{merchantId}/providers"
         };
     }
 }
@@ -262,11 +262,11 @@ service ProviderService {
 message Provider {
     string providerId = 1;
 
-    string companyId = 10;
+    string merchantId = 10;
 }
 
 message ProviderFilter {
-    string companyId = 10;
+    string merchantId = 10;
 }
 
 message ProviderList {
@@ -276,7 +276,7 @@ service CustomerService {
     // CreateOrder creates a customer for the particular user in the store
     rpc CreateCustomer (Customer) returns (Customer) {
         option (google.api.http) = {
-            post: "/companies/{companyId}/customers"
+            post: "/merchants/{merchantId}/customers"
             body: "*"
         };
     }
@@ -284,7 +284,7 @@ service CustomerService {
     // GetCustomers returns all customers that the user has access to
     rpc GetCustomers (CustomerFilter) returns (CustomerList) {
         option (google.api.http) = {
-            get: "/companies/{companyId}/customers"
+            get: "/merchants/{merchantId}/customers"
         };
     }
 }
@@ -292,11 +292,11 @@ service CustomerService {
 message Customer {
     string customerId = 1;
 
-    string companyId = 10;
+    string merchantId = 10;
 }
 
 message CustomerFilter {
-    string companyId = 10;
+    string merchantId = 10;
 }
 
 message CustomerList {

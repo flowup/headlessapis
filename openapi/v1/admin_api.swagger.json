@@ -277,6 +277,39 @@
         ]
       }
     },
+    "/merchants/{merchantId}/products:create": {
+      "post": {
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "CreateProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Product"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Product"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
     "/merchants/{merchantId}/providers": {
       "get": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
@@ -635,6 +668,39 @@
           "items": {
             "$ref": "#/definitions/v1Order"
           }
+        }
+      }
+    },
+    "v1Product": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string"
+        },
+        "productSchema": {
+          "$ref": "#/definitions/v1ProductSchema"
+        },
+        "merchantId": {
+          "type": "string"
+        },
+        "storeId": {
+          "type": "string"
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "attributes are custom key-value pairs provided for the product"
         }
       }
     },

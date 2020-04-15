@@ -35,6 +35,8 @@ export function isV1EmailPassword(arg: any): arg is models.V1EmailPassword {
   typeof arg === 'object' &&
     // email?: string
     ( typeof arg.email === 'undefined' || typeof arg.email === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
     // password?: string
     ( typeof arg.password === 'undefined' || typeof arg.password === 'string' ) &&
 

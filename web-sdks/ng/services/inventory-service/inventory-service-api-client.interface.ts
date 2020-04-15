@@ -13,6 +13,8 @@ export interface InventoryServiceAPIClientInterface {
     args: {
       productId?: string,
       name?: string,
+      merchantId?: string,
+      storeId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1ProductList>;
@@ -24,6 +26,8 @@ export interface InventoryServiceAPIClientInterface {
     args: {
       productId: string,
       name?: string,
+      merchantId?: string,
+      storeId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Product>;

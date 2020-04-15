@@ -49,6 +49,8 @@ export class InventoryServiceAPIClient implements InventoryServiceAPIClientInter
     args: {
       productId?: string,
       name?: string,
+      merchantId?: string,
+      storeId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1ProductList> {
@@ -64,6 +66,12 @@ export class InventoryServiceAPIClient implements InventoryServiceAPIClientInter
     if ('name' in args) {
       options.params = options.params.set('name', String(args.name));
     }
+    if ('merchantId' in args) {
+      options.params = options.params.set('merchantId', String(args.merchantId));
+    }
+    if ('storeId' in args) {
+      options.params = options.params.set('storeId', String(args.storeId));
+    }
     return this.sendRequest<models.V1ProductList>('GET', path, options);
   }
 
@@ -74,6 +82,8 @@ export class InventoryServiceAPIClient implements InventoryServiceAPIClientInter
     args: {
       productId: string,
       name?: string,
+      merchantId?: string,
+      storeId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Product> {
@@ -85,6 +95,12 @@ export class InventoryServiceAPIClient implements InventoryServiceAPIClientInter
 
     if ('name' in args) {
       options.params = options.params.set('name', String(args.name));
+    }
+    if ('merchantId' in args) {
+      options.params = options.params.set('merchantId', String(args.merchantId));
+    }
+    if ('storeId' in args) {
+      options.params = options.params.set('storeId', String(args.storeId));
     }
     return this.sendRequest<models.V1Product>('GET', path, options);
   }

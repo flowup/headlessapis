@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package v1;
+package client.v1;
 
 option go_package = "github.com/flowup/headless/go-sdk/client/v1";
 

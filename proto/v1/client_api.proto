@@ -26,6 +26,7 @@ service AuthService {
 message EmailPassword {
     string email = 1;
     string password = 2;
+    string merchantId = 3;
 }
 
 message Customer {
@@ -63,6 +64,8 @@ message Product {
 message ProductFilter {
     string productId = 1;
     string name = 2;
+    string merchantId = 3;
+    string storeId = 4;
 }
 
 message ProductList {

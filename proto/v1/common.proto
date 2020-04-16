@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package common.v1;
 
-option go_package = "github.com/flowup/headless/go-sdk/common/v1";
+option go_package = "github.com/flowup/headlessapis/go-sdk/common/v1";
 
 // Message representing a value of something in a particular currency
 message Amount {

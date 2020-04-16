@@ -180,13 +180,21 @@ message ProductSchema {
     map<string, string> attributes = 100;
 }
 
+message Amount {
+    string currency = 1;
+    float value = 2;
+}
+
 message Product {
     string productId = 1;
     ProductSchema productSchema = 2;
 
     string merchantId = 10;
-    string storeId = 11;
+    repeated string storeIds = 11;
     string providerId = 12;
+    string name = 13;
+    string description = 14;
+    Amount defaultAmount = 15;
 
     map<string, string> labels = 20;
 

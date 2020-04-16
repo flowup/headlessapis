@@ -17,8 +17,7 @@ gen-swagger:
 gen-go:
 	protoc $(INCLUDES) \
 		proto/v1/common.proto \
-		--gogoslick_out=plugins=grpc,paths=source_relative:go-sdk/common \
-		--grpc-gateway_out=logtostderr=true,allow_patch_feature=false,paths=source_relative:go-sdk/common
+		--gogoslick_out=plugins=grpc,paths=source_relative:go-sdk/common
 	protoc $(INCLUDES) \
 		proto/v1/admin_api.proto \
 		--gogoslick_out=plugins=grpc,paths=source_relative:go-sdk/admin \

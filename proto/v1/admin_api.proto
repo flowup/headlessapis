@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package admin.v1;
 
-option go_package = "github.com/flowup/headless/go-sdk/admin/v1";
+option go_package = "github.com/flowup/headlessapis/go-sdk/admin/v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";

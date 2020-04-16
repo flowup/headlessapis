@@ -236,6 +236,13 @@ service OrderService {
         };
     }
 
+    rpc UpdateOrder (Order) returns (Order) {
+        option (google.api.http) = {
+            put: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
+            body: "*"
+        };
+    }
+
     rpc CancelOrder (Order) returns (Order) {
         option (google.api.http) = {
             delete: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
@@ -257,6 +264,7 @@ enum OrderStatus {
     SUBMITTED = 2;
     PAID = 3;
     SENT = 4;
+    CANCEL = 5;
 }
 
 message Order {

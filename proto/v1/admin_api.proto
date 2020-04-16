@@ -6,6 +6,7 @@ option go_package = "github.com/flowup/headless/go-sdk/admin/v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "v1/common.proto";
 
 service MerchantService {
     // CreateMerchantDry runs validation on the server side and returns
@@ -185,8 +186,12 @@ message Product {
     ProductSchema productSchema = 2;
 
     string merchantId = 10;
-    string storeId = 11;
+    repeated string storeIds = 11;
     string providerId = 12;
+    string name = 13;
+    string description = 14;
+    common.v1.Amount defaultAmount = 15;
+    repeated string images = 16;
 
     map<string, string> labels = 20;
 

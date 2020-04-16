@@ -660,7 +660,8 @@
           "type": "number",
           "format": "float"
         }
-      }
+      },
+      "title": "Message representing a value of something in a particular currency"
     },
     "v1Customer": {
       "type": "object",

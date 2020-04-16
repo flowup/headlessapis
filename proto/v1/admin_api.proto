@@ -250,11 +250,24 @@ service OrderService {
     }
 }
 
+
+enum OrderStatus {
+    ORDER_STATUS_UNDEFINED = 0;
+    NOT_SUBMITTED = 1;
+    SUBMITTED = 2;
+    PAID = 3;
+    SENT = 4;
+}
+
 message Order {
     string orderId = 1;
 
+    OrderStatus status = 2;
+    string note = 3;
+
     string merchantId = 10;
-    string storeId = 2;
+    string storeId = 11;
+
 }
 
 message OrderList {
@@ -263,6 +276,7 @@ message OrderList {
 
 message OrderFilter {
     string orderId = 1;
+    OrderStatus status = 2;
 
     string merchantId = 10;
     string storeId = 11;

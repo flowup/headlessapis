@@ -48,4 +48,11 @@ export interface OrderServiceAPIClientInterface {
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order>;
 
+  /**
+   * Response generated for [ 200 ] HTTP response code.
+   */
+  getActiveOrder(
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.V1Order>;
+
 }

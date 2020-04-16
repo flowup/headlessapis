@@ -4,10 +4,6 @@
     "title": "v1/admin_api.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -77,7 +73,7 @@
     },
     "/dry/merchants/{merchantId}/stores": {
       "post": {
-        "summary": "CreateStoreDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the store\nfor the particular merchant",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
         "operationId": "CreateStoreDry",
         "responses": {
           "200": {
@@ -105,7 +101,7 @@
           }
         ],
         "tags": [
-          "MerchantService"
+          "StoreService"
         ]
       }
     },
@@ -400,8 +396,50 @@
       }
     },
     "/merchants/{merchantId}/stores": {
+      "get": {
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "GetStores",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1StoreList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "[Required] reference to the merchant id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      },
       "post": {
-        "summary": "Create store creates the store for the particular merchant and returns\nthe store object back to the caller",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
         "operationId": "CreateStore",
         "responses": {
           "200": {
@@ -429,7 +467,7 @@
           }
         ],
         "tags": [
-          "MerchantService"
+          "StoreService"
         ]
       }
     },
@@ -764,6 +802,17 @@
         "merchantId": {
           "type": "string",
           "title": "[Required] reference to the merchant id"
+        }
+      }
+    },
+    "v1StoreList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Store"
+          }
         }
       }
     },

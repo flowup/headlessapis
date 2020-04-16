@@ -195,6 +195,7 @@ message Product {
     string name = 13;
     string description = 14;
     Amount defaultAmount = 15;
+    repeated string images = 16;
 
     map<string, string> labels = 20;
 

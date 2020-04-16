@@ -142,6 +142,14 @@ service InventoryService {
             body: "*"
         };
     }
+
+    // CreateProduct creates a product in the firestore for a particular merchant
+    rpc CreateProduct (Product) returns (Product) {
+        option (google.api.http) = {
+            post: "/merchants/{merchantId}/products:create"
+            body: "*"
+        };
+    }
 }
 
 message ProductSchema {
@@ -243,7 +251,7 @@ message OrderFilter {
 }
 
 service ProviderService {
-    // CreateOrder creates an order for the particular user in the store
+    // CreateProvider creates a provider for the particular merchant
     rpc CreateProvider (Provider) returns (Provider) {
         option (google.api.http) = {
             post: "/merchants/{merchantId}/providers"
@@ -273,7 +281,7 @@ message ProviderList {
 }
 
 service CustomerService {
-    // CreateOrder creates a customer for the particular user in the store
+    // CreateCustomer creates a customer for the particular merchant
     rpc CreateCustomer (Customer) returns (Customer) {
         option (google.api.http) = {
             post: "/merchants/{merchantId}/customers"

@@ -57,7 +57,39 @@ service MerchantService {
             get: "/merchants/{merchantId}/users"
         };
     }
+}
 
+message Merchant {
+    // [Required] merchantId can be set only once and is unchangeable during lifetime
+    string merchantId = 1;
+
+    // [Required] name of the merchant can be customized by the user, however, the id
+    // will stay unchanged
+    string name = 2;
+}
+
+message MerchantList {
+    repeated Merchant items = 1;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 4;
+
+    // id of the user this user was invited by into the system
+    string invitedById = 5;
+
+    string merchantId = 10;
+
+    string thumbnail = 50;
+}
+
+message UserList {
+    repeated User items = 1;
+}
+
+service StoreService {
     // CreateStoreDry runs validation on the server side and returns
     // errors that need to be corrected to successfully create the store
     // for the particular merchant
@@ -76,19 +108,13 @@ service MerchantService {
             body: "*"
         };
     }
-}
 
-message Merchant {
-    // [Required] merchantId can be set only once and is unchangeable during lifetime
-    string merchantId = 1;
-
-    // [Required] name of the merchant can be customized by the user, however, the id
-    // will stay unchanged
-    string name = 2;
-}
-
-message MerchantList {
-    repeated Merchant items = 1;
+    // Loads all stores from given merchant
+    rpc GetStores (Store) returns (StoreList) {
+        option (google.api.http) = {
+            get: "/merchants/{merchantId}/stores"
+        };
+    }
 }
 
 message Store {
@@ -100,21 +126,8 @@ message Store {
     string merchantId = 10;
 }
 
-message User {
-    string id = 1;
-    string name = 2;
-    string email = 4;
-
-    // id of the user this user was invited by into the system
-    string invitedById = 5;
-
-    string merchantId = 10;
-
-    string thumbnail = 50;
-}
-
-message UserList {
-    repeated User items = 1;
+message StoreList {
+    repeated Store items = 1;
 }
 
 service InventoryService {

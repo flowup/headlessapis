@@ -755,6 +755,12 @@
         "defaultAmount": {
           "$ref": "#/definitions/v1Amount"
         },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "labels": {
           "type": "object",
           "additionalProperties": {

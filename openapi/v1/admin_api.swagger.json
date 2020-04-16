@@ -4,6 +4,10 @@
     "title": "v1/admin_api.proto",
     "version": "version not set"
   },
+  "schemes": [
+    "http",
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -646,6 +650,18 @@
     }
   },
   "definitions": {
+    "v1Amount": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
     "v1Customer": {
       "type": "object",
       "properties": {
@@ -721,11 +737,23 @@
         "merchantId": {
           "type": "string"
         },
-        "storeId": {
-          "type": "string"
+        "storeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "providerId": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "defaultAmount": {
+          "$ref": "#/definitions/v1Amount"
         },
         "labels": {
           "type": "object",

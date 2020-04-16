@@ -128,74 +128,6 @@ func (m *MerchantList) GetItems() []*Merchant {
 	return nil
 }
 
-type Store struct {
-	StoreId  string `protobuf:"bytes,1,opt,name=storeId,proto3" json:"storeId,omitempty"`
-	Name     string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Location string `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
-	// [Required] reference to the merchant id
-	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
-}
-
-func (m *Store) Reset()      { *m = Store{} }
-func (*Store) ProtoMessage() {}
-func (*Store) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{2}
-}
-func (m *Store) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *Store) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_Store.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *Store) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Store.Merge(m, src)
-}
-func (m *Store) XXX_Size() int {
-	return m.Size()
-}
-func (m *Store) XXX_DiscardUnknown() {
-	xxx_messageInfo_Store.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Store proto.InternalMessageInfo
-
-func (m *Store) GetStoreId() string {
-	if m != nil {
-		return m.StoreId
-	}
-	return ""
-}
-
-func (m *Store) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
-func (m *Store) GetLocation() string {
-	if m != nil {
-		return m.Location
-	}
-	return ""
-}
-
-func (m *Store) GetMerchantId() string {
-	if m != nil {
-		return m.MerchantId
-	}
-	return ""
-}
-
 type User struct {
 	Id    string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -209,7 +141,7 @@ type User struct {
 func (m *User) Reset()      { *m = User{} }
 func (*User) ProtoMessage() {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{3}
+	return fileDescriptor_667592b98ca79aba, []int{2}
 }
 func (m *User) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -287,7 +219,7 @@ type UserList struct {
 func (m *UserList) Reset()      { *m = UserList{} }
 func (*UserList) ProtoMessage() {}
 func (*UserList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{4}
+	return fileDescriptor_667592b98ca79aba, []int{3}
 }
 func (m *UserList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -323,6 +255,117 @@ func (m *UserList) GetItems() []*User {
 	return nil
 }
 
+type Store struct {
+	StoreId  string `protobuf:"bytes,1,opt,name=storeId,proto3" json:"storeId,omitempty"`
+	Name     string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Location string `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
+	// [Required] reference to the merchant id
+	MerchantId string `protobuf:"bytes,10,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
+}
+
+func (m *Store) Reset()      { *m = Store{} }
+func (*Store) ProtoMessage() {}
+func (*Store) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{4}
+}
+func (m *Store) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Store) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Store.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Store) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Store.Merge(m, src)
+}
+func (m *Store) XXX_Size() int {
+	return m.Size()
+}
+func (m *Store) XXX_DiscardUnknown() {
+	xxx_messageInfo_Store.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Store proto.InternalMessageInfo
+
+func (m *Store) GetStoreId() string {
+	if m != nil {
+		return m.StoreId
+	}
+	return ""
+}
+
+func (m *Store) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Store) GetLocation() string {
+	if m != nil {
+		return m.Location
+	}
+	return ""
+}
+
+func (m *Store) GetMerchantId() string {
+	if m != nil {
+		return m.MerchantId
+	}
+	return ""
+}
+
+type StoreList struct {
+	Items []*Store `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *StoreList) Reset()      { *m = StoreList{} }
+func (*StoreList) ProtoMessage() {}
+func (*StoreList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{5}
+}
+func (m *StoreList) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *StoreList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_StoreList.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *StoreList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StoreList.Merge(m, src)
+}
+func (m *StoreList) XXX_Size() int {
+	return m.Size()
+}
+func (m *StoreList) XXX_DiscardUnknown() {
+	xxx_messageInfo_StoreList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StoreList proto.InternalMessageInfo
+
+func (m *StoreList) GetItems() []*Store {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
 type ProductSchema struct {
 	ProductSchemaId string `protobuf:"bytes,1,opt,name=productSchemaId,proto3" json:"productSchemaId,omitempty"`
 	Name            string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -337,7 +380,7 @@ type ProductSchema struct {
 func (m *ProductSchema) Reset()      { *m = ProductSchema{} }
 func (*ProductSchema) ProtoMessage() {}
 func (*ProductSchema) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{5}
+	return fileDescriptor_667592b98ca79aba, []int{6}
 }
 func (m *ProductSchema) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -422,7 +465,7 @@ type Product struct {
 func (m *Product) Reset()      { *m = Product{} }
 func (*Product) ProtoMessage() {}
 func (*Product) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{6}
+	return fileDescriptor_667592b98ca79aba, []int{7}
 }
 func (m *Product) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -512,7 +555,7 @@ type UploadMeta struct {
 func (m *UploadMeta) Reset()      { *m = UploadMeta{} }
 func (*UploadMeta) ProtoMessage() {}
 func (*UploadMeta) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{7}
+	return fileDescriptor_667592b98ca79aba, []int{8}
 }
 func (m *UploadMeta) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -575,7 +618,7 @@ type Warehouse struct {
 func (m *Warehouse) Reset()      { *m = Warehouse{} }
 func (*Warehouse) ProtoMessage() {}
 func (*Warehouse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{8}
+	return fileDescriptor_667592b98ca79aba, []int{9}
 }
 func (m *Warehouse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -610,7 +653,7 @@ type WarehouseFilter struct {
 func (m *WarehouseFilter) Reset()      { *m = WarehouseFilter{} }
 func (*WarehouseFilter) ProtoMessage() {}
 func (*WarehouseFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{9}
+	return fileDescriptor_667592b98ca79aba, []int{10}
 }
 func (m *WarehouseFilter) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -646,7 +689,7 @@ type WarehouseList struct {
 func (m *WarehouseList) Reset()      { *m = WarehouseList{} }
 func (*WarehouseList) ProtoMessage() {}
 func (*WarehouseList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{10}
+	return fileDescriptor_667592b98ca79aba, []int{11}
 }
 func (m *WarehouseList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -691,7 +734,7 @@ type Order struct {
 func (m *Order) Reset()      { *m = Order{} }
 func (*Order) ProtoMessage() {}
 func (*Order) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{11}
+	return fileDescriptor_667592b98ca79aba, []int{12}
 }
 func (m *Order) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -748,7 +791,7 @@ type OrderList struct {
 func (m *OrderList) Reset()      { *m = OrderList{} }
 func (*OrderList) ProtoMessage() {}
 func (*OrderList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{12}
+	return fileDescriptor_667592b98ca79aba, []int{13}
 }
 func (m *OrderList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -793,7 +836,7 @@ type OrderFilter struct {
 func (m *OrderFilter) Reset()      { *m = OrderFilter{} }
 func (*OrderFilter) ProtoMessage() {}
 func (*OrderFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{13}
+	return fileDescriptor_667592b98ca79aba, []int{14}
 }
 func (m *OrderFilter) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -851,7 +894,7 @@ type Provider struct {
 func (m *Provider) Reset()      { *m = Provider{} }
 func (*Provider) ProtoMessage() {}
 func (*Provider) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{14}
+	return fileDescriptor_667592b98ca79aba, []int{15}
 }
 func (m *Provider) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -901,7 +944,7 @@ type ProviderFilter struct {
 func (m *ProviderFilter) Reset()      { *m = ProviderFilter{} }
 func (*ProviderFilter) ProtoMessage() {}
 func (*ProviderFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{15}
+	return fileDescriptor_667592b98ca79aba, []int{16}
 }
 func (m *ProviderFilter) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -943,7 +986,7 @@ type ProviderList struct {
 func (m *ProviderList) Reset()      { *m = ProviderList{} }
 func (*ProviderList) ProtoMessage() {}
 func (*ProviderList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{16}
+	return fileDescriptor_667592b98ca79aba, []int{17}
 }
 func (m *ProviderList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -980,7 +1023,7 @@ type Customer struct {
 func (m *Customer) Reset()      { *m = Customer{} }
 func (*Customer) ProtoMessage() {}
 func (*Customer) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{17}
+	return fileDescriptor_667592b98ca79aba, []int{18}
 }
 func (m *Customer) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1030,7 +1073,7 @@ type CustomerFilter struct {
 func (m *CustomerFilter) Reset()      { *m = CustomerFilter{} }
 func (*CustomerFilter) ProtoMessage() {}
 func (*CustomerFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{18}
+	return fileDescriptor_667592b98ca79aba, []int{19}
 }
 func (m *CustomerFilter) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1072,7 +1115,7 @@ type CustomerList struct {
 func (m *CustomerList) Reset()      { *m = CustomerList{} }
 func (*CustomerList) ProtoMessage() {}
 func (*CustomerList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_667592b98ca79aba, []int{19}
+	return fileDescriptor_667592b98ca79aba, []int{20}
 }
 func (m *CustomerList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1104,9 +1147,10 @@ var xxx_messageInfo_CustomerList proto.InternalMessageInfo
 func init() {
 	proto.RegisterType((*Merchant)(nil), "admin.v1.Merchant")
 	proto.RegisterType((*MerchantList)(nil), "admin.v1.MerchantList")
-	proto.RegisterType((*Store)(nil), "admin.v1.Store")
 	proto.RegisterType((*User)(nil), "admin.v1.User")
 	proto.RegisterType((*UserList)(nil), "admin.v1.UserList")
+	proto.RegisterType((*Store)(nil), "admin.v1.Store")
+	proto.RegisterType((*StoreList)(nil), "admin.v1.StoreList")
 	proto.RegisterType((*ProductSchema)(nil), "admin.v1.ProductSchema")
 	proto.RegisterMapType((map[string]string)(nil), "admin.v1.ProductSchema.AttributesEntry")
 	proto.RegisterMapType((map[string]string)(nil), "admin.v1.ProductSchema.LabelsEntry")
@@ -1132,90 +1176,92 @@ func init() {
 func init() { proto.RegisterFile("v1/admin_api.proto", fileDescriptor_667592b98ca79aba) }
 
 var fileDescriptor_667592b98ca79aba = []byte{
-	// 1321 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x58, 0xdd, 0x8e, 0xdb, 0xc4,
-	0x17, 0x8f, 0x93, 0xa6, 0x4d, 0x4e, 0xb2, 0x49, 0x3b, 0xdb, 0xee, 0x3f, 0x7f, 0xd3, 0xba, 0xdb,
-	0xe9, 0x57, 0xba, 0x6a, 0xe3, 0x36, 0x80, 0xd4, 0x6e, 0x55, 0xa4, 0xb6, 0x94, 0xd5, 0xa2, 0x96,
-	0x56, 0x5b, 0xb5, 0x88, 0x22, 0x54, 0x9c, 0x78, 0x76, 0x63, 0xad, 0x63, 0x07, 0xdb, 0x09, 0x0a,
-	0x55, 0x25, 0xc4, 0x13, 0x20, 0x71, 0xc9, 0x0d, 0x97, 0x3c, 0x00, 0x0f, 0xc1, 0xe5, 0x22, 0x84,
-	0xd4, 0x3b, 0xd8, 0x2c, 0x42, 0x5c, 0xf6, 0x11, 0x90, 0x8f, 0x3d, 0xfe, 0x8a, 0xb3, 0xce, 0x02,
-	0x17, 0xdc, 0x79, 0xce, 0x9c, 0xf3, 0x3b, 0x5f, 0x73, 0xe6, 0x37, 0x32, 0x90, 0xd1, 0x35, 0x59,
-	0x51, 0xfb, 0x9a, 0xf1, 0x5c, 0x19, 0x68, 0xad, 0x81, 0x65, 0x3a, 0x26, 0x29, 0xa1, 0xa0, 0x35,
-	0xba, 0x26, 0x9e, 0xdc, 0x32, 0xcd, 0x2d, 0x9d, 0xc9, 0xca, 0x40, 0x93, 0x15, 0xc3, 0x30, 0x1d,
-	0xc5, 0xd1, 0x4c, 0xc3, 0xf6, 0xf4, 0xc4, 0x37, 0xfc, 0x5d, 0x5c, 0x75, 0x86, 0x9b, 0x32, 0xeb,
-	0x0f, 0x9c, 0xb1, 0xb7, 0x49, 0xdf, 0x81, 0xd2, 0x03, 0x66, 0x75, 0x7b, 0x8a, 0xe1, 0x10, 0x09,
-	0xa0, 0xef, 0x7f, 0xaf, 0xab, 0x0d, 0x61, 0x59, 0x68, 0x96, 0x37, 0x22, 0x12, 0x42, 0xe0, 0x90,
-	0xa1, 0xf4, 0x59, 0x23, 0x8f, 0x3b, 0xf8, 0x4d, 0xaf, 0x43, 0x95, 0xdb, 0xdf, 0xd7, 0x6c, 0x87,
-	0x34, 0xa1, 0xa8, 0x39, 0xac, 0x6f, 0x37, 0x84, 0xe5, 0x42, 0xb3, 0xd2, 0x26, 0x2d, 0x1e, 0x64,
-	0x8b, 0xab, 0x6d, 0x78, 0x0a, 0xf4, 0x33, 0x28, 0x3e, 0x76, 0x4c, 0x8b, 0x91, 0x06, 0x1c, 0xb1,
-	0xdd, 0x8f, 0xc0, 0x27, 0x5f, 0xa6, 0x39, 0x24, 0x22, 0x94, 0x74, 0xb3, 0x8b, 0x09, 0x36, 0x0a,
-	0x28, 0x0f, 0xd6, 0x89, 0x04, 0x20, 0x99, 0x00, 0xfd, 0x4e, 0x80, 0x43, 0x4f, 0x6c, 0x66, 0x91,
-	0x1a, 0xe4, 0x35, 0xee, 0x2d, 0xaf, 0xa5, 0x3b, 0x3a, 0x0e, 0x45, 0xd6, 0x57, 0x34, 0xbd, 0x71,
-	0x08, 0x85, 0xde, 0x82, 0x2c, 0x43, 0x45, 0x33, 0x46, 0x9a, 0xc3, 0xd4, 0x3b, 0xe3, 0x75, 0xb5,
-	0x51, 0xc4, 0xbd, 0xa8, 0x28, 0x2b, 0x08, 0x72, 0x12, 0xca, 0x4e, 0x6f, 0xd8, 0xef, 0x18, 0x2e,
-	0x76, 0x1b, 0xb7, 0x43, 0x01, 0xbd, 0x0a, 0x25, 0x37, 0x42, 0xac, 0xe5, 0xb9, 0x78, 0x2d, 0x6b,
-	0x61, 0x2d, 0x5d, 0x15, 0x5e, 0xc7, 0x6f, 0x0b, 0xb0, 0xf0, 0xc8, 0x32, 0xd5, 0x61, 0xd7, 0x79,
-	0xdc, 0xed, 0xb1, 0xbe, 0x42, 0x9a, 0x50, 0x1f, 0x44, 0x05, 0x41, 0x61, 0x93, 0xe2, 0xd4, 0xbc,
-	0x2f, 0x43, 0xb9, 0x6b, 0x31, 0x05, 0xd3, 0xc1, 0x0a, 0x4f, 0x7b, 0x0e, 0x15, 0x32, 0xb3, 0xbd,
-	0x09, 0x87, 0x75, 0xa5, 0xc3, 0x74, 0xbb, 0x71, 0x1c, 0x93, 0x38, 0x1b, 0x42, 0xc5, 0x82, 0x6e,
-	0xdd, 0x47, 0xad, 0x7b, 0x86, 0x63, 0x8d, 0x37, 0x7c, 0x13, 0xb2, 0x06, 0xa0, 0x38, 0x8e, 0xa5,
-	0x75, 0x86, 0x0e, 0xb3, 0x1b, 0x2a, 0x02, 0x5c, 0x9c, 0x05, 0x70, 0x3b, 0xd0, 0xf4, 0x40, 0x22,
-	0xa6, 0xe2, 0x0d, 0xa8, 0x44, 0xf0, 0xc9, 0x51, 0x28, 0x6c, 0xb3, 0xb1, 0x5f, 0x14, 0xf7, 0xd3,
-	0x6d, 0xf6, 0x48, 0xd1, 0x87, 0xbc, 0x12, 0xde, 0x62, 0x35, 0x7f, 0x5d, 0x10, 0x6f, 0x41, 0x3d,
-	0x81, 0x7c, 0x10, 0x73, 0xfa, 0x43, 0x01, 0x8e, 0xf8, 0x71, 0xba, 0x9d, 0xf7, 0x1b, 0x10, 0x74,
-	0x24, 0x14, 0x90, 0x5b, 0xb0, 0x10, 0x6b, 0x0f, 0x62, 0x55, 0xda, 0xff, 0x9b, 0x91, 0xef, 0x46,
-	0x5c, 0x3b, 0xb3, 0x11, 0x91, 0x29, 0xab, 0xc4, 0xa7, 0x4c, 0x02, 0x18, 0x58, 0xe6, 0x48, 0x53,
-	0x99, 0xb5, 0xae, 0x36, 0xaa, 0x9e, 0x65, 0x28, 0x21, 0x6f, 0x27, 0x5a, 0x78, 0x6a, 0x2a, 0xa2,
-	0xd4, 0xe6, 0xdd, 0x4e, 0x69, 0xde, 0x99, 0x69, 0xd3, 0xff, 0x66, 0xdb, 0x7e, 0x12, 0x00, 0x9e,
-	0x0c, 0x74, 0x53, 0x51, 0x1f, 0x30, 0x47, 0x71, 0x2f, 0x9d, 0x4d, 0x4d, 0x67, 0x1f, 0xb8, 0xb3,
-	0xe2, 0xd9, 0x07, 0x6b, 0x77, 0x86, 0x74, 0xcd, 0xd8, 0xe6, 0x33, 0xe4, 0x7e, 0x67, 0x36, 0xe3,
-	0x7a, 0xa2, 0xa4, 0xcb, 0x91, 0x01, 0x0b, 0xbc, 0xa6, 0x55, 0xf5, 0x1f, 0x94, 0x84, 0x56, 0xa0,
-	0xfc, 0xa1, 0x62, 0xb1, 0x9e, 0x39, 0xb4, 0x19, 0x3d, 0x06, 0xf5, 0x60, 0xf1, 0x9e, 0xa6, 0x3b,
-	0xcc, 0xa2, 0xab, 0xb0, 0x10, 0x88, 0xf0, 0xfe, 0xb9, 0x14, 0xbf, 0x7f, 0x16, 0xc3, 0x20, 0x03,
-	0x3d, 0x7e, 0x09, 0x7d, 0x0c, 0xc5, 0x87, 0x96, 0xca, 0x2c, 0xf7, 0x98, 0x99, 0x96, 0x77, 0x92,
-	0xfc, 0xcb, 0xdc, 0x5f, 0x1e, 0xe4, 0x80, 0xe6, 0x63, 0x07, 0x94, 0xb6, 0xa1, 0x8c, 0xe0, 0x18,
-	0xd4, 0xf9, 0x78, 0x50, 0xf5, 0x30, 0x28, 0xd4, 0xe1, 0x01, 0x29, 0x50, 0xc1, 0xb5, 0x97, 0xdb,
-	0xbf, 0x13, 0x56, 0x7c, 0x6e, 0xe8, 0xfb, 0x50, 0x7a, 0xe4, 0x4f, 0x49, 0x62, 0x86, 0x84, 0xa9,
-	0x19, 0xca, 0x62, 0xa6, 0xab, 0x50, 0xe3, 0x58, 0x7e, 0xc4, 0x59, 0x16, 0x35, 0xa8, 0x72, 0x0b,
-	0xb7, 0x2e, 0x6e, 0x34, 0x77, 0x87, 0xb6, 0x63, 0xf6, 0x3d, 0xdb, 0xae, 0xff, 0x1d, 0x46, 0x13,
-	0x4a, 0xe6, 0x89, 0x86, 0x63, 0xcd, 0x1f, 0x0d, 0xb7, 0x70, 0xa3, 0x69, 0xff, 0x5a, 0x84, 0x3a,
-	0x27, 0xfc, 0xc7, 0xcc, 0x1a, 0x69, 0x5d, 0x46, 0x9e, 0xc2, 0xb1, 0xbb, 0xc8, 0x1b, 0x7c, 0xe3,
-	0x5d, 0x6b, 0x4c, 0x52, 0x1e, 0x08, 0x62, 0x8a, 0x8c, 0xfe, 0xff, 0xab, 0x9f, 0x7f, 0xff, 0x26,
-	0xbf, 0x48, 0x6b, 0xb2, 0x6a, 0x8d, 0x65, 0xee, 0xd9, 0x5e, 0x15, 0x56, 0xc8, 0x43, 0xa8, 0xc5,
-	0x71, 0xe7, 0x06, 0x3d, 0x81, 0xa0, 0x75, 0x0a, 0x71, 0xc0, 0x0d, 0xa8, 0xae, 0x31, 0x87, 0x6b,
-	0xd9, 0x64, 0xa9, 0xe5, 0xbd, 0xa0, 0x5a, 0xfc, 0x05, 0xd5, 0xba, 0xe7, 0xbe, 0xa0, 0xc4, 0xa5,
-	0x69, 0x48, 0x6c, 0x05, 0x41, 0xd8, 0x2a, 0x89, 0xc0, 0x92, 0x4f, 0x60, 0x61, 0x1d, 0x1f, 0x09,
-	0x2e, 0x81, 0xba, 0x89, 0x27, 0x38, 0x55, 0x4c, 0xac, 0xe9, 0x65, 0x04, 0xb9, 0x40, 0xcf, 0xc4,
-	0x13, 0x96, 0x5f, 0x84, 0x55, 0x7f, 0x29, 0x0f, 0x6d, 0x66, 0x61, 0xc8, 0x4f, 0x01, 0x42, 0xf8,
-	0x4c, 0xec, 0x26, 0x62, 0x53, 0x7a, 0x2a, 0x13, 0xf7, 0x23, 0x28, 0xad, 0x31, 0xc7, 0x35, 0xb2,
-	0xb3, 0xaa, 0xca, 0x9f, 0x2d, 0xf4, 0x3c, 0xa2, 0x9f, 0x26, 0xfb, 0xa3, 0x13, 0x85, 0xb7, 0x0d,
-	0x5f, 0x81, 0x6e, 0x49, 0x22, 0xb3, 0x8c, 0x32, 0x31, 0x29, 0xa0, 0x57, 0x10, 0xfa, 0x22, 0xa5,
-	0xfb, 0x15, 0x05, 0xe7, 0x13, 0xa3, 0x7f, 0x06, 0x95, 0x88, 0x8b, 0x39, 0xf0, 0x2f, 0x21, 0xfe,
-	0x59, 0x2a, 0x65, 0x62, 0xb7, 0x7f, 0x29, 0xc0, 0xd1, 0x75, 0x63, 0xc4, 0x0c, 0xc7, 0xb4, 0xc6,
-	0xfc, 0x88, 0x7f, 0x01, 0x4b, 0x9e, 0xc3, 0x18, 0x55, 0xbb, 0xb9, 0xcd, 0xa2, 0x71, 0x71, 0xd6,
-	0x06, 0x6d, 0x61, 0x2c, 0x4d, 0x7a, 0x76, 0xdf, 0x5c, 0x51, 0x17, 0x93, 0xb5, 0x61, 0x31, 0xc5,
-	0xf7, 0xdf, 0x70, 0xbc, 0x82, 0x8e, 0xcf, 0xd1, 0xd3, 0x73, 0x38, 0x65, 0x50, 0xf5, 0x9c, 0x7a,
-	0xb4, 0x45, 0x8e, 0xa7, 0x11, 0x99, 0x98, 0x2a, 0xcd, 0x2e, 0xf6, 0x10, 0x75, 0x5d, 0x37, 0x1a,
-	0x2c, 0xc4, 0x72, 0x23, 0xc7, 0xa6, 0x82, 0x17, 0xa7, 0x45, 0xb4, 0x8d, 0x1e, 0x2e, 0xd3, 0x8b,
-	0xb3, 0x3c, 0xf8, 0x4f, 0x28, 0x7b, 0xd5, 0x7b, 0xd0, 0xba, 0x7d, 0x25, 0x70, 0x34, 0x60, 0x37,
-	0xbf, 0xad, 0xed, 0x9d, 0x3c, 0x54, 0x91, 0x4d, 0x78, 0x9f, 0xb7, 0xf9, 0xc1, 0xf2, 0x48, 0x2f,
-	0x49, 0x42, 0x62, 0x52, 0x40, 0x57, 0x31, 0x92, 0xb7, 0xa8, 0xbc, 0xff, 0xc1, 0x92, 0x5f, 0xf8,
-	0xe4, 0xf2, 0x52, 0x46, 0x7e, 0xc2, 0x1a, 0x5b, 0x50, 0xb9, 0xab, 0x18, 0x5d, 0xa6, 0xcf, 0xeb,
-	0xec, 0x36, 0x3a, 0xbb, 0xb9, 0x72, 0xe3, 0x80, 0xce, 0xe4, 0x17, 0x3e, 0x29, 0xbe, 0x24, 0xcf,
-	0xa1, 0xbc, 0xc6, 0x1c, 0x84, 0xb3, 0xc9, 0x89, 0x84, 0x03, 0x8f, 0x13, 0xc4, 0xc5, 0x84, 0x18,
-	0x87, 0xff, 0x02, 0xfa, 0x5e, 0x26, 0x33, 0x9b, 0xea, 0xb9, 0x6a, 0xff, 0x21, 0x40, 0x9d, 0xf3,
-	0x17, 0xaf, 0xea, 0x26, 0xbf, 0x11, 0x02, 0x5a, 0x25, 0xb1, 0x9e, 0xa2, 0x4c, 0x4c, 0x91, 0x45,
-	0x2e, 0xcb, 0xd9, 0x8d, 0x46, 0x4d, 0x2c, 0xe8, 0x36, 0xde, 0xef, 0xdc, 0xd8, 0x26, 0x8d, 0x69,
-	0x44, 0x3f, 0xc5, 0xa5, 0xe9, 0x1d, 0xcc, 0xd2, 0x3f, 0xba, 0x24, 0xdb, 0x1f, 0x26, 0xca, 0xa9,
-	0x71, 0x2a, 0xd1, 0x80, 0xb1, 0x23, 0x49, 0x71, 0x99, 0x98, 0x22, 0xcb, 0x4e, 0x94, 0xb3, 0x7c,
-	0x24, 0x51, 0x6e, 0x1c, 0x4b, 0x34, 0xce, 0xef, 0xd1, 0x44, 0xa3, 0x3c, 0x9e, 0x9d, 0x68, 0xe0,
-	0xef, 0xce, 0xa7, 0x3b, 0xbb, 0x52, 0xee, 0xd5, 0xae, 0x94, 0x7b, 0xbd, 0x2b, 0x09, 0x5f, 0x4e,
-	0x24, 0xe1, 0xfb, 0x89, 0x24, 0xfc, 0x38, 0x91, 0x84, 0x9d, 0x89, 0x24, 0xfc, 0x36, 0x91, 0x84,
-	0x3f, 0x27, 0x52, 0xee, 0xf5, 0x44, 0x12, 0xbe, 0xde, 0x93, 0x72, 0x3b, 0x7b, 0x52, 0xee, 0xd5,
-	0x9e, 0x94, 0x7b, 0xb6, 0xb2, 0xa5, 0x39, 0xbd, 0x61, 0xa7, 0xd5, 0x35, 0xfb, 0xf2, 0xa6, 0x6e,
-	0x7e, 0x3e, 0x1c, 0xc8, 0x3d, 0xa6, 0xa8, 0x3a, 0xb3, 0x6d, 0x79, 0xcb, 0xbc, 0x62, 0xab, 0xdb,
-	0xde, 0x7f, 0x0f, 0x79, 0x74, 0xad, 0x73, 0x18, 0xf9, 0xf7, 0xcd, 0xbf, 0x02, 0x00, 0x00, 0xff,
-	0xff, 0xb3, 0x72, 0x33, 0x5e, 0x0d, 0x11, 0x00, 0x00,
+	// 1353 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x58, 0xdd, 0x8e, 0xd3, 0xd6,
+	0x13, 0x5f, 0x67, 0x77, 0x21, 0x99, 0x64, 0x13, 0x38, 0x0b, 0xfb, 0xcf, 0xdf, 0x05, 0xb3, 0x1c,
+	0xbe, 0xc2, 0x0a, 0x62, 0x48, 0x5b, 0x09, 0x82, 0xa8, 0x04, 0x94, 0xae, 0xb6, 0x82, 0x82, 0x16,
+	0x41, 0x05, 0x55, 0x45, 0x9d, 0xf8, 0xec, 0xc6, 0x5a, 0xc7, 0x4e, 0x6d, 0x27, 0x55, 0x8a, 0x90,
+	0xaa, 0x3e, 0x41, 0xa5, 0x5e, 0xf6, 0x86, 0x4b, 0x1e, 0xa0, 0x0f, 0xd1, 0xcb, 0xad, 0xaa, 0x4a,
+	0x5c, 0x96, 0x50, 0x55, 0xbd, 0xe4, 0x11, 0x2a, 0x8f, 0x7d, 0xfc, 0x9d, 0x75, 0xb6, 0xed, 0x45,
+	0xef, 0x7c, 0xe6, 0xcc, 0xfc, 0x66, 0x7e, 0x33, 0xe7, 0x9c, 0x19, 0x19, 0xc8, 0xe8, 0xb2, 0xac,
+	0xa8, 0x7d, 0xcd, 0x78, 0xaa, 0x0c, 0xb4, 0xe6, 0xc0, 0x32, 0x1d, 0x93, 0x14, 0x51, 0xd0, 0x1c,
+	0x5d, 0x16, 0x8f, 0x6d, 0x9b, 0xe6, 0xb6, 0xce, 0x64, 0x65, 0xa0, 0xc9, 0x8a, 0x61, 0x98, 0x8e,
+	0xe2, 0x68, 0xa6, 0x61, 0x7b, 0x7a, 0xe2, 0x3b, 0xfe, 0x2e, 0xae, 0x3a, 0xc3, 0x2d, 0x99, 0xf5,
+	0x07, 0xce, 0xd8, 0xdb, 0xa4, 0x1f, 0x40, 0xf1, 0x2e, 0xb3, 0xba, 0x3d, 0xc5, 0x70, 0x88, 0x04,
+	0xd0, 0xf7, 0xbf, 0x37, 0xd4, 0xba, 0xb0, 0x2a, 0x34, 0x4a, 0x9b, 0x11, 0x09, 0x21, 0xb0, 0x60,
+	0x28, 0x7d, 0x56, 0x2f, 0xe0, 0x0e, 0x7e, 0xd3, 0x2b, 0x50, 0xe1, 0xf6, 0x77, 0x34, 0xdb, 0x21,
+	0x0d, 0x58, 0xd4, 0x1c, 0xd6, 0xb7, 0xeb, 0xc2, 0xea, 0x7c, 0xa3, 0xdc, 0x22, 0x4d, 0x1e, 0x64,
+	0x93, 0xab, 0x6d, 0x7a, 0x0a, 0xf4, 0x85, 0x00, 0x0b, 0x0f, 0x6d, 0x66, 0x91, 0x2a, 0x14, 0x34,
+	0xee, 0xae, 0xa0, 0x65, 0xba, 0x21, 0x47, 0x60, 0x91, 0xf5, 0x15, 0x4d, 0xaf, 0x2f, 0xa0, 0xd0,
+	0x5b, 0x90, 0x55, 0x28, 0x6b, 0xc6, 0x48, 0x73, 0x98, 0x7a, 0x73, 0xbc, 0xa1, 0xd6, 0x17, 0x71,
+	0x2f, 0x2a, 0x4a, 0x50, 0x82, 0x14, 0xa5, 0x63, 0x50, 0x72, 0x7a, 0xc3, 0x7e, 0xc7, 0x70, 0xb1,
+	0x5b, 0xb8, 0x1d, 0x0a, 0xe8, 0x25, 0x28, 0xba, 0x11, 0x22, 0xb1, 0xd3, 0x71, 0x62, 0xd5, 0x90,
+	0x98, 0xab, 0xc2, 0x49, 0x7d, 0x09, 0x8b, 0x0f, 0x1c, 0xd3, 0x62, 0xa4, 0x0e, 0x07, 0x6d, 0xf7,
+	0x23, 0x48, 0x24, 0x5f, 0x66, 0xd2, 0x13, 0xa1, 0xa8, 0x9b, 0x5d, 0xac, 0x5a, 0x7d, 0x1e, 0xe5,
+	0xc1, 0x3a, 0x8f, 0x02, 0x6d, 0x41, 0x09, 0x5d, 0x62, 0x94, 0x67, 0xe2, 0x51, 0xd6, 0xc2, 0x28,
+	0x51, 0x87, 0x87, 0xf9, 0xc3, 0x3c, 0x2c, 0xdd, 0xb7, 0x4c, 0x75, 0xd8, 0x75, 0x1e, 0x74, 0x7b,
+	0xac, 0xaf, 0x90, 0x06, 0xd4, 0x06, 0x51, 0x41, 0x10, 0x77, 0x52, 0x9c, 0x19, 0xff, 0x05, 0x28,
+	0x75, 0x2d, 0xa6, 0x60, 0xd6, 0x91, 0x40, 0x3a, 0x41, 0xa1, 0x42, 0x6e, 0x51, 0xae, 0xc1, 0x01,
+	0x5d, 0xe9, 0x30, 0xdd, 0xae, 0x1f, 0x41, 0x16, 0xa7, 0x42, 0xa8, 0x58, 0xd0, 0xcd, 0x3b, 0xa8,
+	0x75, 0xdb, 0x70, 0xac, 0xf1, 0xa6, 0x6f, 0x42, 0xd6, 0x01, 0x14, 0xc7, 0xb1, 0xb4, 0xce, 0xd0,
+	0x61, 0x76, 0x5d, 0x45, 0x80, 0x73, 0xd3, 0x00, 0x6e, 0x04, 0x9a, 0x1e, 0x48, 0xc4, 0x54, 0xbc,
+	0x0a, 0xe5, 0x08, 0x3e, 0x39, 0x04, 0xf3, 0x3b, 0x6c, 0xec, 0x27, 0xc5, 0xfd, 0x74, 0xcf, 0xe4,
+	0x48, 0xd1, 0x87, 0x3c, 0x13, 0xde, 0xa2, 0x5d, 0xb8, 0x22, 0x88, 0xd7, 0xa1, 0x96, 0x40, 0xde,
+	0x8f, 0x39, 0xfd, 0x71, 0x1e, 0x0e, 0xfa, 0x71, 0xba, 0x07, 0xd4, 0x2f, 0x40, 0x50, 0x91, 0x50,
+	0x40, 0xae, 0xc3, 0x52, 0xac, 0x3c, 0x88, 0x55, 0x6e, 0xfd, 0x6f, 0x0a, 0xdf, 0xcd, 0xb8, 0x76,
+	0x6e, 0x21, 0x22, 0x87, 0xb8, 0x1c, 0x3f, 0xc4, 0x12, 0xc0, 0xc0, 0x32, 0x47, 0x9a, 0xca, 0xac,
+	0x0d, 0xb5, 0x5e, 0xf1, 0x2c, 0x43, 0x09, 0x79, 0x3f, 0x51, 0xc2, 0xe3, 0xa9, 0x88, 0x32, 0x8b,
+	0x77, 0x23, 0xa3, 0x78, 0x27, 0xd3, 0xa6, 0xff, 0xcd, 0xb2, 0xfd, 0x2c, 0x00, 0x3c, 0x1c, 0xe8,
+	0xa6, 0xa2, 0xde, 0x65, 0x8e, 0xe2, 0xde, 0xe9, 0x2d, 0x4d, 0x67, 0x9f, 0xb8, 0x77, 0xc5, 0xb3,
+	0x0f, 0xd6, 0xee, 0x1d, 0xd2, 0x35, 0x63, 0x87, 0xdf, 0x21, 0xf7, 0x3b, 0xb7, 0x18, 0x57, 0x12,
+	0x29, 0x5d, 0x8d, 0x5c, 0xb0, 0xc0, 0x6b, 0x56, 0x56, 0xff, 0x41, 0x4a, 0x68, 0x19, 0x4a, 0x9f,
+	0x2a, 0x16, 0xeb, 0x99, 0x43, 0x9b, 0xd1, 0xc3, 0x50, 0x0b, 0x16, 0x1f, 0x69, 0xba, 0xc3, 0x2c,
+	0xda, 0x86, 0xa5, 0x40, 0x84, 0x0f, 0xd0, 0xf9, 0xf8, 0x03, 0xb4, 0x1c, 0x06, 0x19, 0xe8, 0xf1,
+	0x47, 0xe8, 0x33, 0x58, 0xbc, 0x67, 0xa9, 0xcc, 0x72, 0x8f, 0x99, 0x69, 0x79, 0x27, 0xc9, 0x7f,
+	0x2b, 0xfd, 0xe5, 0x7e, 0x0e, 0x68, 0x21, 0x76, 0x40, 0xdd, 0x57, 0x11, 0xc1, 0x73, 0x5e, 0x45,
+	0xd4, 0xe1, 0x01, 0x29, 0x50, 0xc6, 0xb5, 0xc7, 0xed, 0xdf, 0x09, 0x2b, 0x7e, 0x6f, 0xe8, 0xc7,
+	0x50, 0xbc, 0xef, 0xdf, 0x92, 0xc4, 0x1d, 0x12, 0x52, 0x77, 0x28, 0xef, 0xe1, 0xbf, 0x04, 0x55,
+	0x8e, 0xe5, 0x47, 0x9c, 0x67, 0x51, 0x85, 0x0a, 0xb7, 0x70, 0xf3, 0xe2, 0x46, 0x73, 0x6b, 0x68,
+	0x3b, 0x66, 0xdf, 0xb3, 0xed, 0xfa, 0xdf, 0x61, 0x34, 0xa1, 0x64, 0x96, 0x68, 0x38, 0xd6, 0xec,
+	0xd1, 0x70, 0x0b, 0x37, 0x9a, 0xd6, 0x8b, 0x05, 0xa8, 0xf1, 0x21, 0xe1, 0x01, 0xb3, 0x46, 0x5a,
+	0x97, 0x91, 0x47, 0x70, 0xf8, 0x16, 0xf6, 0x0d, 0xbe, 0xf1, 0xa1, 0x35, 0x26, 0x19, 0x43, 0x85,
+	0x98, 0x21, 0xa3, 0xff, 0xff, 0xf6, 0x97, 0xdf, 0xbf, 0x2f, 0x2c, 0xd3, 0xaa, 0xac, 0x5a, 0x63,
+	0x99, 0x7b, 0xb6, 0xdb, 0xc2, 0x1a, 0xb9, 0x07, 0xd5, 0x38, 0xee, 0xcc, 0xa0, 0x47, 0x11, 0xb4,
+	0x46, 0x21, 0x0e, 0xb8, 0x09, 0x95, 0x75, 0xe6, 0x70, 0x2d, 0x9b, 0xac, 0x34, 0xbd, 0xa9, 0xab,
+	0xc9, 0xa7, 0xae, 0xe6, 0x6d, 0x77, 0xea, 0x12, 0x57, 0xd2, 0x90, 0x58, 0x0a, 0x82, 0xb0, 0x15,
+	0x12, 0x81, 0x25, 0x9f, 0xc3, 0xd2, 0x06, 0xce, 0x32, 0x6e, 0x03, 0x75, 0x89, 0x27, 0x7a, 0xaa,
+	0x98, 0x58, 0xd3, 0x0b, 0x08, 0x72, 0x96, 0x9e, 0x8c, 0x13, 0x96, 0x9f, 0x85, 0x59, 0x7f, 0x2e,
+	0x0f, 0x6d, 0x66, 0x61, 0xc8, 0x8f, 0x00, 0x42, 0xf8, 0x5c, 0xec, 0x06, 0x62, 0x53, 0x7a, 0x3c,
+	0x17, 0xf7, 0x31, 0x14, 0xd7, 0x99, 0xe3, 0x1a, 0xd9, 0x79, 0x59, 0xe5, 0xd3, 0x15, 0x3d, 0x83,
+	0xe8, 0x27, 0xc8, 0xde, 0xe8, 0xad, 0x97, 0x05, 0xa8, 0xe0, 0x20, 0xc3, 0xcf, 0x87, 0xc2, 0xeb,
+	0x88, 0x52, 0x37, 0x47, 0xc9, 0x91, 0x47, 0x4c, 0x0a, 0xe8, 0x45, 0xf4, 0x75, 0x8e, 0xd2, 0xbd,
+	0xb2, 0x84, 0x17, 0x16, 0xe9, 0x3c, 0x81, 0x72, 0xc4, 0xc5, 0x0c, 0xf8, 0xe7, 0x11, 0xff, 0x14,
+	0x95, 0xf2, 0xb1, 0x1f, 0x43, 0x69, 0x9d, 0x39, 0x68, 0x66, 0xa7, 0x91, 0x97, 0x13, 0x02, 0xcc,
+	0xd4, 0x59, 0x44, 0x5f, 0x25, 0x39, 0xe8, 0xad, 0x5f, 0xe7, 0xe1, 0xd0, 0x86, 0x31, 0x62, 0x86,
+	0x63, 0x5a, 0x63, 0x9e, 0xae, 0xaf, 0x61, 0xc5, 0xe3, 0x12, 0x1b, 0x0b, 0xdc, 0xb4, 0x4d, 0x1b,
+	0x19, 0xc4, 0x69, 0x1b, 0xb4, 0x89, 0x81, 0x34, 0xe8, 0xa9, 0x3d, 0xd3, 0x88, 0xba, 0xc8, 0xd5,
+	0x86, 0xe5, 0x0c, 0xdf, 0x7f, 0xc3, 0xf1, 0x1a, 0x3a, 0x3e, 0x4d, 0x4f, 0xcc, 0xe0, 0x94, 0x41,
+	0xc5, 0x73, 0xea, 0xb5, 0x48, 0x72, 0x24, 0xab, 0x69, 0x8a, 0x99, 0xd2, 0xfc, 0x3a, 0x0e, 0x51,
+	0xd7, 0x75, 0xa3, 0xc1, 0x52, 0x8c, 0x1b, 0x39, 0x9c, 0x0a, 0x5e, 0x4c, 0x8b, 0x68, 0x0b, 0x3d,
+	0x5c, 0xa0, 0xe7, 0xa6, 0x79, 0xf0, 0xc7, 0x35, 0xbb, 0xed, 0x0d, 0xcf, 0x6d, 0x61, 0xad, 0x45,
+	0xe0, 0x50, 0xd0, 0x49, 0xfd, 0xb2, 0xb6, 0x76, 0x0b, 0x50, 0xc1, 0xce, 0xc5, 0xeb, 0xbc, 0xc3,
+	0xcf, 0xac, 0xd7, 0x60, 0x93, 0x0d, 0x4f, 0x4c, 0x0a, 0x68, 0x1b, 0x23, 0x79, 0x8f, 0xca, 0x7b,
+	0x9f, 0x2a, 0xf9, 0x99, 0xdf, 0xc8, 0x9e, 0xcb, 0xd8, 0x0b, 0x31, 0xc7, 0x16, 0x94, 0x6f, 0x29,
+	0x46, 0x97, 0xe9, 0xb3, 0x3a, 0xbb, 0x81, 0xce, 0xae, 0xad, 0x5d, 0xdd, 0xa7, 0x33, 0xf9, 0x99,
+	0xdf, 0x80, 0x9f, 0x93, 0xa7, 0x78, 0x71, 0x10, 0xce, 0x26, 0x47, 0x13, 0x0e, 0xbc, 0xfe, 0x13,
+	0xbd, 0x3e, 0xc1, 0x28, 0x90, 0x7f, 0x7d, 0x3c, 0x57, 0xad, 0x3f, 0x04, 0xa8, 0xf1, 0x5e, 0xc9,
+	0xb3, 0xba, 0xc5, 0x1f, 0x9b, 0xa0, 0x85, 0x93, 0x58, 0x4d, 0x51, 0x26, 0x66, 0xc8, 0x22, 0x0f,
+	0xf3, 0xf4, 0x42, 0xa3, 0x26, 0x26, 0x74, 0x07, 0x7b, 0x09, 0x37, 0xb6, 0x49, 0x3d, 0x8d, 0xe8,
+	0x53, 0x5c, 0x49, 0xef, 0x20, 0x4b, 0xff, 0xe8, 0x92, 0x7c, 0x7f, 0x48, 0x94, 0xb7, 0xe1, 0x14,
+	0xd1, 0x60, 0x3a, 0x88, 0x90, 0xe2, 0x32, 0x31, 0x43, 0x96, 0x4f, 0x94, 0x4f, 0x14, 0x11, 0xa2,
+	0xdc, 0x38, 0x46, 0x34, 0x3e, 0x4b, 0x44, 0x89, 0x46, 0x67, 0x86, 0x7c, 0xa2, 0x81, 0xbf, 0x9b,
+	0x5f, 0xec, 0xbe, 0x96, 0xe6, 0x5e, 0xbd, 0x96, 0xe6, 0xde, 0xbe, 0x96, 0x84, 0x6f, 0x26, 0x92,
+	0xf0, 0x72, 0x22, 0x09, 0x3f, 0x4d, 0x24, 0x61, 0x77, 0x22, 0x09, 0xbf, 0x4d, 0x24, 0xe1, 0xcf,
+	0x89, 0x34, 0xf7, 0x76, 0x22, 0x09, 0xdf, 0xbd, 0x91, 0xe6, 0x76, 0xdf, 0x48, 0x73, 0xaf, 0xde,
+	0x48, 0x73, 0x4f, 0xd6, 0xb6, 0x35, 0xa7, 0x37, 0xec, 0x34, 0xbb, 0x66, 0x5f, 0xde, 0xd2, 0xcd,
+	0xaf, 0x86, 0x03, 0xb9, 0xc7, 0x14, 0x55, 0x67, 0xb6, 0x2d, 0x6f, 0x9b, 0x17, 0x6d, 0x75, 0xc7,
+	0xfb, 0x2f, 0x23, 0x8f, 0x2e, 0x77, 0x0e, 0x60, 0xaf, 0x7f, 0xf7, 0xaf, 0x00, 0x00, 0x00, 0xff,
+	0xff, 0xdd, 0xe1, 0xc1, 0xa4, 0xad, 0x11, 0x00, 0x00,
 }
 
 func (this *Merchant) Equal(that interface{}) bool {
@@ -1274,39 +1320,6 @@ func (this *MerchantList) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Store) Equal(that interface{}) bool {
-	if that == nil {
-		return this == nil
-	}
-
-	that1, ok := that.(*Store)
-	if !ok {
-		that2, ok := that.(Store)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		return this == nil
-	} else if this == nil {
-		return false
-	}
-	if this.StoreId != that1.StoreId {
-		return false
-	}
-	if this.Name != that1.Name {
-		return false
-	}
-	if this.Location != that1.Location {
-		return false
-	}
-	if this.MerchantId != that1.MerchantId {
-		return false
-	}
-	return true
-}
 func (this *User) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
@@ -1354,6 +1367,68 @@ func (this *UserList) Equal(that interface{}) bool {
 	that1, ok := that.(*UserList)
 	if !ok {
 		that2, ok := that.(UserList)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Items) != len(that1.Items) {
+		return false
+	}
+	for i := range this.Items {
+		if !this.Items[i].Equal(that1.Items[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *Store) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Store)
+	if !ok {
+		that2, ok := that.(Store)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.StoreId != that1.StoreId {
+		return false
+	}
+	if this.Name != that1.Name {
+		return false
+	}
+	if this.Location != that1.Location {
+		return false
+	}
+	if this.MerchantId != that1.MerchantId {
+		return false
+	}
+	return true
+}
+func (this *StoreList) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*StoreList)
+	if !ok {
+		that2, ok := that.(StoreList)
 		if ok {
 			that1 = &that2
 		} else {
@@ -1841,19 +1916,6 @@ func (this *MerchantList) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *Store) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 8)
-	s = append(s, "&v1.Store{")
-	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
-	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
-	s = append(s, "Location: "+fmt.Sprintf("%#v", this.Location)+",\n")
-	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
 func (this *User) GoString() string {
 	if this == nil {
 		return "nil"
@@ -1875,6 +1937,31 @@ func (this *UserList) GoString() string {
 	}
 	s := make([]string, 0, 5)
 	s = append(s, "&v1.UserList{")
+	if this.Items != nil {
+		s = append(s, "Items: "+fmt.Sprintf("%#v", this.Items)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *Store) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&v1.Store{")
+	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
+	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
+	s = append(s, "Location: "+fmt.Sprintf("%#v", this.Location)+",\n")
+	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *StoreList) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&v1.StoreList{")
 	if this.Items != nil {
 		s = append(s, "Items: "+fmt.Sprintf("%#v", this.Items)+",\n")
 	}
@@ -2152,13 +2239,6 @@ type MerchantServiceClient interface {
 	InviteUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 	// GetUsers returns all users present in the merchant
 	GetUsers(ctx context.Context, in *Merchant, opts ...grpc.CallOption) (*UserList, error)
-	// CreateStoreDry runs validation on the server side and returns
-	// errors that need to be corrected to successfully create the store
-	// for the particular merchant
-	CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error)
-	// Create store creates the store for the particular merchant and returns
-	// the store object back to the caller
-	CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error)
 }
 
 type merchantServiceClient struct {
@@ -2223,24 +2303,6 @@ func (c *merchantServiceClient) GetUsers(ctx context.Context, in *Merchant, opts
 	return out, nil
 }
 
-func (c *merchantServiceClient) CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
-	out := new(Store)
-	err := c.cc.Invoke(ctx, "/admin.v1.MerchantService/CreateStoreDry", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *merchantServiceClient) CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
-	out := new(Store)
-	err := c.cc.Invoke(ctx, "/admin.v1.MerchantService/CreateStore", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MerchantServiceServer is the server API for MerchantService service.
 type MerchantServiceServer interface {
 	// CreateMerchantDry runs validation on the server side and returns
@@ -2259,13 +2321,6 @@ type MerchantServiceServer interface {
 	InviteUser(context.Context, *User) (*User, error)
 	// GetUsers returns all users present in the merchant
 	GetUsers(context.Context, *Merchant) (*UserList, error)
-	// CreateStoreDry runs validation on the server side and returns
-	// errors that need to be corrected to successfully create the store
-	// for the particular merchant
-	CreateStoreDry(context.Context, *Store) (*Store, error)
-	// Create store creates the store for the particular merchant and returns
-	// the store object back to the caller
-	CreateStore(context.Context, *Store) (*Store, error)
 }
 
 // UnimplementedMerchantServiceServer can be embedded to have forward compatible implementations.
@@ -2289,12 +2344,6 @@ func (*UnimplementedMerchantServiceServer) InviteUser(ctx context.Context, req *
 }
 func (*UnimplementedMerchantServiceServer) GetUsers(ctx context.Context, req *Merchant) (*UserList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
-}
-func (*UnimplementedMerchantServiceServer) CreateStoreDry(ctx context.Context, req *Store) (*Store, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateStoreDry not implemented")
-}
-func (*UnimplementedMerchantServiceServer) CreateStore(ctx context.Context, req *Store) (*Store, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateStore not implemented")
 }
 
 func RegisterMerchantServiceServer(s *grpc.Server, srv MerchantServiceServer) {
@@ -2409,42 +2458,6 @@ func _MerchantService_GetUsers_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MerchantService_CreateStoreDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Store)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MerchantServiceServer).CreateStoreDry(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/admin.v1.MerchantService/CreateStoreDry",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerchantServiceServer).CreateStoreDry(ctx, req.(*Store))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _MerchantService_CreateStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Store)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MerchantServiceServer).CreateStore(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/admin.v1.MerchantService/CreateStore",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerchantServiceServer).CreateStore(ctx, req.(*Store))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _MerchantService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "admin.v1.MerchantService",
 	HandlerType: (*MerchantServiceServer)(nil),
@@ -2473,13 +2486,161 @@ var _MerchantService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "GetUsers",
 			Handler:    _MerchantService_GetUsers_Handler,
 		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "v1/admin_api.proto",
+}
+
+// StoreServiceClient is the client API for StoreService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type StoreServiceClient interface {
+	// CreateStoreDry runs validation on the server side and returns
+	// errors that need to be corrected to successfully create the store
+	// for the particular merchant
+	CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error)
+	// Create store creates the store for the particular merchant and returns
+	// the store object back to the caller
+	CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error)
+	// Loads all stores from given merchant
+	GetStores(ctx context.Context, in *Store, opts ...grpc.CallOption) (*StoreList, error)
+}
+
+type storeServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewStoreServiceClient(cc *grpc.ClientConn) StoreServiceClient {
+	return &storeServiceClient{cc}
+}
+
+func (c *storeServiceClient) CreateStoreDry(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
+	out := new(Store)
+	err := c.cc.Invoke(ctx, "/admin.v1.StoreService/CreateStoreDry", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storeServiceClient) CreateStore(ctx context.Context, in *Store, opts ...grpc.CallOption) (*Store, error) {
+	out := new(Store)
+	err := c.cc.Invoke(ctx, "/admin.v1.StoreService/CreateStore", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storeServiceClient) GetStores(ctx context.Context, in *Store, opts ...grpc.CallOption) (*StoreList, error) {
+	out := new(StoreList)
+	err := c.cc.Invoke(ctx, "/admin.v1.StoreService/GetStores", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// StoreServiceServer is the server API for StoreService service.
+type StoreServiceServer interface {
+	// CreateStoreDry runs validation on the server side and returns
+	// errors that need to be corrected to successfully create the store
+	// for the particular merchant
+	CreateStoreDry(context.Context, *Store) (*Store, error)
+	// Create store creates the store for the particular merchant and returns
+	// the store object back to the caller
+	CreateStore(context.Context, *Store) (*Store, error)
+	// Loads all stores from given merchant
+	GetStores(context.Context, *Store) (*StoreList, error)
+}
+
+// UnimplementedStoreServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedStoreServiceServer struct {
+}
+
+func (*UnimplementedStoreServiceServer) CreateStoreDry(ctx context.Context, req *Store) (*Store, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateStoreDry not implemented")
+}
+func (*UnimplementedStoreServiceServer) CreateStore(ctx context.Context, req *Store) (*Store, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateStore not implemented")
+}
+func (*UnimplementedStoreServiceServer) GetStores(ctx context.Context, req *Store) (*StoreList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStores not implemented")
+}
+
+func RegisterStoreServiceServer(s *grpc.Server, srv StoreServiceServer) {
+	s.RegisterService(&_StoreService_serviceDesc, srv)
+}
+
+func _StoreService_CreateStoreDry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Store)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoreServiceServer).CreateStoreDry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.StoreService/CreateStoreDry",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoreServiceServer).CreateStoreDry(ctx, req.(*Store))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StoreService_CreateStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Store)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoreServiceServer).CreateStore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.StoreService/CreateStore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoreServiceServer).CreateStore(ctx, req.(*Store))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StoreService_GetStores_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Store)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoreServiceServer).GetStores(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.StoreService/GetStores",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoreServiceServer).GetStores(ctx, req.(*Store))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _StoreService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "admin.v1.StoreService",
+	HandlerType: (*StoreServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateStoreDry",
-			Handler:    _MerchantService_CreateStoreDry_Handler,
+			Handler:    _StoreService_CreateStoreDry_Handler,
 		},
 		{
 			MethodName: "CreateStore",
-			Handler:    _MerchantService_CreateStore_Handler,
+			Handler:    _StoreService_CreateStore_Handler,
+		},
+		{
+			MethodName: "GetStores",
+			Handler:    _StoreService_GetStores_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -3156,57 +3317,6 @@ func (m *MerchantList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Store) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *Store) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *Store) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.MerchantId) > 0 {
-		i -= len(m.MerchantId)
-		copy(dAtA[i:], m.MerchantId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
-		i--
-		dAtA[i] = 0x52
-	}
-	if len(m.Location) > 0 {
-		i -= len(m.Location)
-		copy(dAtA[i:], m.Location)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Location)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.StoreId) > 0 {
-		i -= len(m.StoreId)
-		copy(dAtA[i:], m.StoreId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *User) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -3290,6 +3400,94 @@ func (m *UserList) MarshalTo(dAtA []byte) (int, error) {
 }
 
 func (m *UserList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Items[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintAdminApi(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Store) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Store) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Store) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.MerchantId) > 0 {
+		i -= len(m.MerchantId)
+		copy(dAtA[i:], m.MerchantId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.Location) > 0 {
+		i -= len(m.Location)
+		copy(dAtA[i:], m.Location)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Location)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.StoreId) > 0 {
+		i -= len(m.StoreId)
+		copy(dAtA[i:], m.StoreId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *StoreList) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StoreList) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *StoreList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -4010,31 +4208,6 @@ func (m *MerchantList) Size() (n int) {
 	return n
 }
 
-func (m *Store) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.StoreId)
-	if l > 0 {
-		n += 1 + l + sovAdminApi(uint64(l))
-	}
-	l = len(m.Name)
-	if l > 0 {
-		n += 1 + l + sovAdminApi(uint64(l))
-	}
-	l = len(m.Location)
-	if l > 0 {
-		n += 1 + l + sovAdminApi(uint64(l))
-	}
-	l = len(m.MerchantId)
-	if l > 0 {
-		n += 1 + l + sovAdminApi(uint64(l))
-	}
-	return n
-}
-
 func (m *User) Size() (n int) {
 	if m == nil {
 		return 0
@@ -4069,6 +4242,46 @@ func (m *User) Size() (n int) {
 }
 
 func (m *UserList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovAdminApi(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *Store) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.StoreId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.Location)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.MerchantId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+
+func (m *StoreList) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -4398,19 +4611,6 @@ func (this *MerchantList) String() string {
 	}, "")
 	return s
 }
-func (this *Store) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&Store{`,
-		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
-		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
-		`Location:` + fmt.Sprintf("%v", this.Location) + `,`,
-		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
-		`}`,
-	}, "")
-	return s
-}
 func (this *User) String() string {
 	if this == nil {
 		return "nil"
@@ -4436,6 +4636,34 @@ func (this *UserList) String() string {
 	}
 	repeatedStringForItems += "}"
 	s := strings.Join([]string{`&UserList{`,
+		`Items:` + repeatedStringForItems + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Store) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Store{`,
+		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
+		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
+		`Location:` + fmt.Sprintf("%v", this.Location) + `,`,
+		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *StoreList) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForItems := "[]*Store{"
+	for _, f := range this.Items {
+		repeatedStringForItems += strings.Replace(f.String(), "Store", "Store", 1) + ","
+	}
+	repeatedStringForItems += "}"
+	s := strings.Join([]string{`&StoreList{`,
 		`Items:` + repeatedStringForItems + `,`,
 		`}`,
 	}, "")
@@ -4879,187 +5107,6 @@ func (m *MerchantList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Store) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowAdminApi
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: Store: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Store: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StoreId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StoreId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Name = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Location", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Location = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 10:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.MerchantId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipAdminApi(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if (iNdEx + skippy) < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *User) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -5364,6 +5411,274 @@ func (m *UserList) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Items = append(m.Items, &User{})
+			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Store) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Store: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Store: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StoreId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StoreId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Location", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Location = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MerchantId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *StoreList) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: StoreList: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: StoreList: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Items = append(m.Items, &Store{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

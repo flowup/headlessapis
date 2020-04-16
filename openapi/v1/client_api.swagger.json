@@ -221,6 +221,18 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "merchantId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -248,6 +260,18 @@
           },
           {
             "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "merchantId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
             "in": "query",
             "required": false,
             "type": "string"
@@ -281,6 +305,9 @@
           "type": "string"
         },
         "password": {
+          "type": "string"
+        },
+        "merchantId": {
           "type": "string"
         }
       }

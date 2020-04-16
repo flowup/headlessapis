@@ -26,6 +26,8 @@ export class GuardedInventoryServiceAPIClient extends InventoryServiceAPIClient 
     args: {
       productId?: string,
       name?: string,
+      merchantId?: string,
+      storeId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1ProductList> {
@@ -37,6 +39,8 @@ export class GuardedInventoryServiceAPIClient extends InventoryServiceAPIClient 
     args: {
       productId: string,
       name?: string,
+      merchantId?: string,
+      storeId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Product> {

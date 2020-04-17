@@ -273,6 +273,9 @@ message Order {
     OrderStatus status = 2;
     string note = 3;
     repeated OrderItem items = 4;
+    common.v1.Amount totalAmount = 5;
+
+    int64 createdAt = 6;
 
     string merchantId = 10;
     string storeId = 11;
@@ -281,6 +284,7 @@ message Order {
 message OrderItem {
     Product product = 1;
     int32 count = 2;
+    common.v1.Amount amount = 3;
 
     string orderId = 10;
 }

@@ -272,10 +272,17 @@ message Order {
 
     OrderStatus status = 2;
     string note = 3;
+    repeated OrderItem items = 4;
 
     string merchantId = 10;
     string storeId = 11;
+}
 
+message OrderItem {
+    Product product = 1;
+    int32 count = 2;
+
+    string orderId = 10;
 }
 
 message OrderList {

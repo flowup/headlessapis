@@ -318,15 +318,19 @@
             "name": "status",
             "in": "query",
             "required": false,
-            "type": "string",
-            "enum": [
-              "ORDER_STATUS_UNDEFINED",
-              "NOT_SUBMITTED",
-              "SUBMITTED",
-              "PAID",
-              "SENT"
-            ],
-            "default": "ORDER_STATUS_UNDEFINED"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ORDER_STATUS_UNDEFINED",
+                "NOT_SUBMITTED",
+                "SUBMITTED",
+                "PAID",
+                "SENT",
+                "CANCEL"
+              ]
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "storeId",
@@ -381,6 +385,7 @@
     },
     "/merchants/{merchantId}/providers": {
       "get": {
+        "summary": "UpdateOrder update an attributes in order",
         "operationId": "GetProviders",
         "responses": {
           "200": {
@@ -663,7 +668,8 @@
               "NOT_SUBMITTED",
               "SUBMITTED",
               "PAID",
-              "SENT"
+              "SENT",
+              "CANCEL"
             ],
             "default": "ORDER_STATUS_UNDEFINED"
           },
@@ -672,6 +678,74 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "totalAmount.currency",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "totalAmount.value",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "createdAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
           }
         ],
         "tags": [
@@ -892,10 +966,41 @@
         "note": {
           "type": "string"
         },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
+        },
+        "totalAmount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "int64"
+        },
         "merchantId": {
           "type": "string"
         },
         "storeId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1OrderItem": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "$ref": "#/definitions/v1Product"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "amount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "orderId": {
           "type": "string"
         }
       }
@@ -918,7 +1023,8 @@
         "NOT_SUBMITTED",
         "SUBMITTED",
         "PAID",
-        "SENT"
+        "SENT",
+        "CANCEL"
       ],
       "default": "ORDER_STATUS_UNDEFINED"
     },

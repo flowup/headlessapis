@@ -236,6 +236,7 @@ service OrderService {
         };
     }
 
+    // UpdateOrder update an attributes in order
     rpc UpdateOrder (Order) returns (Order) {
         option (google.api.http) = {
             put: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
@@ -243,6 +244,7 @@ service OrderService {
         };
     }
 
+    // CancelOrder set status of order to cancel
     rpc CancelOrder (Order) returns (Order) {
         option (google.api.http) = {
             delete: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
@@ -295,7 +297,7 @@ message OrderList {
 
 message OrderFilter {
     string orderId = 1;
-    OrderStatus status = 2;
+    repeated OrderStatus status = 2;
 
     string merchantId = 10;
     string storeId = 11;

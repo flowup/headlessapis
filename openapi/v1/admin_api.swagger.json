@@ -318,16 +318,19 @@
             "name": "status",
             "in": "query",
             "required": false,
-            "type": "string",
-            "enum": [
-              "ORDER_STATUS_UNDEFINED",
-              "NOT_SUBMITTED",
-              "SUBMITTED",
-              "PAID",
-              "SENT",
-              "CANCEL"
-            ],
-            "default": "ORDER_STATUS_UNDEFINED"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ORDER_STATUS_UNDEFINED",
+                "NOT_SUBMITTED",
+                "SUBMITTED",
+                "PAID",
+                "SENT",
+                "CANCEL"
+              ]
+            },
+            "collectionFormat": "multi"
           },
           {
             "name": "storeId",
@@ -382,6 +385,7 @@
     },
     "/merchants/{merchantId}/providers": {
       "get": {
+        "summary": "UpdateOrder update an attributes in order",
         "operationId": "GetProviders",
         "responses": {
           "200": {

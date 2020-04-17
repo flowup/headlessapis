@@ -942,10 +942,31 @@
         "note": {
           "type": "string"
         },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
+        },
         "merchantId": {
           "type": "string"
         },
         "storeId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1OrderItem": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "$ref": "#/definitions/v1Product"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "orderId": {
           "type": "string"
         }
       }

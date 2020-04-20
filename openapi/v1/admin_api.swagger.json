@@ -86,7 +86,6 @@
         "parameters": [
           {
             "name": "merchantId",
-            "description": "[Required] reference to the merchant id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -96,7 +95,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1Store"
+              "$ref": "#/definitions/v1CreateStoreRequest"
             }
           }
         ],
@@ -299,7 +298,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateInventoryItemRequest"
+              "$ref": "#/definitions/v1AddInventoryItemRequest"
             }
           }
         ],
@@ -535,7 +534,7 @@
     },
     "/merchants/{merchantId}/stores": {
       "get": {
-        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
         "operationId": "GetStores",
         "responses": {
           "200": {
@@ -548,27 +547,8 @@
         "parameters": [
           {
             "name": "merchantId",
-            "description": "[Required] reference to the merchant id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "location",
-            "in": "query",
-            "required": false,
             "type": "string"
           }
         ],
@@ -577,8 +557,8 @@
         ]
       },
       "post": {
-        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
-        "operationId": "CreateStore",
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "Update",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -590,7 +570,6 @@
         "parameters": [
           {
             "name": "merchantId",
-            "description": "[Required] reference to the merchant id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -600,8 +579,39 @@
             "in": "body",
             "required": true,
             "schema": {
+              "$ref": "#/definitions/v1UpdateStoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/stores/{storeId}": {
+      "get": {
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "GetStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
               "$ref": "#/definitions/v1Store"
             }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -868,6 +878,32 @@
     }
   },
   "definitions": {
+    "v1AddInventoryItemRequest": {
+      "type": "object",
+      "properties": {
+        "merchantId": {
+          "type": "string",
+          "title": "Required parameter"
+        },
+        "inventoryId": {
+          "type": "string",
+          "title": "Required parameter"
+        },
+        "productId": {
+          "type": "string",
+          "title": "Required parameter"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "description": "Request for creating and updating product items within inventory."
+    },
     "v1Amount": {
       "type": "object",
       "properties": {
@@ -881,26 +917,32 @@
       },
       "title": "Message representing a value of something in a particular currency"
     },
-    "v1CreateInventoryItemRequest": {
+    "v1CreateStoreRequest": {
       "type": "object",
       "properties": {
+        "storeId": {
+          "type": "string"
+        },
         "merchantId": {
-          "type": "string",
-          "title": "Required parameter"
+          "type": "string"
         },
-        "inventoryId": {
-          "type": "string",
-          "title": "Required parameter"
+        "name": {
+          "type": "string"
         },
-        "amount": {
-          "type": "number",
-          "format": "double"
+        "location": {
+          "type": "string"
         },
-        "count": {
-          "type": "integer",
-          "format": "int64"
+        "address": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1InventoryItem"
+          }
         }
-      }
+      },
+      "title": "Request for created for create"
     },
     "v1Customer": {
       "type": "object",
@@ -973,7 +1015,8 @@
           },
           "title": "attributes are custom key-value pairs provided for the product"
         }
-      }
+      },
+      "description": "Response message for InventoryItem model."
     },
     "v1Merchant": {
       "type": "object",
@@ -1109,6 +1152,9 @@
             "type": "string"
           }
         },
+        "productSchema": {
+          "$ref": "#/definitions/v1ProductSchema"
+        },
         "labels": {
           "type": "object",
           "additionalProperties": {
@@ -1172,7 +1218,7 @@
     "v1Store": {
       "type": "object",
       "properties": {
-        "storeId": {
+        "merchantId": {
           "type": "string"
         },
         "name": {
@@ -1181,9 +1227,16 @@
         "location": {
           "type": "string"
         },
-        "merchantId": {
-          "type": "string",
-          "title": "[Required] reference to the merchant id"
+        "address": {
+          "type": "string"
+        },
+        "productCounter": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "itemCounter": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
@@ -1221,7 +1274,35 @@
           "type": "integer",
           "format": "int64"
         }
-      }
+      },
+      "description": "Request for creating and updating product items within inventory."
+    },
+    "v1UpdateStoreRequest": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "merchantId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1InventoryItem"
+          }
+        }
+      },
+      "title": "Request for created for create"
     },
     "v1UploadMeta": {
       "type": "object",

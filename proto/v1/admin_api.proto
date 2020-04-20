@@ -173,7 +173,7 @@ message UpdateInventoryItemRequest {
     // Required parameter
     string productId = 3;
 
-    double amount = 50;
+    common.v1.Amount amount = 50;
     uint32 count = 51;
 }
 
@@ -183,7 +183,7 @@ message CreateInventoryItemRequest {
     // Required parameter
     string inventoryId = 3;
 
-    double amount = 50;
+    common.v1.Amount amount = 50;
     uint32 count = 51;
 }
 
@@ -200,7 +200,7 @@ message InventoryItem {
     common.v1.Amount defaultAmount = 15;
     repeated string images = 16;
 
-    double amount = 50;
+    common.v1.Amount amount = 50;
     uint32 count = 51;
 
     map<string, string> labels = 100;

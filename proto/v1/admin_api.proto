@@ -94,7 +94,7 @@ service StoreService {
     // CreateStoreDry runs validation on the server side and returns
     // errors that need to be corrected to successfully create the store
     // for the particular merchant
-    rpc CreateStoreDry (Store) returns (Store) {
+    rpc CreateStoreDry (CreateStoreRequest) returns (Store) {
         option (google.api.http) = {
             post: "/dry/merchants/{merchantId}/stores"
             body: "*"
@@ -103,7 +103,16 @@ service StoreService {
 
     // Create store creates the store for the particular merchant and returns
     // the store object back to the caller
-    rpc CreateStore (Store) returns (Store) {
+    rpc CreateStore (CreateStoreRequest) returns (Store) {
+        option (google.api.http) = {
+            post: "/merchants/{merchantId}/stores"
+            body: "*"
+        };
+    }
+
+    // Create store creates the store for the particular merchant and returns
+    // the store object back to the caller
+    rpc Update (UpdateStoreRequest) returns (Store) {
         option (google.api.http) = {
             post: "/merchants/{merchantId}/stores"
             body: "*"
@@ -111,20 +120,61 @@ service StoreService {
     }
 
     // Loads all stores from given merchant
-    rpc GetStores (Store) returns (StoreList) {
+    rpc GetStores (GetStoresRequest) returns (StoreList) {
         option (google.api.http) = {
             get: "/merchants/{merchantId}/stores"
         };
     }
+
+    // Loads single stores from given merchant
+    rpc GetStore (GetStoreRequest) returns (Store) {
+        option (google.api.http) = {
+            get: "/merchants/{merchantId}/stores/{storeId}"
+        };
+    }
+}
+
+// Request for loading all stores for given merchant.
+message GetStoresRequest {
+    string merchantId = 2;
+}
+
+// Request for loading single store by ID from given merchant.
+message GetStoreRequest {
+    string storeId = 1;
+    string merchantId = 2;
+}
+
+// Request for created for create
+message CreateStoreRequest {
+    string storeId = 1;
+    string merchantId = 2;
+
+    string name = 10;
+    string location = 11;
+    string address = 12;
+    repeated InventoryItem items = 13;
+}
+
+// Request for created for create
+message UpdateStoreRequest {
+    string storeId = 1;
+    string merchantId = 2;
+
+    string name = 10;
+    string location = 11;
+    string address = 12;
+    repeated InventoryItem items = 13;
 }
 
 message Store {
-    string storeId = 1;
-    string name = 2;
-    string location = 3;
+    string merchantId = 2;
 
-    // [Required] reference to the merchant id
-    string merchantId = 10;
+    string name = 10;
+    string location = 11;
+    string address = 12;
+    uint32 productCounter = 13;
+    uint32 itemCounter = 14;
 }
 
 message StoreList {
@@ -134,22 +184,22 @@ message StoreList {
 // Inventory service is implementing storing concrete products (Item model) that are
 // in N:1 relationship with Product model.
 service InventoryService {
-    // Loads all stores from given merchant
-    rpc AddInventoryItem (CreateInventoryItemRequest) returns (InventoryItem) {
+    // Adds inventory item into the inventory of merchant.
+    rpc AddInventoryItem (AddInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
             post: "/merchants/{merchantId}/inventories/{inventoryId}/items"
             body: "*"
         };
     }
 
-    // Loads all stores from given merchant
+    // Loads all stores from given merchant.
     rpc GetInventoryItems (GetInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
             get: "/merchants/{merchantId}/inventories/{inventoryId}/items"
         };
     }
 
-    // Loads all stores from given merchant
+    // Updates data stored in inventory Firestore collection
     rpc UpdateInventoryItem (UpdateInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
             put: "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}"
@@ -165,6 +215,20 @@ message GetInventoryItemRequest {
     string inventoryId = 2;
 }
 
+// Request for creating and updating product items within inventory.
+message AddInventoryItemRequest {
+    // Required parameter
+    string merchantId = 1;
+    // Required parameter
+    string inventoryId = 2;
+    // Required parameter
+    string productId = 3;
+
+    common.v1.Amount amount = 50;
+    uint32 count = 51;
+}
+
+// Request for creating and updating product items within inventory.
 message UpdateInventoryItemRequest {
     // Required parameter
     string merchantId = 1;
@@ -177,16 +241,7 @@ message UpdateInventoryItemRequest {
     uint32 count = 51;
 }
 
-message CreateInventoryItemRequest {
-    // Required parameter
-    string merchantId = 1;
-    // Required parameter
-    string inventoryId = 3;
-
-    common.v1.Amount amount = 50;
-    uint32 count = 51;
-}
-
+// Response message for InventoryItem model.
 message InventoryItem {
     string productId = 1;
     string inventoryId = 2;

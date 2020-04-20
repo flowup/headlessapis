@@ -901,7 +901,7 @@
           "format": "int64"
         }
       },
-      "description": "Request for creating and updating product items within inventory."
+      "description": "Request for adding product items within inventory."
     },
     "v1Amount": {
       "type": "object",
@@ -941,7 +941,7 @@
           }
         }
       },
-      "title": "Request for created for create"
+      "title": "Request for create store in Firestore database"
     },
     "v1Customer": {
       "type": "object",
@@ -1269,7 +1269,7 @@
           "format": "int64"
         }
       },
-      "description": "Request for creating and updating product items within inventory."
+      "description": "Request for updating product items within inventory."
     },
     "v1UpdateStoreRequest": {
       "type": "object",
@@ -1296,7 +1296,7 @@
           }
         }
       },
-      "title": "Request for created for create"
+      "title": "Request for update store in Firestore database"
     },
     "v1UploadMeta": {
       "type": "object",

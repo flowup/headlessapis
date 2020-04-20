@@ -386,7 +386,7 @@ func (m *GetStoreRequest) GetMerchantId() string {
 	return ""
 }
 
-// Request for created for create
+// Request for create store in Firestore database
 type CreateStoreRequest struct {
 	StoreId    string           `protobuf:"bytes,1,opt,name=storeId,proto3" json:"storeId,omitempty"`
 	MerchantId string           `protobuf:"bytes,2,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
@@ -470,7 +470,7 @@ func (m *CreateStoreRequest) GetItems() []*InventoryItem {
 	return nil
 }
 
-// Request for created for create
+// Request for update store in Firestore database
 type UpdateStoreRequest struct {
 	StoreId    string           `protobuf:"bytes,1,opt,name=storeId,proto3" json:"storeId,omitempty"`
 	MerchantId string           `protobuf:"bytes,2,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
@@ -733,7 +733,7 @@ func (m *GetInventoryItemRequest) GetInventoryId() string {
 	return ""
 }
 
-// Request for creating and updating product items within inventory.
+// Request for adding product items within inventory.
 type AddInventoryItemRequest struct {
 	// Required parameter
 	MerchantId string `protobuf:"bytes,1,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
@@ -812,7 +812,7 @@ func (m *AddInventoryItemRequest) GetCount() uint32 {
 	return 0
 }
 
-// Request for creating and updating product items within inventory.
+// Request for updating product items within inventory.
 type UpdateInventoryItemRequest struct {
 	// Required parameter
 	MerchantId string `protobuf:"bytes,1,opt,name=merchantId,proto3" json:"merchantId,omitempty"`
@@ -3963,12 +3963,12 @@ type StoreServiceClient interface {
 	// Create store creates the store for the particular merchant and returns
 	// the store object back to the caller
 	CreateStore(ctx context.Context, in *CreateStoreRequest, opts ...grpc.CallOption) (*Store, error)
-	// Create store creates the store for the particular merchant and returns
+	// Update store creates the store for the particular merchant and returns
 	// the store object back to the caller
 	Update(ctx context.Context, in *UpdateStoreRequest, opts ...grpc.CallOption) (*Store, error)
 	// Loads all stores from given merchant
 	GetStores(ctx context.Context, in *GetStoresRequest, opts ...grpc.CallOption) (*StoreList, error)
-	// Loads single stores from given merchant
+	// Loads single store from a given merchant
 	GetStore(ctx context.Context, in *GetStoreRequest, opts ...grpc.CallOption) (*Store, error)
 }
 
@@ -4034,12 +4034,12 @@ type StoreServiceServer interface {
 	// Create store creates the store for the particular merchant and returns
 	// the store object back to the caller
 	CreateStore(context.Context, *CreateStoreRequest) (*Store, error)
-	// Create store creates the store for the particular merchant and returns
+	// Update store creates the store for the particular merchant and returns
 	// the store object back to the caller
 	Update(context.Context, *UpdateStoreRequest) (*Store, error)
 	// Loads all stores from given merchant
 	GetStores(context.Context, *GetStoresRequest) (*StoreList, error)
-	// Loads single stores from given merchant
+	// Loads single store from a given merchant
 	GetStore(context.Context, *GetStoreRequest) (*Store, error)
 }
 
@@ -4190,9 +4190,9 @@ var _StoreService_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type InventoryServiceClient interface {
-	// Adds inventory item into the inventory of merchant.
+	// Adds an inventory item into the inventory of a merchant.
 	AddInventoryItem(ctx context.Context, in *AddInventoryItemRequest, opts ...grpc.CallOption) (*InventoryItem, error)
-	// Loads all stores from given merchant.
+	// Loads all items from given inventory.
 	GetInventoryItems(ctx context.Context, in *GetInventoryItemRequest, opts ...grpc.CallOption) (*InventoryItem, error)
 	// Updates data stored in inventory Firestore collection
 	UpdateInventoryItem(ctx context.Context, in *UpdateInventoryItemRequest, opts ...grpc.CallOption) (*InventoryItem, error)
@@ -4235,9 +4235,9 @@ func (c *inventoryServiceClient) UpdateInventoryItem(ctx context.Context, in *Up
 
 // InventoryServiceServer is the server API for InventoryService service.
 type InventoryServiceServer interface {
-	// Adds inventory item into the inventory of merchant.
+	// Adds an inventory item into the inventory of a merchant.
 	AddInventoryItem(context.Context, *AddInventoryItemRequest) (*InventoryItem, error)
-	// Loads all stores from given merchant.
+	// Loads all items from given inventory.
 	GetInventoryItems(context.Context, *GetInventoryItemRequest) (*InventoryItem, error)
 	// Updates data stored in inventory Firestore collection
 	UpdateInventoryItem(context.Context, *UpdateInventoryItemRequest) (*InventoryItem, error)

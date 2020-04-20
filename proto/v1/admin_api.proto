@@ -131,7 +131,86 @@ message StoreList {
     repeated Store items = 1;
 }
 
+// Inventory service is implementing storing concrete products (Item model) that are
+// in N:1 relationship with Product model.
 service InventoryService {
+    // Loads all stores from given merchant
+    rpc AddInventoryItem (CreateInventoryItemRequest) returns (InventoryItem) {
+        option (google.api.http) = {
+            post: "/merchants/{merchantId}/inventories/{inventoryId}/items"
+            body: "*"
+        };
+    }
+
+    // Loads all stores from given merchant
+    rpc GetInventoryItems (GetInventoryItemRequest) returns (InventoryItem) {
+        option (google.api.http) = {
+            get: "/merchants/{merchantId}/inventories/{inventoryId}/items"
+        };
+    }
+
+    // Loads all stores from given merchant
+    rpc UpdateInventoryItem (UpdateInventoryItemRequest) returns (InventoryItem) {
+        option (google.api.http) = {
+            put: "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}"
+            body: "*"
+        };
+    }
+}
+
+message GetInventoryItemRequest {
+    // Required parameter
+    string merchantId = 1;
+    // Required parameter
+    string inventoryId = 2;
+}
+
+message UpdateInventoryItemRequest {
+    // Required parameter
+    string merchantId = 1;
+    // Required parameter
+    string inventoryId = 2;
+    // Required parameter
+    string productId = 3;
+
+    common.v1.Amount amount = 50;
+    uint32 count = 51;
+}
+
+message CreateInventoryItemRequest {
+    // Required parameter
+    string merchantId = 1;
+    // Required parameter
+    string inventoryId = 3;
+
+    common.v1.Amount amount = 50;
+    uint32 count = 51;
+}
+
+message InventoryItem {
+    string productId = 1;
+    string inventoryId = 2;
+
+    string merchantId = 10;
+    repeated string storeIds = 11;
+    string providerId = 12;
+
+    string name = 13;
+    string description = 14;
+    common.v1.Amount defaultAmount = 15;
+    repeated string images = 16;
+
+    common.v1.Amount amount = 50;
+    uint32 count = 51;
+
+    map<string, string> labels = 100;
+    // attributes are custom key-value pairs provided for the product
+    map<string, string> attributes = 101;
+}
+
+// Service containing RPC that are working on merchant's products and product schemas.
+// Product are company wide,
+service ProductService {
     // CreateProductSchemaDry validates provided product schema and returns a list
     // of errors or the product schema on success
     rpc CreateProductSchemaDry (ProductSchema) returns (ProductSchema) {
@@ -175,15 +254,14 @@ message ProductSchema {
 
     string merchantId = 10;
 
-    map<string, string> labels = 20;
-
+    map<string, string> labels = 100;
     // attributes are custom key-value pairs provided for the product
-    map<string, string> attributes = 100;
+    map<string, string> attributes = 101;
 }
 
 message Product {
     string productId = 1;
-    ProductSchema productSchema = 2;
+    string productSchemaId = 2;
 
     string merchantId = 10;
     repeated string storeIds = 11;
@@ -193,10 +271,9 @@ message Product {
     common.v1.Amount defaultAmount = 15;
     repeated string images = 16;
 
-    map<string, string> labels = 20;
-
+    map<string, string> labels = 100;
     // attributes are custom key-value pairs provided for the product
-    map<string, string> attributes = 100;
+    map<string, string> attributes = 101;
 }
 
 message UploadMeta {

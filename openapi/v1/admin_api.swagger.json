@@ -894,8 +894,7 @@
           "title": "Required parameter"
         },
         "amount": {
-          "type": "number",
-          "format": "double"
+          "$ref": "#/definitions/v1Amount"
         },
         "count": {
           "type": "integer",
@@ -995,8 +994,7 @@
           }
         },
         "amount": {
-          "type": "number",
-          "format": "double"
+          "$ref": "#/definitions/v1Amount"
         },
         "count": {
           "type": "integer",
@@ -1264,8 +1262,7 @@
           "title": "Required parameter"
         },
         "amount": {
-          "type": "number",
-          "format": "double"
+          "$ref": "#/definitions/v1Amount"
         },
         "count": {
           "type": "integer",

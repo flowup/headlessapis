@@ -110,7 +110,7 @@ service StoreService {
         };
     }
 
-    // Create store creates the store for the particular merchant and returns
+    // Update store creates the store for the particular merchant and returns
     // the store object back to the caller
     rpc Update (UpdateStoreRequest) returns (Store) {
         option (google.api.http) = {
@@ -126,7 +126,7 @@ service StoreService {
         };
     }
 
-    // Loads single stores from given merchant
+    // Loads single store from a given merchant
     rpc GetStore (GetStoreRequest) returns (Store) {
         option (google.api.http) = {
             get: "/merchants/{merchantId}/stores/{storeId}"
@@ -145,7 +145,7 @@ message GetStoreRequest {
     string merchantId = 2;
 }
 
-// Request for created for create
+// Request for create store in Firestore database
 message CreateStoreRequest {
     string storeId = 1;
     string merchantId = 2;
@@ -156,7 +156,7 @@ message CreateStoreRequest {
     repeated InventoryItem items = 13;
 }
 
-// Request for created for create
+// Request for update store in Firestore database
 message UpdateStoreRequest {
     string storeId = 1;
     string merchantId = 2;
@@ -184,7 +184,7 @@ message StoreList {
 // Inventory service is implementing storing concrete products (Item model) that are
 // in N:1 relationship with Product model.
 service InventoryService {
-    // Adds inventory item into the inventory of merchant.
+    // Adds an inventory item into the inventory of a merchant.
     rpc AddInventoryItem (AddInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
             post: "/merchants/{merchantId}/inventories/{inventoryId}/items"
@@ -192,7 +192,7 @@ service InventoryService {
         };
     }
 
-    // Loads all stores from given merchant.
+    // Loads all items from given inventory.
     rpc GetInventoryItems (GetInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
             get: "/merchants/{merchantId}/inventories/{inventoryId}/items"
@@ -215,7 +215,7 @@ message GetInventoryItemRequest {
     string inventoryId = 2;
 }
 
-// Request for creating and updating product items within inventory.
+// Request for adding product items within inventory.
 message AddInventoryItemRequest {
     // Required parameter
     string merchantId = 1;
@@ -228,7 +228,7 @@ message AddInventoryItemRequest {
     uint32 count = 51;
 }
 
-// Request for creating and updating product items within inventory.
+// Request for updating product items within inventory.
 message UpdateInventoryItemRequest {
     // Required parameter
     string merchantId = 1;

@@ -284,66 +284,6 @@
         ]
       }
     },
-    "/merchants/{merchantId}/orders": {
-      "get": {
-        "operationId": "GetOrders",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1OrderList"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "ORDER_STATUS_UNDEFINED",
-                "NOT_SUBMITTED",
-                "SUBMITTED",
-                "PAID",
-                "SENT",
-                "CANCEL"
-              ]
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      }
-    },
     "/merchants/{merchantId}/products:create": {
       "post": {
         "summary": "CreateProduct creates a product in the firestore for a particular merchant",
@@ -578,181 +518,6 @@
         ]
       }
     },
-    "/merchants/{merchantId}/stores/{storeId}/orders": {
-      "post": {
-        "operationId": "CreateOrder",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      }
-    },
-    "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}": {
-      "delete": {
-        "operationId": "CancelOrder",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "ORDER_STATUS_UNDEFINED",
-              "NOT_SUBMITTED",
-              "SUBMITTED",
-              "PAID",
-              "SENT",
-              "CANCEL"
-            ],
-            "default": "ORDER_STATUS_UNDEFINED"
-          },
-          {
-            "name": "note",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "totalAmount.currency",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "totalAmount.value",
-            "in": "query",
-            "required": false,
-            "type": "number",
-            "format": "double"
-          },
-          {
-            "name": "createdAt",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      },
-      "put": {
-        "operationId": "UpdateOrder",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Order"
-            }
-          }
-        ],
-        "tags": [
-          "OrderService"
-        ]
-      }
-    },
     "/merchants/{merchantId}/upload": {
       "post": {
         "summary": "CreateUpload creates an upload link for the merchant gallery",
@@ -867,6 +632,200 @@
           "MerchantService"
         ]
       }
+    },
+    "/merchants/{merchant_id}/orders": {
+      "get": {
+        "operationId": "ListOrders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListOrdersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "order_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "ORDER_STATUS_UNSPECIFIED",
+                "NOT_SUBMITTED",
+                "SUBMITTED",
+                "PAID",
+                "SENT",
+                "CANCEL"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/merchants/{merchant_id}/stores/{store_id}/orders": {
+      "post": {
+        "operationId": "CreateOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
+    },
+    "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}": {
+      "delete": {
+        "operationId": "CancelOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchant_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OrderService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -916,6 +875,32 @@
       },
       "title": "Message representing a value of something in a particular currency"
     },
+    "v1CreateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1OrderStatus"
+        },
+        "note": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
+        },
+        "total_amount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "merchant_id": {
+          "type": "string"
+        },
+        "store_id": {
+          "type": "string"
+        }
+      }
+    },
     "v1Customer": {
       "type": "object",
       "properties": {
@@ -929,6 +914,17 @@
     },
     "v1CustomerList": {
       "type": "object"
+    },
+    "v1ListOrdersResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Order"
+          }
+        }
+      }
     },
     "v1Merchant": {
       "type": "object",
@@ -957,7 +953,7 @@
     "v1Order": {
       "type": "object",
       "properties": {
-        "orderId": {
+        "order_id": {
           "type": "string"
         },
         "status": {
@@ -972,17 +968,17 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "totalAmount": {
+        "total_amount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "createdAt": {
+        "created_at": {
           "type": "string",
           "format": "int64"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "storeId": {
+        "store_id": {
           "type": "string"
         }
       }
@@ -999,34 +995,20 @@
         },
         "amount": {
           "$ref": "#/definitions/v1Amount"
-        },
-        "orderId": {
-          "type": "string"
-        }
-      }
-    },
-    "v1OrderList": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1Order"
-          }
         }
       }
     },
     "v1OrderStatus": {
       "type": "string",
       "enum": [
-        "ORDER_STATUS_UNDEFINED",
+        "ORDER_STATUS_UNSPECIFIED",
         "NOT_SUBMITTED",
         "SUBMITTED",
         "PAID",
         "SENT",
         "CANCEL"
       ],
-      "default": "ORDER_STATUS_UNDEFINED"
+      "default": "ORDER_STATUS_UNSPECIFIED"
     },
     "v1Product": {
       "type": "object",
@@ -1150,6 +1132,35 @@
           "items": {
             "$ref": "#/definitions/v1Store"
           }
+        }
+      }
+    },
+    "v1UpdateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/v1OrderStatus"
+        },
+        "note": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
+        },
+        "total_amount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "merchant_id": {
+          "type": "string"
+        },
+        "store_id": {
+          "type": "string"
         }
       }
     },

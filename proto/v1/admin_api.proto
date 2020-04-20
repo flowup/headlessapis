@@ -229,39 +229,39 @@ message WarehouseList {
 
 service OrderService {
     // CreateOrder creates an order for the particular user in the store
-    rpc CreateOrder (Order) returns (Order) {
+    rpc CreateOrder (CreateOrderRequest) returns (Order) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/stores/{storeId}/orders"
+            post: "/merchants/{merchant_id}/stores/{store_id}/orders"
             body: "*"
         };
     }
 
     // UpdateOrder update an attributes in order
-    rpc UpdateOrder (Order) returns (Order) {
+    rpc UpdateOrder (UpdateOrderRequest) returns (Order) {
         option (google.api.http) = {
-            put: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
+            put: "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}"
             body: "*"
         };
     }
 
     // CancelOrder set status of order to cancel
-    rpc CancelOrder (Order) returns (Order) {
+    rpc CancelOrder (CancelOrderRequest) returns (Order) {
         option (google.api.http) = {
-            delete: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
+            delete: "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}"
         };
     }
 
-    // GetOrders returns all orders that the user has access to
-    rpc GetOrders (OrderFilter) returns (OrderList) {
+    // ListOrders returns all orders that the user has access to
+    rpc ListOrders (ListOrdersRequest) returns (ListOrdersResponse) {
         option (google.api.http) = {
-            get: "/merchants/{merchantId}/orders"
+            get: "/merchants/{merchant_id}/orders"
         };
     }
 }
 
 
 enum OrderStatus {
-    ORDER_STATUS_UNDEFINED = 0;
+    ORDER_STATUS_UNSPECIFIED = 0;
     NOT_SUBMITTED = 1;
     SUBMITTED = 2;
     PAID = 3;
@@ -269,38 +269,64 @@ enum OrderStatus {
     CANCEL = 5;
 }
 
-message Order {
-    string orderId = 1;
+message CreateOrderRequest {
+    OrderStatus status = 2;
+    string note = 3;
+    repeated OrderItem items = 4;
+    common.v1.Amount total_amount = 5;
+
+    string merchant_id = 10;
+    string store_id = 11;
+}
+
+message UpdateOrderRequest {
+    string order_id = 1;
 
     OrderStatus status = 2;
     string note = 3;
     repeated OrderItem items = 4;
-    common.v1.Amount totalAmount = 5;
+    common.v1.Amount total_amount = 5;
 
-    int64 createdAt = 6;
+    string merchant_id = 10;
+    string store_id = 11;
+}
 
-    string merchantId = 10;
-    string storeId = 11;
+message CancelOrderRequest {
+    string order_id = 1;
+    string merchant_id = 2;
+    string store_id = 3;
+}
+
+message Order {
+    string order_id = 1;
+
+    OrderStatus status = 2;
+    string note = 3;
+    repeated OrderItem items = 4;
+    common.v1.Amount total_amount = 5;
+
+    int64 created_at = 6;
+
+    string merchant_id = 10;
+    string store_id = 11;
 }
 
 message OrderItem {
     Product product = 1;
     int32 count = 2;
     common.v1.Amount amount = 3;
-
-    string orderId = 10;
 }
 
-message OrderList {
+message ListOrdersResponse {
     repeated Order items = 1;
 }
 
-message OrderFilter {
-    string orderId = 1;
+message ListOrdersRequest {
+    string order_id = 1;
     repeated OrderStatus status = 2;
 
-    string merchantId = 10;
-    string storeId = 11;
+    string merchant_id = 10;
+    string store_id = 11;
 }
 
 service ProviderService {

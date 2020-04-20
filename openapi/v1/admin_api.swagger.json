@@ -1152,9 +1152,6 @@
             "type": "string"
           }
         },
-        "productSchema": {
-          "$ref": "#/definitions/v1ProductSchema"
-        },
         "labels": {
           "type": "object",
           "additionalProperties": {

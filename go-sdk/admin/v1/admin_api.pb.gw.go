@@ -759,8 +759,8 @@ func local_request_InventoryService_AddInventoryItem_0(ctx context.Context, mars
 
 }
 
-func request_InventoryService_GetInventoryItems_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetInventoryItemRequest
+func request_InventoryService_ListInventoryItems_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListInventoryItemsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -792,13 +792,13 @@ func request_InventoryService_GetInventoryItems_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "inventoryId", err)
 	}
 
-	msg, err := client.GetInventoryItems(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListInventoryItems(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_InventoryService_GetInventoryItems_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetInventoryItemRequest
+func local_request_InventoryService_ListInventoryItems_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListInventoryItemsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -830,7 +830,7 @@ func local_request_InventoryService_GetInventoryItems_0(ctx context.Context, mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "inventoryId", err)
 	}
 
-	msg, err := server.GetInventoryItems(ctx, &protoReq)
+	msg, err := server.ListInventoryItems(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -2126,7 +2126,7 @@ func RegisterInventoryServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_InventoryService_GetInventoryItems_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryService_ListInventoryItems_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2135,14 +2135,14 @@ func RegisterInventoryServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_InventoryService_GetInventoryItems_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_InventoryService_ListInventoryItems_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryService_GetInventoryItems_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryService_ListInventoryItems_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2853,7 +2853,7 @@ func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_InventoryService_GetInventoryItems_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryService_ListInventoryItems_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2862,14 +2862,14 @@ func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_InventoryService_GetInventoryItems_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_InventoryService_ListInventoryItems_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryService_GetInventoryItems_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryService_ListInventoryItems_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2899,7 +2899,7 @@ func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 var (
 	pattern_InventoryService_AddInventoryItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchants", "merchantId", "inventories", "inventoryId", "items"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_InventoryService_GetInventoryItems_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchants", "merchantId", "inventories", "inventoryId", "items"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_InventoryService_ListInventoryItems_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchants", "merchantId", "inventories", "inventoryId", "items"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_InventoryService_UpdateInventoryItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchants", "merchantId", "inventories", "inventoryId", "items", "productId"}, "", runtime.AssumeColonVerbOpt(true)))
 )
@@ -2907,7 +2907,7 @@ var (
 var (
 	forward_InventoryService_AddInventoryItem_0 = runtime.ForwardResponseMessage
 
-	forward_InventoryService_GetInventoryItems_0 = runtime.ForwardResponseMessage
+	forward_InventoryService_ListInventoryItems_0 = runtime.ForwardResponseMessage
 
 	forward_InventoryService_UpdateInventoryItem_0 = runtime.ForwardResponseMessage
 )

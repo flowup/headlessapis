@@ -238,12 +238,12 @@
     "/merchants/{merchantId}/inventories/{inventoryId}/items": {
       "get": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
-        "operationId": "GetInventoryItems",
+        "operationId": "ListInventoryItems",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1InventoryItem"
+              "$ref": "#/definitions/v1InventoryItemList"
             }
           }
         },
@@ -935,12 +935,6 @@
         },
         "description": {
           "type": "string"
-        },
-        "InventoryIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       },
       "title": "Request for create store in Firestore database"
@@ -980,6 +974,17 @@
         }
       },
       "description": "Response message for InventoryItem model."
+    },
+    "v1InventoryItemList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1InventoryItem"
+          }
+        }
+      }
     },
     "v1Merchant": {
       "type": "object",

@@ -153,11 +153,9 @@ message CreateStoreRequest {
 
     string name = 10;
     reserved 11;
-//    string location = 11;
+    //    string location = 11;
     string address = 12;
     string description = 13;
-
-    repeated string InventoryIds = 50;
 }
 
 // Request for update store in Firestore database
@@ -167,7 +165,7 @@ message UpdateStoreRequest {
 
     string name = 10;
     reserved 11;
-//    string location = 11;
+    //    string location = 11;
     string address = 12;
     string description = 13;
 
@@ -180,7 +178,7 @@ message Store {
 
     string name = 10;
     reserved 11;
-//    string location = 11;
+    //    string location = 11;
     string address = 12;
     string description = 13;
 }
@@ -191,7 +189,7 @@ message StoreDetails {
 
     string name = 10;
     reserved 11;
-//    string location = 11;
+    //    string location = 11;
     string address = 12;
     string description = 13;
 
@@ -217,7 +215,7 @@ service InventoryService {
     }
 
     // Loads all items from given inventory.
-    rpc GetInventoryItems (GetInventoryItemRequest) returns (InventoryItem) {
+    rpc ListInventoryItems (ListInventoryItemsRequest) returns (InventoryItemList) {
         option (google.api.http) = {
             get: "/merchants/{merchantId}/inventories/{inventoryId}/items"
         };
@@ -232,7 +230,7 @@ service InventoryService {
     }
 }
 
-message GetInventoryItemRequest {
+message ListInventoryItemsRequest {
     // Required parameter
     string merchantId = 1;
     // Required parameter
@@ -274,6 +272,10 @@ message InventoryItem {
     uint32 count = 11;
 
     Product product = 50;
+}
+
+message InventoryItemList {
+    repeated InventoryItem items = 1;
 }
 
 // Service containing RPC that are working on merchant's products and product schemas.

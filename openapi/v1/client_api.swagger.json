@@ -20,6 +20,12 @@
             "schema": {
               "$ref": "#/definitions/v1Customer"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -45,6 +51,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Customer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -73,6 +85,12 @@
             "schema": {
               "$ref": "#/definitions/v1OrderList"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -96,6 +114,12 @@
             "schema": {
               "$ref": "#/definitions/v1Order"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -115,12 +139,19 @@
     },
     "/orders/{orderId}/items:add": {
       "post": {
+        "summary": "AddItemToOrder adds an item to the currently active order",
         "operationId": "AddItemToOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -155,6 +186,12 @@
             "schema": {
               "$ref": "#/definitions/v1Order"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -180,12 +217,19 @@
     },
     "/orders:active": {
       "get": {
+        "summary": "GetActiveOrder returns the current order that the client has active.\nIn case there's no active order, an empty order is returned",
         "operationId": "GetActiveOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -202,6 +246,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ProductList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -232,7 +282,7 @@
           }
         ],
         "tags": [
-          "InventoryService"
+          "ProductService"
         ]
       }
     },
@@ -244,6 +294,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Product"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -274,12 +330,45 @@
           }
         ],
         "tags": [
-          "InventoryService"
+          "ProductService"
         ]
       }
     }
   },
   "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
     "v1Customer": {
       "type": "object",
       "properties": {

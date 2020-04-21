@@ -101,17 +101,17 @@ func local_request_AuthService_SignUpWithPassword_0(ctx context.Context, marshal
 }
 
 var (
-	filter_InventoryService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_ProductService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_InventoryService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ProductService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client ProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InventoryService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProductService_ListProducts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -120,11 +120,11 @@ func request_InventoryService_ListProducts_0(ctx context.Context, marshaler runt
 
 }
 
-func local_request_InventoryService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ProductService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server ProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_InventoryService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ProductService_ListProducts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -134,10 +134,10 @@ func local_request_InventoryService_ListProducts_0(ctx context.Context, marshale
 }
 
 var (
-	filter_InventoryService_GetProduct_0 = &utilities.DoubleArray{Encoding: map[string]int{"productId": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_ProductService_GetProduct_0 = &utilities.DoubleArray{Encoding: map[string]int{"productId": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
-func request_InventoryService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client ProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
@@ -162,7 +162,7 @@ func request_InventoryService_GetProduct_0(ctx context.Context, marshaler runtim
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InventoryService_GetProduct_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProductService_GetProduct_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -171,7 +171,7 @@ func request_InventoryService_GetProduct_0(ctx context.Context, marshaler runtim
 
 }
 
-func local_request_InventoryService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server ProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
@@ -193,7 +193,7 @@ func local_request_InventoryService_GetProduct_0(ctx context.Context, marshaler 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "productId", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_InventoryService_GetProduct_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ProductService_GetProduct_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -475,12 +475,12 @@ func RegisterAuthServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 	return nil
 }
 
-// RegisterInventoryServiceHandlerServer registers the http handlers for service InventoryService to "mux".
-// UnaryRPC     :call InventoryServiceServer directly.
+// RegisterProductServiceHandlerServer registers the http handlers for service ProductService to "mux".
+// UnaryRPC     :call ProductServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-func RegisterInventoryServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server InventoryServiceServer) error {
+func RegisterProductServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProductServiceServer) error {
 
-	mux.Handle("GET", pattern_InventoryService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ProductService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -489,18 +489,18 @@ func RegisterInventoryServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_InventoryService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ProductService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ProductService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_InventoryService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ProductService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -509,14 +509,14 @@ func RegisterInventoryServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_InventoryService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_ProductService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ProductService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -724,9 +724,9 @@ var (
 	forward_AuthService_SignUpWithPassword_0 = runtime.ForwardResponseMessage
 )
 
-// RegisterInventoryServiceHandlerFromEndpoint is same as RegisterInventoryServiceHandler but
+// RegisterProductServiceHandlerFromEndpoint is same as RegisterProductServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterInventoryServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterProductServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -746,23 +746,23 @@ func RegisterInventoryServiceHandlerFromEndpoint(ctx context.Context, mux *runti
 		}()
 	}()
 
-	return RegisterInventoryServiceHandler(ctx, mux, conn)
+	return RegisterProductServiceHandler(ctx, mux, conn)
 }
 
-// RegisterInventoryServiceHandler registers the http handlers for service InventoryService to "mux".
+// RegisterProductServiceHandler registers the http handlers for service ProductService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterInventoryServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterInventoryServiceHandlerClient(ctx, mux, NewInventoryServiceClient(conn))
+func RegisterProductServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProductServiceHandlerClient(ctx, mux, NewProductServiceClient(conn))
 }
 
-// RegisterInventoryServiceHandlerClient registers the http handlers for service InventoryService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "InventoryServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "InventoryServiceClient"
+// RegisterProductServiceHandlerClient registers the http handlers for service ProductService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProductServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProductServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "InventoryServiceClient" to call the correct interceptors.
-func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client InventoryServiceClient) error {
+// "ProductServiceClient" to call the correct interceptors.
+func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProductServiceClient) error {
 
-	mux.Handle("GET", pattern_InventoryService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ProductService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -771,18 +771,18 @@ func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_InventoryService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ProductService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ProductService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_InventoryService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ProductService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -791,14 +791,14 @@ func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_InventoryService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ProductService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ProductService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -806,15 +806,15 @@ func RegisterInventoryServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_InventoryService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"products"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProductService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"products"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_InventoryService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"products", "productId"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProductService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"products", "productId"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_InventoryService_ListProducts_0 = runtime.ForwardResponseMessage
+	forward_ProductService_ListProducts_0 = runtime.ForwardResponseMessage
 
-	forward_InventoryService_GetProduct_0 = runtime.ForwardResponseMessage
+	forward_ProductService_GetProduct_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrderServiceHandlerFromEndpoint is same as RegisterOrderServiceHandler but

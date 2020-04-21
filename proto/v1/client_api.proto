@@ -35,7 +35,7 @@ message Customer {
     string thumbnail = 3;
 }
 
-service InventoryService {
+service ProductService {
     rpc ListProducts (ProductFilter) returns (ProductList) {
         option (google.api.http) = {
             get: "/products"

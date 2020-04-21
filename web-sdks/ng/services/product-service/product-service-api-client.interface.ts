@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpOptions } from './';
 import * as models from '../../models';
 
-export interface InventoryServiceAPIClientInterface {
+export interface ProductServiceAPIClientInterface {
 
   /**
    * Response generated for [ 200 ] HTTP response code.

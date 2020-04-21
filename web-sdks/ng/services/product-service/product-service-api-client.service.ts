@@ -3,12 +3,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { DefaultHttpOptions, HttpOptions, InventoryServiceAPIClientInterface } from './';
+import { DefaultHttpOptions, HttpOptions, ProductServiceAPIClientInterface } from './';
 
 import * as models from '../../models';
 
-export const USE_DOMAIN = new InjectionToken<string>('InventoryServiceAPIClient_USE_DOMAIN');
-export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('InventoryServiceAPIClient_USE_HTTP_OPTIONS');
+export const USE_DOMAIN = new InjectionToken<string>('ProductServiceAPIClient_USE_DOMAIN');
+export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('ProductServiceAPIClient_USE_HTTP_OPTIONS');
 
 type APIHttpOptions = HttpOptions & {
   headers: HttpHeaders;
@@ -20,7 +20,7 @@ type APIHttpOptions = HttpOptions & {
  * Created with https://github.com/flowup/api-client-generator
  */
 @Injectable()
-export class InventoryServiceAPIClient implements InventoryServiceAPIClientInterface {
+export class ProductServiceAPIClient implements ProductServiceAPIClientInterface {
 
   readonly options: APIHttpOptions;
 

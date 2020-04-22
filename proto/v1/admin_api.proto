@@ -317,13 +317,13 @@ service ProductService {
     // UpdateProduct updates a product in the firestore for a particular merchant
     rpc UpdateProduct (UpdateProductRequest) returns (Product) {
         option (google.api.http) = {
-            post: "/merchants/{merchant_id}/products:update"
+            put: "/merchants/{merchant_id}/products:update"
             body: "*"
         };
     }
 
     // Returns all products assigned to a particular merchant
-    rpc ListProducts (ProductFilter) returns (ProductList) {
+    rpc ListProducts (ListProductsRequest) returns (ProductList) {
         option (google.api.http) = {
             get: "/merchants/{merchant_id}/orders"
         };
@@ -337,7 +337,7 @@ service ProductService {
     }
 }
 
-message ProductFilter {
+message ListProductsRequest {
     // Required. Id of the merchant to which the product is assigned
     string merchant_id = 1;
 

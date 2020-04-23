@@ -325,7 +325,7 @@ service ProductService {
     // Returns all products assigned to a particular merchant
     rpc ListProducts (ListProductsRequest) returns (ProductList) {
         option (google.api.http) = {
-            get: "/merchants/{merchant_id}/orders"
+            get: "/merchants/{merchant_id}/products"
         };
     }
 

@@ -184,7 +184,7 @@ message Store {
     string address = 12;
     string description = 13;
 
-    string inventory_ids = 50;
+    repeated string inventory_ids = 50;
 }
 
 message StoreDetails {
@@ -201,7 +201,8 @@ message StoreDetails {
     uint32 product_counter = 30;
     uint32 item_counter = 31;
 
-    repeated InventoryItem items = 50;
+    repeated string inventory_ids = 50;
+    repeated InventoryItem items = 51;
 }
 
 message StoreList {

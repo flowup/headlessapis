@@ -6,13 +6,13 @@ gen: gen-swagger gen-go gen-ng
 gen-swagger:
 	protoc $(INCLUDES) \
 		proto/v1/common.proto \
-		--swagger_out=logtostderr=true:openapi
+		--swagger_out=logtostderr=true,json_names_for_fields=true:openapi
 	protoc $(INCLUDES) \
 		proto/v1/admin_api.proto \
-		--swagger_out=logtostderr=true:openapi
+		--swagger_out=logtostderr=true,json_names_for_fields=true:openapi
 	protoc $(INCLUDES) \
 		proto/v1/client_api.proto \
-		--swagger_out=logtostderr=true:openapi
+		--swagger_out=logtostderr=true,json_names_for_fields=true:openapi
 
 gen-go:
 	protoc $(INCLUDES) \

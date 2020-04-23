@@ -39,7 +39,7 @@ service MerchantService {
     // and other required fields by user invitation process
     rpc InviteUserDry (User) returns (User) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/users:dry"
+            post: "/merchants/{merchant_id}/users:dry"
             body: "*"
         };
     }
@@ -48,7 +48,7 @@ service MerchantService {
     // Otherwise it invites the user into the merchant
     rpc InviteUser (User) returns (User) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/users"
+            post: "/merchants/{merchant_id}/users"
             body: "*"
         };
     }
@@ -56,14 +56,14 @@ service MerchantService {
     // GetUsers returns all users present in the merchant
     rpc GetUsers (Merchant) returns (UserList) {
         option (google.api.http) = {
-            get: "/merchants/{merchantId}/users"
+            get: "/merchants/{merchant_id}/users"
         };
     }
 }
 
 message Merchant {
-    // [Required] merchantId can be set only once and is unchangeable during lifetime
-    string merchantId = 1;
+    // [Required] merchant_id can be set only once and is unchangeable during lifetime
+    string merchant_id = 1;
 
     // [Required] name of the merchant can be customized by the user, however, the id
     // will stay unchanged
@@ -80,9 +80,9 @@ message User {
     string email = 4;
 
     // id of the user this user was invited by into the system
-    string invitedById = 5;
+    string invited_by_id = 5;
 
-    string merchantId = 10;
+    string merchant_id = 10;
 
     string thumbnail = 50;
 }
@@ -285,7 +285,7 @@ service ProductService {
     // of errors or the product schema on success
     rpc CreateProductSchemaDry (ProductSchema) returns (ProductSchema) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/schemas:dry"
+            post: "/merchants/{merchant_id}/schemas:dry"
             body: "*"
         };
     }
@@ -293,7 +293,7 @@ service ProductService {
     // CreateProductSchema creates the product schema in the system
     rpc CreateProductSchema (ProductSchema) returns (ProductSchema) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/schemas"
+            post: "/merchants/{merchant_id}/schemas"
             body: "*"
         };
     }
@@ -301,28 +301,104 @@ service ProductService {
     // CreateUpload creates an upload link for the merchant gallery
     rpc CreateUpload (UploadMeta) returns (UploadMeta) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/upload"
+            post: "/merchants/{merchant_id}/upload"
             body: "*"
         };
     }
 
     // CreateProduct creates a product in the firestore for a particular merchant
-    rpc CreateProduct (Product) returns (Product) {
+    rpc CreateProduct (CreateProductRequest) returns (Product) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/products:create"
+            post: "/merchants/{merchant_id}/products"
             body: "*"
+        };
+    }
+
+    // UpdateProduct updates a product in the firestore for a particular merchant
+    rpc UpdateProduct (UpdateProductRequest) returns (Product) {
+        option (google.api.http) = {
+            put: "/merchants/{merchant_id}/products"
+            body: "*"
+        };
+    }
+
+    // Returns all products assigned to a particular merchant
+    rpc ListProducts (ListProductsRequest) returns (ProductList) {
+        option (google.api.http) = {
+            get: "/merchants/{merchant_id}/products"
+        };
+    }
+
+    // Loads single product from a given merchant
+    rpc GetProduct (GetProductRequest) returns (Product) {
+        option (google.api.http) = {
+            get: "/merchants/{merchant_id}/products/{product_id}"
         };
     }
 }
 
+message ListProductsRequest {
+    // Required. Id of the merchant to which the product is assigned
+    string merchant_id = 1;
+
+    // Expressions used for filtering
+    repeated common.v1.Expression filter = 2;
+}
+
+message ProductList {
+    repeated Product items = 1;
+}
+
 message ProductSchema {
-    string productSchemaId = 1;
+    string product_schema_id = 1;
     string name = 2;
 
     // createdBy is a reference to the user that created this product schema
-    User createdBy = 3;
+    User created_by = 3;
 
-    string merchantId = 10;
+    string merchant_id = 10;
+
+    map<string, string> labels = 100;
+    // attributes are custom key-value pairs provided for the product
+    map<string, string> attributes = 101;
+}
+
+message GetProductRequest {
+    // Required. Id of the product
+    string product_id = 1;
+
+    // Required. Id of the merchant to which the product is assigned
+    string merchant_id = 2;
+}
+
+message CreateProductRequest {
+    string product_id = 1;
+
+    // Required. Id of the merchant to which the product is assigned
+    string merchant_id = 10;
+    repeated string store_ids = 11;
+    string provider_id = 12;
+    string name = 13;
+    string description = 14;
+    common.v1.Amount default_amount = 15;
+    repeated string images = 16;
+
+    map<string, string> labels = 100;
+    // attributes are custom key-value pairs provided for the product
+    map<string, string> attributes = 101;
+}
+
+message UpdateProductRequest {
+    string product_id = 1;
+
+    // Required. Id of the merchant to which the product is assigned
+    string merchant_id = 10;
+    repeated string store_ids = 11;
+    string provider_id = 12;
+    string name = 13;
+    string description = 14;
+    common.v1.Amount default_amount = 15;
+    repeated string images = 16;
 
     map<string, string> labels = 100;
     // attributes are custom key-value pairs provided for the product
@@ -330,15 +406,15 @@ message ProductSchema {
 }
 
 message Product {
-    string productId = 1;
-    string productSchemaId = 2;
+    string product_id = 1;
+    string product_schema_id = 2;
 
-    string merchantId = 10;
-    repeated string storeIds = 11;
-    string providerId = 12;
+    string merchant_id = 10;
+    repeated string store_ids = 11;
+    string provider_id = 12;
     string name = 13;
     string description = 14;
-    common.v1.Amount defaultAmount = 15;
+    common.v1.Amount default_amount = 15;
     repeated string images = 16;
 
     map<string, string> labels = 100;
@@ -348,12 +424,12 @@ message Product {
 
 message UploadMeta {
     // [Required] fileName is searchable throughout the system
-    string fileName = 1;
+    string file_name = 1;
 
     // [Output Only] this is being provided by the system after the file is uploaded
     string link = 2;
 
-    string merchantId = 10;
+    string merchant_id = 10;
 
     map<string, string> labels = 20;
 }
@@ -378,7 +454,7 @@ service OrderService {
     // CreateOrder creates an order for the particular user in the store
     rpc CreateOrder (Order) returns (Order) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/stores/{storeId}/orders"
+            post: "/merchants/{merchant_id}/stores/{store_id}/orders"
             body: "*"
         };
     }
@@ -386,7 +462,7 @@ service OrderService {
     // UpdateOrder update an attributes in order
     rpc UpdateOrder (Order) returns (Order) {
         option (google.api.http) = {
-            put: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
+            put: "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}"
             body: "*"
         };
     }
@@ -394,14 +470,14 @@ service OrderService {
     // CancelOrder set status of order to cancel
     rpc CancelOrder (Order) returns (Order) {
         option (google.api.http) = {
-            delete: "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}"
+            delete: "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}"
         };
     }
 
     // GetOrders returns all orders that the user has access to
     rpc GetOrders (OrderFilter) returns (OrderList) {
         option (google.api.http) = {
-            get: "/merchants/{merchantId}/orders"
+            get: "/merchants/{merchant_id}/orders"
         };
     }
 }
@@ -417,17 +493,17 @@ enum OrderStatus {
 }
 
 message Order {
-    string orderId = 1;
+    string order_id = 1;
 
     OrderStatus status = 2;
     string note = 3;
     repeated OrderItem items = 4;
-    common.v1.Amount totalAmount = 5;
+    common.v1.Amount total_amount = 5;
 
-    int64 createdAt = 6;
+    int64 created_at = 6;
 
-    string merchantId = 10;
-    string storeId = 11;
+    string merchant_id = 10;
+    string store_id = 11;
 }
 
 message OrderItem {
@@ -435,7 +511,7 @@ message OrderItem {
     int32 count = 2;
     common.v1.Amount amount = 3;
 
-    string orderId = 10;
+    string order_id = 10;
 }
 
 message OrderList {
@@ -443,18 +519,18 @@ message OrderList {
 }
 
 message OrderFilter {
-    string orderId = 1;
+    string order_id = 1;
     repeated OrderStatus status = 2;
 
-    string merchantId = 10;
-    string storeId = 11;
+    string merchant_id = 10;
+    string store_id = 11;
 }
 
 service ProviderService {
     // CreateProvider creates a provider for the particular merchant
     rpc CreateProvider (Provider) returns (Provider) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/providers"
+            post: "/merchants/{merchant_id}/providers"
             body: "*"
         };
     }
@@ -462,19 +538,19 @@ service ProviderService {
     // GetProviders returns all providers that the user has access to
     rpc GetProviders (ProviderFilter) returns (ProviderList) {
         option (google.api.http) = {
-            get: "/merchants/{merchantId}/providers"
+            get: "/merchants/{merchant_id}/providers"
         };
     }
 }
 
 message Provider {
-    string providerId = 1;
+    string provider_id = 1;
 
-    string merchantId = 10;
+    string merchant_id = 10;
 }
 
 message ProviderFilter {
-    string merchantId = 10;
+    string merchant_id = 10;
 }
 
 message ProviderList {
@@ -484,7 +560,7 @@ service CustomerService {
     // CreateCustomer creates a customer for the particular merchant
     rpc CreateCustomer (Customer) returns (Customer) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/customers"
+            post: "/merchants/{merchant_id}/customers"
             body: "*"
         };
     }
@@ -492,19 +568,19 @@ service CustomerService {
     // GetCustomers returns all customers that the user has access to
     rpc GetCustomers (CustomerFilter) returns (CustomerList) {
         option (google.api.http) = {
-            get: "/merchants/{merchantId}/customers"
+            get: "/merchants/{merchant_id}/customers"
         };
     }
 }
 
 message Customer {
-    string customerId = 1;
+    string customer_id = 1;
 
-    string merchantId = 10;
+    string merchant_id = 10;
 }
 
 message CustomerFilter {
-    string merchantId = 10;
+    string merchant_id = 10;
 }
 
 message CustomerList {

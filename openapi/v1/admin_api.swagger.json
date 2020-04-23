@@ -4,6 +4,10 @@
     "title": "v1/admin_api.proto",
     "version": "version not set"
   },
+  "schemes": [
+    "http",
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -277,7 +281,31 @@
         ]
       }
     },
-    "/merchants/{merchantId}/products:create": {
+    "/merchants/{merchantId}/products": {
+      "get": {
+        "summary": "GetUsers returns all users present in the merchant",
+        "operationId": "ListProducts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProductList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Required. Id of the merchant to which the product is assigned",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProductService"
+        ]
+      },
       "post": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
         "operationId": "CreateProduct",
@@ -292,6 +320,7 @@
         "parameters": [
           {
             "name": "merchantId",
+            "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
             "type": "string"
@@ -301,8 +330,73 @@
             "in": "body",
             "required": true,
             "schema": {
+              "$ref": "#/definitions/v1CreateProductRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ProductService"
+        ]
+      },
+      "put": {
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "UpdateProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
               "$ref": "#/definitions/v1Product"
             }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Required. Id of the merchant to which the product is assigned",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateProductRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ProductService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/products/{productId}": {
+      "get": {
+        "summary": "Loads single product from a given merchant",
+        "operationId": "GetProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Product"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Required. Id of the merchant to which the product is assigned",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "description": "Required. Id of the product",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -642,13 +736,13 @@
             "type": "string"
           },
           {
-            "name": "totalAmount.currency",
+            "name": "total_amount.currency",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "totalAmount.value",
+            "name": "total_amount.value",
             "in": "query",
             "required": false,
             "type": "number",
@@ -791,7 +885,7 @@
         "parameters": [
           {
             "name": "merchantId",
-            "description": "[Required] merchantId can be set only once and is unchangeable during lifetime",
+            "description": "[Required] merchant_id can be set only once and is unchangeable during lifetime",
             "in": "path",
             "required": true,
             "type": "string"
@@ -937,6 +1031,55 @@
       },
       "title": "Message representing a value of something in a particular currency"
     },
+    "v1CreateProductRequest": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string"
+        },
+        "merchantId": {
+          "type": "string",
+          "title": "Required. Id of the merchant to which the product is assigned"
+        },
+        "storeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "defaultAmount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "attributes are custom key-value pairs provided for the product"
+        }
+      }
+    },
     "v1CreateStoreRequest": {
       "type": "object",
       "properties": {
@@ -973,6 +1116,21 @@
     },
     "v1CustomerList": {
       "type": "object"
+    },
+    "v1Expression": {
+      "type": "object",
+      "properties": {
+        "lhs": {
+          "type": "string"
+        },
+        "op": {
+          "type": "string"
+        },
+        "rhs": {
+          "type": "string"
+        }
+      },
+      "title": "Message representing an expression to be used especially in filter operations"
     },
     "v1InventoryItem": {
       "type": "object",
@@ -1019,7 +1177,7 @@
       "properties": {
         "merchantId": {
           "type": "string",
-          "title": "[Required] merchantId can be set only once and is unchangeable during lifetime"
+          "title": "[Required] merchant_id can be set only once and is unchangeable during lifetime"
         },
         "name": {
           "type": "string",
@@ -1160,6 +1318,17 @@
             "type": "string"
           },
           "title": "attributes are custom key-value pairs provided for the product"
+        }
+      }
+    },
+    "v1ProductList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Product"
+          }
         }
       }
     },
@@ -1316,6 +1485,55 @@
         }
       },
       "description": "Request for updating product items within inventory."
+    },
+    "v1UpdateProductRequest": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string"
+        },
+        "merchantId": {
+          "type": "string",
+          "title": "Required. Id of the merchant to which the product is assigned"
+        },
+        "storeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "defaultAmount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "attributes are custom key-value pairs provided for the product"
+        }
+      }
     },
     "v1UpdateStoreRequest": {
       "type": "object",

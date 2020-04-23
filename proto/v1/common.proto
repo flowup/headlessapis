@@ -9,3 +9,10 @@ message Amount {
     string currency = 1;
     double value = 2;
 }
+
+// Message representing an expression to be used especially in filter operations
+message Expression {
+    string lhs = 1;
+    string op = 2;
+    string rhs = 3;
+}

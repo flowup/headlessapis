@@ -1201,7 +1201,10 @@
           "type": "string"
         },
         "inventoryIds": {
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -1235,6 +1238,12 @@
         "itemCounter": {
           "type": "integer",
           "format": "int64"
+        },
+        "inventoryIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "items": {
           "type": "array",

@@ -317,7 +317,7 @@ service ProductService {
     // UpdateProduct updates a product in the firestore for a particular merchant
     rpc UpdateProduct (UpdateProductRequest) returns (Product) {
         option (google.api.http) = {
-            put: "/merchants/{merchant_id}/products:update"
+            put: "/merchants/{merchant_id}/products"
             body: "*"
         };
     }

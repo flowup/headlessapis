@@ -115,7 +115,7 @@ service StoreService {
     // the store object back to the caller
     rpc UpdateStore (UpdateStoreRequest) returns (Store) {
         option (google.api.http) = {
-            post: "/merchants/{merchant_id}/stores"
+            put: "/merchants/{merchant_id}/stores"
             body: "*"
         };
     }

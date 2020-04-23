@@ -229,7 +229,7 @@
     "/merchants/{merchantId}/orders": {
       "get": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
-        "operationId": "GetOrders",
+        "operationId": "ListOrders",
         "responses": {
           "200": {
             "description": "A successful response.",

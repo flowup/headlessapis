@@ -309,7 +309,7 @@ service ProductService {
     // CreateProduct creates a product in the firestore for a particular merchant
     rpc CreateProduct (CreateProductRequest) returns (Product) {
         option (google.api.http) = {
-            post: "/merchants/{merchant_id}/products:create"
+            post: "/merchants/{merchant_id}/products"
             body: "*"
         };
     }

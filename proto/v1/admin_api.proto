@@ -475,7 +475,7 @@ service OrderService {
     }
 
     // GetOrders returns all orders that the user has access to
-    rpc GetOrders (ListOrdersRequest) returns (OrderList) {
+    rpc ListOrders (ListOrdersRequest) returns (OrderList) {
         option (google.api.http) = {
             get: "/merchants/{merchant_id}/orders"
         };

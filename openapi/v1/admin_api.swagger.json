@@ -674,7 +674,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1Order"
+              "$ref": "#/definitions/v1CreateOrderRequest"
             }
           }
         ],
@@ -713,47 +713,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "ORDER_STATUS_UNDEFINED",
-              "NOT_SUBMITTED",
-              "SUBMITTED",
-              "PAID",
-              "SENT",
-              "CANCEL"
-            ],
-            "default": "ORDER_STATUS_UNDEFINED"
-          },
-          {
-            "name": "note",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "total_amount.currency",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "total_amount.value",
-            "in": "query",
-            "required": false,
-            "type": "number",
-            "format": "double"
-          },
-          {
-            "name": "createdAt",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
           }
         ],
         "tags": [
@@ -795,7 +754,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1Order"
+              "$ref": "#/definitions/v1UpdateOrderRequest"
             }
           }
         ],
@@ -1030,6 +989,35 @@
         }
       },
       "title": "Message representing a value of something in a particular currency"
+    },
+    "v1CreateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/v1OrderStatus"
+        },
+        "note": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
+        },
+        "totalAmount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "merchantId": {
+          "type": "string"
+        },
+        "storeId": {
+          "type": "string"
+        }
+      }
     },
     "v1CreateProductRequest": {
       "type": "object",
@@ -1485,6 +1473,35 @@
         }
       },
       "description": "Request for updating product items within inventory."
+    },
+    "v1UpdateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/v1OrderStatus"
+        },
+        "note": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1OrderItem"
+          }
+        },
+        "totalAmount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "merchantId": {
+          "type": "string"
+        },
+        "storeId": {
+          "type": "string"
+        }
+      }
     },
     "v1UpdateProductRequest": {
       "type": "object",

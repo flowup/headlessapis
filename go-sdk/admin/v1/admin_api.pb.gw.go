@@ -1442,7 +1442,7 @@ func local_request_ProductService_GetProduct_0(ctx context.Context, marshaler ru
 }
 
 func request_OrderService_CreateOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq CreateOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1488,7 +1488,7 @@ func request_OrderService_CreateOrder_0(ctx context.Context, marshaler runtime.M
 }
 
 func local_request_OrderService_CreateOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq CreateOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1534,7 +1534,7 @@ func local_request_OrderService_CreateOrder_0(ctx context.Context, marshaler run
 }
 
 func request_OrderService_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq UpdateOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1591,7 +1591,7 @@ func request_OrderService_UpdateOrder_0(ctx context.Context, marshaler runtime.M
 }
 
 func local_request_OrderService_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq UpdateOrderRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -1647,12 +1647,8 @@ func local_request_OrderService_UpdateOrder_0(ctx context.Context, marshaler run
 
 }
 
-var (
-	filter_OrderService_CancelOrder_0 = &utilities.DoubleArray{Encoding: map[string]int{"merchant_id": 0, "store_id": 1, "order_id": 2}, Base: []int{1, 1, 2, 3, 0, 0, 0}, Check: []int{0, 1, 1, 1, 2, 3, 4}}
-)
-
 func request_OrderService_CancelOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrderServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq CancelOrderRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1693,13 +1689,6 @@ func request_OrderService_CancelOrder_0(ctx context.Context, marshaler runtime.M
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_id", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderService_CancelOrder_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.CancelOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1708,7 +1697,7 @@ func request_OrderService_CancelOrder_0(ctx context.Context, marshaler runtime.M
 }
 
 func local_request_OrderService_CancelOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrderServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Order
+	var protoReq CancelOrderRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1749,10 +1738,6 @@ func local_request_OrderService_CancelOrder_0(ctx context.Context, marshaler run
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_id", err)
-	}
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_OrderService_CancelOrder_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.CancelOrder(ctx, &protoReq)
@@ -1765,7 +1750,7 @@ var (
 )
 
 func request_OrderService_GetOrders_0(ctx context.Context, marshaler runtime.Marshaler, client OrderServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq OrderFilter
+	var protoReq ListOrdersRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -1799,7 +1784,7 @@ func request_OrderService_GetOrders_0(ctx context.Context, marshaler runtime.Mar
 }
 
 func local_request_OrderService_GetOrders_0(ctx context.Context, marshaler runtime.Marshaler, server OrderServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq OrderFilter
+	var protoReq ListOrdersRequest
 	var metadata runtime.ServerMetadata
 
 	var (

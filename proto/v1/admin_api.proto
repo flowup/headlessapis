@@ -122,7 +122,7 @@ service StoreService {
 
     // Loads all stores from given merchant
     rpc ListStores (ListStoresRequest) returns (StoreList) {
-        option (google.api.http) = {
+        option (google.api.http) = {         A
             get: "/merchants/{merchant_id}/stores"
         };
     }

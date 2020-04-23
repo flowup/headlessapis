@@ -14,7 +14,7 @@ service MerchantService {
     // errors that need to be corrected to successfully create the merchant
     rpc CreateMerchantDry (Merchant) returns (Merchant) {
         option (google.api.http) = {
-            post: "/dry/merchants"
+            post: "/merchants:dry"
             body: "*"
         };
     }
@@ -39,7 +39,7 @@ service MerchantService {
     // and other required fields by user invitation process
     rpc InviteUserDry (User) returns (User) {
         option (google.api.http) = {
-            post: "/dry/merchants/{merchantId}/users"
+            post: "/merchants/{merchantId}/users:dry"
             body: "*"
         };
     }
@@ -97,7 +97,7 @@ service StoreService {
     // for the particular merchant
     rpc CreateStoreDry (CreateStoreRequest) returns (Store) {
         option (google.api.http) = {
-            post: "/dry/merchants/{merchant_id}/stores"
+            post: "/merchants/{merchant_id}/stores:dry"
             body: "*"
         };
     }
@@ -285,7 +285,7 @@ service ProductService {
     // of errors or the product schema on success
     rpc CreateProductSchemaDry (ProductSchema) returns (ProductSchema) {
         option (google.api.http) = {
-            post: "/dry/merchants/{merchantId}/schemas"
+            post: "/merchants/{merchantId}/schemas:dry"
             body: "*"
         };
     }

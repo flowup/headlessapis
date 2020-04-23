@@ -11,132 +11,6 @@
     "application/json"
   ],
   "paths": {
-    "/dry/merchants": {
-      "post": {
-        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "CreateMerchantDry",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Merchant"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1Merchant"
-            }
-          }
-        ],
-        "tags": [
-          "MerchantService"
-        ]
-      }
-    },
-    "/dry/merchants/{merchantId}/schemas": {
-      "post": {
-        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "CreateProductSchemaDry",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ProductSchema"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1ProductSchema"
-            }
-          }
-        ],
-        "tags": [
-          "ProductService"
-        ]
-      }
-    },
-    "/dry/merchants/{merchantId}/stores": {
-      "post": {
-        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "CreateStoreDry",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Store"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1CreateStoreRequest"
-            }
-          }
-        ],
-        "tags": [
-          "StoreService"
-        ]
-      }
-    },
-    "/dry/merchants/{merchantId}/users": {
-      "post": {
-        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
-        "operationId": "InviteUserDry",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1User"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1User"
-            }
-          }
-        ],
-        "tags": [
-          "MerchantService"
-        ]
-      }
-    },
     "/merchants": {
       "get": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
@@ -525,6 +399,39 @@
         ]
       }
     },
+    "/merchants/{merchantId}/schemas:dry": {
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateProductSchemaDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProductSchema"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ProductSchema"
+            }
+          }
+        ],
+        "tags": [
+          "ProductService"
+        ]
+      }
+    },
     "/merchants/{merchantId}/stores": {
       "get": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
@@ -803,6 +710,39 @@
         ]
       }
     },
+    "/merchants/{merchantId}/stores:dry": {
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateStoreDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Store"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateStoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      }
+    },
     "/merchants/{merchantId}/upload": {
       "post": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
@@ -892,6 +832,66 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1User"
+            }
+          }
+        ],
+        "tags": [
+          "MerchantService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/users:dry": {
+      "post": {
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "InviteUserDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1User"
+            }
+          }
+        ],
+        "tags": [
+          "MerchantService"
+        ]
+      }
+    },
+    "/merchants:dry": {
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateMerchantDry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Merchant"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Merchant"
             }
           }
         ],

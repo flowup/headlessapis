@@ -2603,13 +2603,13 @@ func RegisterMerchantServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_MerchantService_CreateMerchantDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"dry", "merchants"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_MerchantService_CreateMerchantDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"merchants"}, "dry", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_MerchantService_CreateMerchant_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"merchants"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_MerchantService_GetMerchants_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"merchants"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_MerchantService_InviteUserDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"dry", "merchants", "merchantId", "users"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_MerchantService_InviteUserDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchantId", "users"}, "dry", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_MerchantService_InviteUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchantId", "users"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -2772,7 +2772,7 @@ func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_StoreService_CreateStoreDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"dry", "merchants", "merchant_id", "stores"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_StoreService_CreateStoreDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchant_id", "stores"}, "dry", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_StoreService_CreateStore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchant_id", "stores"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -3034,7 +3034,7 @@ func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ProductService_CreateProductSchemaDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"dry", "merchants", "merchantId", "schemas"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProductService_CreateProductSchemaDry_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchantId", "schemas"}, "dry", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_ProductService_CreateProductSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchantId", "schemas"}, "", runtime.AssumeColonVerbOpt(true)))
 

@@ -1186,6 +1186,10 @@
         "merchantId": {
           "type": "string"
         },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
         "name": {
           "type": "string"
         },
@@ -1194,6 +1198,9 @@
           "title": "string location = 11;"
         },
         "description": {
+          "type": "string"
+        },
+        "inventoryIds": {
           "type": "string"
         }
       }

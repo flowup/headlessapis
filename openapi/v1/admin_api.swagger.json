@@ -550,6 +550,37 @@
         ]
       },
       "post": {
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "CreateStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Store"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateStoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      },
+      "put": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
         "operationId": "UpdateStore",
         "responses": {

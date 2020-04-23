@@ -39,7 +39,7 @@ service MerchantService {
     // and other required fields by user invitation process
     rpc InviteUserDry (User) returns (User) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/users:dry"
+            post: "/merchants/{merchant_id}/users:dry"
             body: "*"
         };
     }
@@ -62,7 +62,7 @@ service MerchantService {
 }
 
 message Merchant {
-    // [Required] merchantId can be set only once and is unchangeable during lifetime
+    // [Required] merchant_id can be set only once and is unchangeable during lifetime
     string merchant_id = 1;
 
     // [Required] name of the merchant can be customized by the user, however, the id
@@ -285,7 +285,7 @@ service ProductService {
     // of errors or the product schema on success
     rpc CreateProductSchemaDry (ProductSchema) returns (ProductSchema) {
         option (google.api.http) = {
-            post: "/merchants/{merchantId}/schemas:dry"
+            post: "/merchants/{merchant_id}/schemas:dry"
             body: "*"
         };
     }

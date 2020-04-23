@@ -9,8 +9,8 @@ import (
 	v1 "github.com/flowup/headlessapis/go-sdk/common/v1"
 	proto "github.com/gogo/protobuf/proto"
 	github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
+	types "github.com/gogo/protobuf/types"
 	empty "github.com/golang/protobuf/ptypes/empty"
-	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -551,10 +551,10 @@ func (m *UpdateStoreRequest) GetInventoryIds() []string {
 }
 
 type Store struct {
-	StoreId    string               `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	MerchantId string               `protobuf:"bytes,2,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
-	CreatedAt  *timestamp.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Name       string               `protobuf:"bytes,10,opt,name=name,proto3" json:"name,omitempty"`
+	StoreId    string           `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	MerchantId string           `protobuf:"bytes,2,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
+	CreatedAt  *types.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Name       string           `protobuf:"bytes,10,opt,name=name,proto3" json:"name,omitempty"`
 	//    string location = 11;
 	Address      string   `protobuf:"bytes,12,opt,name=address,proto3" json:"address,omitempty"`
 	Description  string   `protobuf:"bytes,13,opt,name=description,proto3" json:"description,omitempty"`
@@ -607,7 +607,7 @@ func (m *Store) GetMerchantId() string {
 	return ""
 }
 
-func (m *Store) GetCreatedAt() *timestamp.Timestamp {
+func (m *Store) GetCreatedAt() *types.Timestamp {
 	if m != nil {
 		return m.CreatedAt
 	}
@@ -643,10 +643,10 @@ func (m *Store) GetInventoryIds() []string {
 }
 
 type StoreDetails struct {
-	StoreId    string               `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
-	MerchantId string               `protobuf:"bytes,2,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
-	CreatedAt  *timestamp.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Name       string               `protobuf:"bytes,10,opt,name=name,proto3" json:"name,omitempty"`
+	StoreId    string           `protobuf:"bytes,1,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
+	MerchantId string           `protobuf:"bytes,2,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
+	CreatedAt  *types.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Name       string           `protobuf:"bytes,10,opt,name=name,proto3" json:"name,omitempty"`
 	//    string location = 11;
 	Address        string           `protobuf:"bytes,12,opt,name=address,proto3" json:"address,omitempty"`
 	Description    string           `protobuf:"bytes,13,opt,name=description,proto3" json:"description,omitempty"`
@@ -702,7 +702,7 @@ func (m *StoreDetails) GetMerchantId() string {
 	return ""
 }
 
-func (m *StoreDetails) GetCreatedAt() *timestamp.Timestamp {
+func (m *StoreDetails) GetCreatedAt() *types.Timestamp {
 	if m != nil {
 		return m.CreatedAt
 	}
@@ -1006,13 +1006,13 @@ func (m *UpdateInventoryItemRequest) GetCount() uint32 {
 
 // Response message for InventoryItem model.
 type InventoryItem struct {
-	MerchantId  string               `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
-	ProductId   string               `protobuf:"bytes,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	InventoryId string               `protobuf:"bytes,3,opt,name=inventory_id,json=inventoryId,proto3" json:"inventory_id,omitempty"`
-	CreatedAt   *timestamp.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Amount      *v1.Amount           `protobuf:"bytes,10,opt,name=amount,proto3" json:"amount,omitempty"`
-	Count       uint32               `protobuf:"varint,11,opt,name=count,proto3" json:"count,omitempty"`
-	Product     *Product             `protobuf:"bytes,50,opt,name=product,proto3" json:"product,omitempty"`
+	MerchantId  string           `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
+	ProductId   string           `protobuf:"bytes,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	InventoryId string           `protobuf:"bytes,3,opt,name=inventory_id,json=inventoryId,proto3" json:"inventory_id,omitempty"`
+	CreatedAt   *types.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Amount      *v1.Amount       `protobuf:"bytes,10,opt,name=amount,proto3" json:"amount,omitempty"`
+	Count       uint32           `protobuf:"varint,11,opt,name=count,proto3" json:"count,omitempty"`
+	Product     *Product         `protobuf:"bytes,50,opt,name=product,proto3" json:"product,omitempty"`
 }
 
 func (m *InventoryItem) Reset()      { *m = InventoryItem{} }
@@ -1068,7 +1068,7 @@ func (m *InventoryItem) GetInventoryId() string {
 	return ""
 }
 
-func (m *InventoryItem) GetCreatedAt() *timestamp.Timestamp {
+func (m *InventoryItem) GetCreatedAt() *types.Timestamp {
 	if m != nil {
 		return m.CreatedAt
 	}
@@ -7735,7 +7735,7 @@ func (this *Store) String() string {
 	s := strings.Join([]string{`&Store{`,
 		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
 		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
-		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "timestamp.Timestamp", 1) + `,`,
+		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "types.Timestamp", 1) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Address:` + fmt.Sprintf("%v", this.Address) + `,`,
 		`Description:` + fmt.Sprintf("%v", this.Description) + `,`,
@@ -7756,7 +7756,7 @@ func (this *StoreDetails) String() string {
 	s := strings.Join([]string{`&StoreDetails{`,
 		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
 		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
-		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "timestamp.Timestamp", 1) + `,`,
+		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "types.Timestamp", 1) + `,`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`Address:` + fmt.Sprintf("%v", this.Address) + `,`,
 		`Description:` + fmt.Sprintf("%v", this.Description) + `,`,
@@ -7830,7 +7830,7 @@ func (this *InventoryItem) String() string {
 		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`ProductId:` + fmt.Sprintf("%v", this.ProductId) + `,`,
 		`InventoryId:` + fmt.Sprintf("%v", this.InventoryId) + `,`,
-		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "timestamp.Timestamp", 1) + `,`,
+		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "types.Timestamp", 1) + `,`,
 		`Amount:` + strings.Replace(fmt.Sprintf("%v", this.Amount), "Amount", "v1.Amount", 1) + `,`,
 		`Count:` + fmt.Sprintf("%v", this.Count) + `,`,
 		`Product:` + strings.Replace(this.Product.String(), "Product", "Product", 1) + `,`,
@@ -9434,7 +9434,7 @@ func (m *Store) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.CreatedAt == nil {
-				m.CreatedAt = &timestamp.Timestamp{}
+				m.CreatedAt = &types.Timestamp{}
 			}
 			if err := m.CreatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -9715,7 +9715,7 @@ func (m *StoreDetails) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.CreatedAt == nil {
-				m.CreatedAt = &timestamp.Timestamp{}
+				m.CreatedAt = &types.Timestamp{}
 			}
 			if err := m.CreatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
@@ -10712,7 +10712,7 @@ func (m *InventoryItem) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.CreatedAt == nil {
-				m.CreatedAt = &timestamp.Timestamp{}
+				m.CreatedAt = &types.Timestamp{}
 			}
 			if err := m.CreatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err

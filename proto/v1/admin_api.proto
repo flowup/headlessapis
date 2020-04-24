@@ -452,7 +452,7 @@ message WarehouseList {
 
 service OrderService {
     // CreateOrder creates an order for the particular user in the store
-    rpc CreateOrder (Order) returns (Order) {
+    rpc CreateOrder (CreateOrderRequest) returns (Order) {
         option (google.api.http) = {
             post: "/merchants/{merchant_id}/stores/{store_id}/orders"
             body: "*"
@@ -460,7 +460,7 @@ service OrderService {
     }
 
     // UpdateOrder update an attributes in order
-    rpc UpdateOrder (Order) returns (Order) {
+    rpc UpdateOrder (UpdateOrderRequest) returns (Order) {
         option (google.api.http) = {
             put: "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}"
             body: "*"
@@ -468,14 +468,14 @@ service OrderService {
     }
 
     // CancelOrder set status of order to cancel
-    rpc CancelOrder (Order) returns (Order) {
+    rpc CancelOrder (CancelOrderRequest) returns (Order) {
         option (google.api.http) = {
             delete: "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}"
         };
     }
 
     // GetOrders returns all orders that the user has access to
-    rpc GetOrders (OrderFilter) returns (OrderList) {
+    rpc ListOrders (ListOrdersRequest) returns (OrderList) {
         option (google.api.http) = {
             get: "/merchants/{merchant_id}/orders"
         };
@@ -506,6 +506,39 @@ message Order {
     string store_id = 11;
 }
 
+message CancelOrderRequest {
+    string order_id = 1;
+
+    string merchant_id = 10;
+    string store_id = 11;
+}
+
+message UpdateOrderRequest {
+    string order_id = 1;
+
+    OrderStatus status = 2;
+    string note = 3;
+    repeated OrderItem items = 4;
+    common.v1.Amount total_amount = 5;
+
+
+    string merchant_id = 10;
+    string store_id = 11;
+}
+
+message CreateOrderRequest {
+    string order_id = 1;
+
+    OrderStatus status = 2;
+    string note = 3;
+    repeated OrderItem items = 4;
+    common.v1.Amount total_amount = 5;
+
+
+    string merchant_id = 10;
+    string store_id = 11;
+}
+
 message OrderItem {
     Product product = 1;
     int32 count = 2;
@@ -518,7 +551,7 @@ message OrderList {
     repeated Order items = 1;
 }
 
-message OrderFilter {
+message ListOrdersRequest {
     string order_id = 1;
     repeated OrderStatus status = 2;
 

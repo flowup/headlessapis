@@ -12,7 +12,13 @@ message Amount {
 
 // Message representing an expression to be used especially in filter operations
 message Expression {
-    string lhs = 1;
-    string op = 2;
-    string rhs = 3;
+    // Operator used in expression
+    string op = 1;
+    // Right hand side of the expression - value
+    string rhs = 2;
+}
+
+// List of expressions
+message ExpressionList {
+    repeated Expression items = 1;
 }

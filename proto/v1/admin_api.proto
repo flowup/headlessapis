@@ -341,8 +341,8 @@ message ListProductsRequest {
     // Required. Id of the merchant to which the product is assigned
     string merchant_id = 1;
 
-    // Expressions used for filtering
-    repeated common.v1.Expression filter = 2;
+    // Expressions used for filtering, key specifies filtered attribute
+    map<string, common.v1.ExpressionList> filter = 2;
 }
 
 message ProductList {

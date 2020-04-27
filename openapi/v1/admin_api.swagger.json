@@ -1108,17 +1108,28 @@
     "v1Expression": {
       "type": "object",
       "properties": {
-        "lhs": {
-          "type": "string"
-        },
         "op": {
-          "type": "string"
+          "type": "string",
+          "title": "Operator used in expression"
         },
         "rhs": {
-          "type": "string"
+          "type": "string",
+          "title": "Right hand side of the expression - value"
         }
       },
       "title": "Message representing an expression to be used especially in filter operations"
+    },
+    "v1ExpressionList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Expression"
+          }
+        }
+      },
+      "title": "List of expressions"
     },
     "v1InventoryItem": {
       "type": "object",

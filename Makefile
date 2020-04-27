@@ -4,7 +4,7 @@ PROTO_GOGOSLICK_ARGS=Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,M
 
 PROTO_GRPC_GATEWAY_ARGS=logtostderr=true,allow_patch_feature=false,paths=source_relative
 
-PROTO_SWAGGER_ARGS=logtostderr=true,json_names_for_fields=true
+PROTO_SWAGGER_ARGS=logtostderr=true
 
 gen: gen-swagger gen-go gen-ng
 

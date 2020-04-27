@@ -3,6 +3,7 @@ syntax = "proto3";
 package common.v1;
 
 option go_package = "github.com/flowup/headlessapis/go-sdk/common/v1";
+import "google/protobuf/timestamp.proto";
 
 // Message representing a value of something in a particular currency
 message Amount {
@@ -15,7 +16,20 @@ message Expression {
     // Operator used in expression
     string op = 1;
     // Right hand side of the expression - value
-    string rhs = 2;
+    oneof rhs_oneof {
+        string rhs_string = 2;
+        double rhs_double = 3;
+        bool rhs_bool = 4;
+        int64 rhs_int = 5;
+        google.protobuf.Timestamp rhs_time = 6;
+        RepeatedString rhs_string_array = 7;
+        Amount rhs_amount = 8;
+    }
+}
+
+// List of strings for use in oneofs
+message RepeatedString {
+    repeated string items = 1;
 }
 
 // List of expressions

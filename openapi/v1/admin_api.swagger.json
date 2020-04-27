@@ -57,7 +57,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/customers": {
+    "/merchants/{merchant_id}/customers": {
       "get": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
         "operationId": "GetCustomers",
@@ -71,7 +71,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -94,7 +94,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -113,7 +113,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/inventories/{inventoryId}/items": {
+    "/merchants/{merchant_id}/inventories/{inventory_id}/items": {
       "get": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
         "operationId": "ListInventoryItems",
@@ -127,13 +127,13 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "inventoryId",
+            "name": "inventory_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -156,13 +156,13 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "inventoryId",
+            "name": "inventory_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -181,7 +181,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}": {
+    "/merchants/{merchant_id}/inventories/{inventory_id}/items/{product_id}": {
       "put": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
         "operationId": "UpdateInventoryItem",
@@ -195,19 +195,19 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "inventoryId",
+            "name": "inventory_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "productId",
+            "name": "product_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -226,7 +226,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/orders": {
+    "/merchants/{merchant_id}/orders": {
       "get": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
         "operationId": "ListOrders",
@@ -240,13 +240,13 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "orderId",
+            "name": "order_id",
             "in": "query",
             "required": false,
             "type": "string"
@@ -270,7 +270,7 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "storeId",
+            "name": "store_id",
             "in": "query",
             "required": false,
             "type": "string"
@@ -281,7 +281,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/products": {
+    "/merchants/{merchant_id}/products": {
       "get": {
         "summary": "GetUsers returns all users present in the merchant",
         "operationId": "ListProducts",
@@ -295,7 +295,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
@@ -319,7 +319,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
@@ -351,7 +351,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
@@ -371,7 +371,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/products/{productId}": {
+    "/merchants/{merchant_id}/products/{product_id}": {
       "get": {
         "summary": "Loads single product from a given merchant",
         "operationId": "GetProduct",
@@ -385,14 +385,14 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "productId",
+            "name": "product_id",
             "description": "Required. Id of the product",
             "in": "path",
             "required": true,
@@ -404,7 +404,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/providers": {
+    "/merchants/{merchant_id}/providers": {
       "get": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
         "operationId": "GetProviders",
@@ -418,7 +418,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -441,7 +441,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -460,7 +460,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/schemas": {
+    "/merchants/{merchant_id}/schemas": {
       "post": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
         "operationId": "CreateProductSchema",
@@ -474,7 +474,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -493,7 +493,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/schemas:dry": {
+    "/merchants/{merchant_id}/schemas:dry": {
       "post": {
         "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
         "operationId": "CreateProductSchemaDry",
@@ -507,7 +507,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -526,7 +526,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/stores": {
+    "/merchants/{merchant_id}/stores": {
       "get": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
         "operationId": "ListStores",
@@ -540,7 +540,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -563,7 +563,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -594,7 +594,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -613,7 +613,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/stores/{storeId}": {
+    "/merchants/{merchant_id}/stores/{store_id}": {
       "get": {
         "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
         "operationId": "GetStore",
@@ -627,13 +627,13 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "storeId",
+            "name": "store_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -644,7 +644,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/stores/{storeId}/orders": {
+    "/merchants/{merchant_id}/stores/{store_id}/orders": {
       "post": {
         "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
         "operationId": "CreateOrder",
@@ -658,13 +658,13 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "storeId",
+            "name": "store_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -683,7 +683,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}": {
+    "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}": {
       "delete": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
         "operationId": "CancelOrder",
@@ -697,19 +697,19 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "storeId",
+            "name": "store_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "orderId",
+            "name": "order_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -732,19 +732,19 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "storeId",
+            "name": "store_id",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "orderId",
+            "name": "order_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -763,7 +763,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/stores:dry": {
+    "/merchants/{merchant_id}/stores:dry": {
       "post": {
         "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
         "operationId": "CreateStoreDry",
@@ -777,7 +777,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -796,7 +796,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/upload": {
+    "/merchants/{merchant_id}/upload": {
       "post": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
         "operationId": "CreateUpload",
@@ -810,7 +810,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -829,7 +829,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/users": {
+    "/merchants/{merchant_id}/users": {
       "get": {
         "summary": "GetUsers returns all users present in the merchant",
         "operationId": "GetUsers",
@@ -843,7 +843,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "description": "[Required] merchant_id can be set only once and is unchangeable during lifetime",
             "in": "path",
             "required": true,
@@ -874,7 +874,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -893,7 +893,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/users:dry": {
+    "/merchants/{merchant_id}/users:dry": {
       "post": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
         "operationId": "InviteUserDry",
@@ -907,7 +907,7 @@
         },
         "parameters": [
           {
-            "name": "merchantId",
+            "name": "merchant_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -958,13 +958,13 @@
     "v1AddInventoryItemRequest": {
       "type": "object",
       "properties": {
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "inventoryId": {
+        "inventory_id": {
           "type": "string"
         },
-        "productId": {
+        "product_id": {
           "type": "string"
         },
         "amount": {
@@ -993,7 +993,7 @@
     "v1CreateOrderRequest": {
       "type": "object",
       "properties": {
-        "orderId": {
+        "order_id": {
           "type": "string"
         },
         "status": {
@@ -1008,13 +1008,13 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "totalAmount": {
+        "total_amount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "storeId": {
+        "store_id": {
           "type": "string"
         }
       }
@@ -1022,20 +1022,20 @@
     "v1CreateProductRequest": {
       "type": "object",
       "properties": {
-        "productId": {
+        "product_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string",
           "title": "Required. Id of the merchant to which the product is assigned"
         },
-        "storeIds": {
+        "store_ids": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "providerId": {
+        "provider_id": {
           "type": "string"
         },
         "name": {
@@ -1044,7 +1044,7 @@
         "description": {
           "type": "string"
         },
-        "defaultAmount": {
+        "default_amount": {
           "$ref": "#/definitions/v1Amount"
         },
         "images": {
@@ -1071,11 +1071,11 @@
     "v1CreateStoreRequest": {
       "type": "object",
       "properties": {
-        "storeId": {
+        "store_id": {
           "type": "string",
           "title": "Optional custom ID"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
         "name": {
@@ -1094,10 +1094,10 @@
     "v1Customer": {
       "type": "object",
       "properties": {
-        "customerId": {
+        "customer_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         }
       }
@@ -1123,16 +1123,16 @@
     "v1InventoryItem": {
       "type": "object",
       "properties": {
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "productId": {
+        "product_id": {
           "type": "string"
         },
-        "inventoryId": {
+        "inventory_id": {
           "type": "string"
         },
-        "createdAt": {
+        "created_at": {
           "type": "string",
           "format": "date-time"
         },
@@ -1163,7 +1163,7 @@
     "v1Merchant": {
       "type": "object",
       "properties": {
-        "merchantId": {
+        "merchant_id": {
           "type": "string",
           "title": "[Required] merchant_id can be set only once and is unchangeable during lifetime"
         },
@@ -1187,7 +1187,7 @@
     "v1Order": {
       "type": "object",
       "properties": {
-        "orderId": {
+        "order_id": {
           "type": "string"
         },
         "status": {
@@ -1202,17 +1202,17 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "totalAmount": {
+        "total_amount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "createdAt": {
+        "created_at": {
           "type": "string",
           "format": "int64"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "storeId": {
+        "store_id": {
           "type": "string"
         }
       }
@@ -1230,7 +1230,7 @@
         "amount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "orderId": {
+        "order_id": {
           "type": "string"
         }
       }
@@ -1261,22 +1261,22 @@
     "v1Product": {
       "type": "object",
       "properties": {
-        "productId": {
+        "product_id": {
           "type": "string"
         },
-        "productSchemaId": {
+        "product_schema_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "storeIds": {
+        "store_ids": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "providerId": {
+        "provider_id": {
           "type": "string"
         },
         "name": {
@@ -1285,7 +1285,7 @@
         "description": {
           "type": "string"
         },
-        "defaultAmount": {
+        "default_amount": {
           "$ref": "#/definitions/v1Amount"
         },
         "images": {
@@ -1323,17 +1323,17 @@
     "v1ProductSchema": {
       "type": "object",
       "properties": {
-        "productSchemaId": {
+        "product_schema_id": {
           "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "createdBy": {
+        "created_by": {
           "$ref": "#/definitions/v1User",
           "title": "createdBy is a reference to the user that created this product schema"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
         "labels": {
@@ -1354,10 +1354,10 @@
     "v1Provider": {
       "type": "object",
       "properties": {
-        "providerId": {
+        "provider_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         }
       }
@@ -1368,13 +1368,13 @@
     "v1Store": {
       "type": "object",
       "properties": {
-        "storeId": {
+        "store_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "createdAt": {
+        "created_at": {
           "type": "string",
           "format": "date-time"
         },
@@ -1388,7 +1388,7 @@
         "description": {
           "type": "string"
         },
-        "inventoryIds": {
+        "inventory_ids": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1399,13 +1399,13 @@
     "v1StoreDetails": {
       "type": "object",
       "properties": {
-        "storeId": {
+        "store_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "createdAt": {
+        "created_at": {
           "type": "string",
           "format": "date-time"
         },
@@ -1419,15 +1419,15 @@
         "description": {
           "type": "string"
         },
-        "productCounter": {
+        "product_counter": {
           "type": "integer",
           "format": "int64"
         },
-        "itemCounter": {
+        "item_counter": {
           "type": "integer",
           "format": "int64"
         },
-        "inventoryIds": {
+        "inventory_ids": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1455,13 +1455,13 @@
     "v1UpdateInventoryItemRequest": {
       "type": "object",
       "properties": {
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "inventoryId": {
+        "inventory_id": {
           "type": "string"
         },
-        "productId": {
+        "product_id": {
           "type": "string"
         },
         "amount": {
@@ -1477,7 +1477,7 @@
     "v1UpdateOrderRequest": {
       "type": "object",
       "properties": {
-        "orderId": {
+        "order_id": {
           "type": "string"
         },
         "status": {
@@ -1492,13 +1492,13 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "totalAmount": {
+        "total_amount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
-        "storeId": {
+        "store_id": {
           "type": "string"
         }
       }
@@ -1506,20 +1506,20 @@
     "v1UpdateProductRequest": {
       "type": "object",
       "properties": {
-        "productId": {
+        "product_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string",
           "title": "Required. Id of the merchant to which the product is assigned"
         },
-        "storeIds": {
+        "store_ids": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "providerId": {
+        "provider_id": {
           "type": "string"
         },
         "name": {
@@ -1528,7 +1528,7 @@
         "description": {
           "type": "string"
         },
-        "defaultAmount": {
+        "default_amount": {
           "$ref": "#/definitions/v1Amount"
         },
         "images": {
@@ -1555,10 +1555,10 @@
     "v1UpdateStoreRequest": {
       "type": "object",
       "properties": {
-        "storeId": {
+        "store_id": {
           "type": "string"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
         "name": {
@@ -1571,7 +1571,7 @@
         "description": {
           "type": "string"
         },
-        "inventoryIds": {
+        "inventory_ids": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1583,7 +1583,7 @@
     "v1UploadMeta": {
       "type": "object",
       "properties": {
-        "fileName": {
+        "file_name": {
           "type": "string",
           "title": "[Required] fileName is searchable throughout the system"
         },
@@ -1591,7 +1591,7 @@
           "type": "string",
           "title": "[Output Only] this is being provided by the system after the file is uploaded"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
         "labels": {
@@ -1614,11 +1614,11 @@
         "email": {
           "type": "string"
         },
-        "invitedById": {
+        "invited_by_id": {
           "type": "string",
           "title": "id of the user this user was invited by into the system"
         },
-        "merchantId": {
+        "merchant_id": {
           "type": "string"
         },
         "thumbnail": {

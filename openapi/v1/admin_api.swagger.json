@@ -1112,9 +1112,30 @@
           "type": "string",
           "title": "Operator used in expression"
         },
-        "rhs": {
+        "rhs_string": {
+          "type": "string"
+        },
+        "rhs_double": {
+          "type": "number",
+          "format": "double"
+        },
+        "rhs_bool": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "rhs_int": {
           "type": "string",
-          "title": "Right hand side of the expression - value"
+          "format": "int64"
+        },
+        "rhs_time": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rhs_string_array": {
+          "$ref": "#/definitions/v1RepeatedString"
+        },
+        "rhs_amount": {
+          "$ref": "#/definitions/v1Amount"
         }
       },
       "title": "Message representing an expression to be used especially in filter operations"
@@ -1375,6 +1396,18 @@
     },
     "v1ProviderList": {
       "type": "object"
+    },
+    "v1RepeatedString": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "List of strings for use in oneofs"
     },
     "v1Store": {
       "type": "object",

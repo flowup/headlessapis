@@ -24,6 +24,8 @@ message Expression {
         google.protobuf.Timestamp rhs_time = 6;
         RepeatedString rhs_string_array = 7;
         Amount rhs_amount = 8;
+        string rhs_ref = 9;
+        RepeatedString rhs_ref_array = 10;
     }
 }
 

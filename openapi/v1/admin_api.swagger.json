@@ -1136,6 +1136,12 @@
         },
         "rhs_amount": {
           "$ref": "#/definitions/v1Amount"
+        },
+        "rhs_ref": {
+          "type": "string"
+        },
+        "rhs_ref_array": {
+          "$ref": "#/definitions/v1RepeatedString"
         }
       },
       "title": "Message representing an expression to be used especially in filter operations"

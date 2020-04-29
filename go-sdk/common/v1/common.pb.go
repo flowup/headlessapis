@@ -7,6 +7,7 @@ import (
 	encoding_binary "encoding/binary"
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
+	types "github.com/gogo/protobuf/types"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -82,7 +83,16 @@ type Expression struct {
 	// Operator used in expression
 	Op string `protobuf:"bytes,1,opt,name=op,proto3" json:"op,omitempty"`
 	// Right hand side of the expression - value
-	Rhs string `protobuf:"bytes,2,opt,name=rhs,proto3" json:"rhs,omitempty"`
+	//
+	// Types that are valid to be assigned to RhsOneof:
+	//	*Expression_RhsString
+	//	*Expression_RhsDouble
+	//	*Expression_RhsBool
+	//	*Expression_RhsInt
+	//	*Expression_RhsTime
+	//	*Expression_RhsStringArray
+	//	*Expression_RhsAmount
+	RhsOneof isExpression_RhsOneof `protobuf_oneof:"rhs_oneof"`
 }
 
 func (m *Expression) Reset()      { *m = Expression{} }
@@ -117,6 +127,50 @@ func (m *Expression) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Expression proto.InternalMessageInfo
 
+type isExpression_RhsOneof interface {
+	isExpression_RhsOneof()
+	Equal(interface{}) bool
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type Expression_RhsString struct {
+	RhsString string `protobuf:"bytes,2,opt,name=rhs_string,json=rhsString,proto3,oneof" json:"rhs_string,omitempty"`
+}
+type Expression_RhsDouble struct {
+	RhsDouble float64 `protobuf:"fixed64,3,opt,name=rhs_double,json=rhsDouble,proto3,oneof" json:"rhs_double,omitempty"`
+}
+type Expression_RhsBool struct {
+	RhsBool bool `protobuf:"varint,4,opt,name=rhs_bool,json=rhsBool,proto3,oneof" json:"rhs_bool,omitempty"`
+}
+type Expression_RhsInt struct {
+	RhsInt int64 `protobuf:"varint,5,opt,name=rhs_int,json=rhsInt,proto3,oneof" json:"rhs_int,omitempty"`
+}
+type Expression_RhsTime struct {
+	RhsTime *types.Timestamp `protobuf:"bytes,6,opt,name=rhs_time,json=rhsTime,proto3,oneof" json:"rhs_time,omitempty"`
+}
+type Expression_RhsStringArray struct {
+	RhsStringArray *RepeatedString `protobuf:"bytes,7,opt,name=rhs_string_array,json=rhsStringArray,proto3,oneof" json:"rhs_string_array,omitempty"`
+}
+type Expression_RhsAmount struct {
+	RhsAmount *Amount `protobuf:"bytes,8,opt,name=rhs_amount,json=rhsAmount,proto3,oneof" json:"rhs_amount,omitempty"`
+}
+
+func (*Expression_RhsString) isExpression_RhsOneof()      {}
+func (*Expression_RhsDouble) isExpression_RhsOneof()      {}
+func (*Expression_RhsBool) isExpression_RhsOneof()        {}
+func (*Expression_RhsInt) isExpression_RhsOneof()         {}
+func (*Expression_RhsTime) isExpression_RhsOneof()        {}
+func (*Expression_RhsStringArray) isExpression_RhsOneof() {}
+func (*Expression_RhsAmount) isExpression_RhsOneof()      {}
+
+func (m *Expression) GetRhsOneof() isExpression_RhsOneof {
+	if m != nil {
+		return m.RhsOneof
+	}
+	return nil
+}
+
 func (m *Expression) GetOp() string {
 	if m != nil {
 		return m.Op
@@ -124,11 +178,110 @@ func (m *Expression) GetOp() string {
 	return ""
 }
 
-func (m *Expression) GetRhs() string {
-	if m != nil {
-		return m.Rhs
+func (m *Expression) GetRhsString() string {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsString); ok {
+		return x.RhsString
 	}
 	return ""
+}
+
+func (m *Expression) GetRhsDouble() float64 {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsDouble); ok {
+		return x.RhsDouble
+	}
+	return 0
+}
+
+func (m *Expression) GetRhsBool() bool {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsBool); ok {
+		return x.RhsBool
+	}
+	return false
+}
+
+func (m *Expression) GetRhsInt() int64 {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsInt); ok {
+		return x.RhsInt
+	}
+	return 0
+}
+
+func (m *Expression) GetRhsTime() *types.Timestamp {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsTime); ok {
+		return x.RhsTime
+	}
+	return nil
+}
+
+func (m *Expression) GetRhsStringArray() *RepeatedString {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsStringArray); ok {
+		return x.RhsStringArray
+	}
+	return nil
+}
+
+func (m *Expression) GetRhsAmount() *Amount {
+	if x, ok := m.GetRhsOneof().(*Expression_RhsAmount); ok {
+		return x.RhsAmount
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*Expression) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*Expression_RhsString)(nil),
+		(*Expression_RhsDouble)(nil),
+		(*Expression_RhsBool)(nil),
+		(*Expression_RhsInt)(nil),
+		(*Expression_RhsTime)(nil),
+		(*Expression_RhsStringArray)(nil),
+		(*Expression_RhsAmount)(nil),
+	}
+}
+
+// List of strings for use in oneofs
+type RepeatedString struct {
+	Items []string `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (m *RepeatedString) Reset()      { *m = RepeatedString{} }
+func (*RepeatedString) ProtoMessage() {}
+func (*RepeatedString) Descriptor() ([]byte, []int) {
+	return fileDescriptor_372283428b44e521, []int{2}
+}
+func (m *RepeatedString) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RepeatedString) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RepeatedString.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RepeatedString) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RepeatedString.Merge(m, src)
+}
+func (m *RepeatedString) XXX_Size() int {
+	return m.Size()
+}
+func (m *RepeatedString) XXX_DiscardUnknown() {
+	xxx_messageInfo_RepeatedString.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RepeatedString proto.InternalMessageInfo
+
+func (m *RepeatedString) GetItems() []string {
+	if m != nil {
+		return m.Items
+	}
+	return nil
 }
 
 // List of expressions
@@ -139,7 +292,7 @@ type ExpressionList struct {
 func (m *ExpressionList) Reset()      { *m = ExpressionList{} }
 func (*ExpressionList) ProtoMessage() {}
 func (*ExpressionList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_372283428b44e521, []int{2}
+	return fileDescriptor_372283428b44e521, []int{3}
 }
 func (m *ExpressionList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -178,30 +331,44 @@ func (m *ExpressionList) GetItems() []*Expression {
 func init() {
 	proto.RegisterType((*Amount)(nil), "common.v1.Amount")
 	proto.RegisterType((*Expression)(nil), "common.v1.Expression")
+	proto.RegisterType((*RepeatedString)(nil), "common.v1.RepeatedString")
 	proto.RegisterType((*ExpressionList)(nil), "common.v1.ExpressionList")
 }
 
 func init() { proto.RegisterFile("v1/common.proto", fileDescriptor_372283428b44e521) }
 
 var fileDescriptor_372283428b44e521 = []byte{
-	// 272 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x44, 0x90, 0x31, 0x4b, 0xc3, 0x40,
-	0x18, 0x86, 0xef, 0x6b, 0x69, 0x31, 0x27, 0x54, 0x39, 0x14, 0x82, 0xc3, 0x47, 0xc8, 0x14, 0x10,
-	0x73, 0x44, 0x37, 0xc1, 0x41, 0xc1, 0xcd, 0x29, 0xa3, 0x5b, 0x9a, 0x9e, 0x4d, 0x30, 0xc9, 0x1d,
-	0xb9, 0x24, 0xea, 0xe6, 0x4f, 0xf0, 0x67, 0xf8, 0x53, 0x1c, 0x33, 0x76, 0x34, 0x97, 0xc5, 0xb1,
-	0x3f, 0x41, 0xda, 0x86, 0x76, 0xfb, 0x1e, 0x78, 0xde, 0x8f, 0x97, 0x97, 0x9e, 0x34, 0x01, 0x8f,
-	0x65, 0x9e, 0xcb, 0xc2, 0x57, 0xa5, 0xac, 0x24, 0xb3, 0x06, 0x6a, 0x02, 0xf7, 0x96, 0x4e, 0xef,
-	0x73, 0x59, 0x17, 0x15, 0xbb, 0xa0, 0x47, 0x71, 0x5d, 0x96, 0xa2, 0x88, 0x3f, 0x6c, 0x70, 0xc0,
-	0xb3, 0xc2, 0x3d, 0xb3, 0x33, 0x3a, 0x69, 0xa2, 0xac, 0x16, 0xf6, 0xc8, 0x01, 0x0f, 0xc2, 0x1d,
-	0xb8, 0x3e, 0xa5, 0x8f, 0xef, 0xaa, 0x14, 0x5a, 0xa7, 0xb2, 0x60, 0x33, 0x3a, 0x92, 0x6a, 0x48,
-	0x8e, 0xa4, 0x62, 0xa7, 0x74, 0x5c, 0x26, 0x7a, 0x9b, 0xb0, 0xc2, 0xcd, 0xe9, 0xde, 0xd1, 0xd9,
-	0xc1, 0x7f, 0x4a, 0x75, 0xc5, 0x2e, 0xe9, 0x24, 0xad, 0x44, 0xae, 0x6d, 0x70, 0xc6, 0xde, 0xf1,
-	0xf5, 0xb9, 0xbf, 0x2f, 0xe6, 0x1f, 0xcc, 0x70, 0xe7, 0x3c, 0x88, 0xb6, 0x43, 0xb2, 0xea, 0x90,
-	0xac, 0x3b, 0x84, 0x4f, 0x83, 0xf0, 0x6d, 0x10, 0x7e, 0x0c, 0x42, 0x6b, 0x10, 0x7e, 0x0d, 0xc2,
-	0x9f, 0x41, 0xb2, 0x36, 0x08, 0x5f, 0x3d, 0x92, 0xb6, 0x47, 0xb2, 0xea, 0x91, 0x3c, 0xf3, 0x65,
-	0x5a, 0x25, 0xf5, 0x7c, 0xf3, 0x99, 0xbf, 0x64, 0xf2, 0xad, 0x56, 0x3c, 0x11, 0xd1, 0x22, 0x13,
-	0x5a, 0x47, 0x2a, 0xd5, 0x7c, 0x29, 0xaf, 0xf4, 0xe2, 0x75, 0xd8, 0x87, 0x37, 0xc1, 0x7c, 0xba,
-	0xdd, 0xe8, 0xe6, 0x3f, 0x00, 0x00, 0xff, 0xff, 0xc6, 0x4f, 0x6e, 0x13, 0x36, 0x01, 0x00, 0x00,
+	// 465 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x52, 0xbd, 0x8e, 0xd3, 0x40,
+	0x18, 0xdc, 0xcd, 0x71, 0xb9, 0x78, 0x23, 0x05, 0x58, 0x81, 0xe4, 0x0b, 0xd2, 0x9e, 0x95, 0x02,
+	0x59, 0x42, 0xd8, 0x4a, 0x28, 0x90, 0x90, 0x28, 0x2e, 0xe2, 0xa4, 0x20, 0x51, 0x19, 0x2a, 0x9a,
+	0xc8, 0x4e, 0x36, 0xb6, 0x85, 0xed, 0xcf, 0xda, 0x5d, 0x07, 0xae, 0xe3, 0x11, 0x78, 0x0c, 0x1e,
+	0x85, 0x32, 0x1d, 0x57, 0x12, 0xa7, 0xa1, 0xbc, 0x47, 0x40, 0xeb, 0x75, 0x7e, 0xe8, 0x3c, 0x9f,
+	0x67, 0xe6, 0xf3, 0xcc, 0x67, 0xf2, 0x70, 0x3d, 0xf6, 0x17, 0x90, 0xe7, 0x50, 0x78, 0xa5, 0x00,
+	0x05, 0xd4, 0x6a, 0xd1, 0x7a, 0x3c, 0xbc, 0x8a, 0x01, 0xe2, 0x8c, 0xfb, 0xcd, 0x8b, 0xa8, 0x5a,
+	0xf9, 0x2a, 0xcd, 0xb9, 0x54, 0x61, 0x5e, 0x1a, 0xee, 0xe8, 0x0d, 0xe9, 0x5e, 0xe7, 0x50, 0x15,
+	0x8a, 0x0e, 0x49, 0x6f, 0x51, 0x09, 0xc1, 0x8b, 0xc5, 0xad, 0x8d, 0x1d, 0xec, 0x5a, 0xc1, 0x01,
+	0xd3, 0x27, 0xe4, 0x7c, 0x1d, 0x66, 0x15, 0xb7, 0x3b, 0x0e, 0x76, 0x71, 0x60, 0xc0, 0xe8, 0x77,
+	0x87, 0x90, 0x9b, 0x6f, 0xa5, 0xe0, 0x52, 0xa6, 0x50, 0xd0, 0x01, 0xe9, 0x40, 0xd9, 0x4a, 0x3b,
+	0x50, 0xd2, 0x2b, 0x42, 0x44, 0x22, 0xe7, 0x52, 0x89, 0xb4, 0x88, 0x1b, 0xa5, 0x35, 0x43, 0x81,
+	0x25, 0x12, 0xf9, 0xb1, 0x19, 0xed, 0x09, 0x4b, 0xa8, 0xa2, 0x8c, 0xdb, 0x67, 0xda, 0xba, 0x25,
+	0xbc, 0x6b, 0x46, 0xf4, 0x19, 0xe9, 0x69, 0x42, 0x04, 0x90, 0xd9, 0x0f, 0x1c, 0xec, 0xf6, 0x66,
+	0x28, 0xb8, 0x10, 0x89, 0x9c, 0x02, 0x64, 0xf4, 0x92, 0xe8, 0xc7, 0x79, 0x5a, 0x28, 0xfb, 0xdc,
+	0xc1, 0xee, 0xd9, 0x0c, 0x05, 0x5d, 0x91, 0xc8, 0xf7, 0x85, 0xa2, 0xaf, 0x8d, 0x4e, 0x67, 0xb5,
+	0xbb, 0x0e, 0x76, 0xfb, 0x93, 0xa1, 0x67, 0x8a, 0xf0, 0xf6, 0x45, 0x78, 0x9f, 0xf6, 0x45, 0xb4,
+	0x9e, 0x1a, 0xd3, 0x1b, 0xf2, 0xe8, 0xf8, 0xc9, 0xf3, 0x50, 0x88, 0xf0, 0xd6, 0xbe, 0x68, 0x0c,
+	0x2e, 0xbd, 0x43, 0xa9, 0x5e, 0xc0, 0x4b, 0x1e, 0x2a, 0xbe, 0x34, 0x31, 0x66, 0x28, 0x18, 0x1c,
+	0x32, 0x5d, 0x6b, 0x09, 0x9d, 0x98, 0x60, 0x61, 0x53, 0xac, 0xdd, 0x6b, 0x0c, 0x1e, 0x9f, 0x18,
+	0x98, 0xc6, 0xdb, 0xac, 0x06, 0x4c, 0xfb, 0x44, 0x83, 0x39, 0x14, 0x1c, 0x56, 0xa3, 0xe7, 0x64,
+	0xf0, 0xff, 0x12, 0x7d, 0x81, 0x54, 0xf1, 0x5c, 0xda, 0xd8, 0x39, 0x73, 0xad, 0xc0, 0x80, 0xd1,
+	0x5b, 0x32, 0x38, 0x1e, 0xe0, 0x43, 0x2a, 0x15, 0x7d, 0x71, 0xca, 0xeb, 0x4f, 0x9e, 0x9e, 0x6c,
+	0x3d, 0x32, 0x5b, 0xf9, 0x94, 0x6f, 0xb6, 0x0c, 0xdd, 0x6d, 0x19, 0xba, 0xdf, 0x32, 0xfc, 0xbd,
+	0x66, 0xf8, 0x67, 0xcd, 0xf0, 0xaf, 0x9a, 0xe1, 0x4d, 0xcd, 0xf0, 0x9f, 0x9a, 0xe1, 0xbf, 0x35,
+	0x43, 0xf7, 0x35, 0xc3, 0x3f, 0x76, 0x0c, 0x6d, 0x76, 0x0c, 0xdd, 0xed, 0x18, 0xfa, 0xec, 0xc7,
+	0xa9, 0x4a, 0xaa, 0x48, 0x3b, 0xfb, 0xab, 0x0c, 0xbe, 0x56, 0xa5, 0x9f, 0xf0, 0x70, 0x99, 0x71,
+	0x29, 0xc3, 0x32, 0x95, 0x7e, 0x0c, 0x2f, 0xe5, 0xf2, 0x4b, 0xfb, 0x4b, 0xfa, 0xeb, 0x71, 0xd4,
+	0x6d, 0x4a, 0x7f, 0xf5, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x41, 0x28, 0x2f, 0x5d, 0xa9, 0x02, 0x00,
+	0x00,
 }
 
 func (this *Amount) Equal(that interface{}) bool {
@@ -253,8 +420,211 @@ func (this *Expression) Equal(that interface{}) bool {
 	if this.Op != that1.Op {
 		return false
 	}
-	if this.Rhs != that1.Rhs {
+	if that1.RhsOneof == nil {
+		if this.RhsOneof != nil {
+			return false
+		}
+	} else if this.RhsOneof == nil {
 		return false
+	} else if !this.RhsOneof.Equal(that1.RhsOneof) {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsString) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsString)
+	if !ok {
+		that2, ok := that.(Expression_RhsString)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.RhsString != that1.RhsString {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsDouble) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsDouble)
+	if !ok {
+		that2, ok := that.(Expression_RhsDouble)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.RhsDouble != that1.RhsDouble {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsBool) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsBool)
+	if !ok {
+		that2, ok := that.(Expression_RhsBool)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.RhsBool != that1.RhsBool {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsInt) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsInt)
+	if !ok {
+		that2, ok := that.(Expression_RhsInt)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.RhsInt != that1.RhsInt {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsTime) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsTime)
+	if !ok {
+		that2, ok := that.(Expression_RhsTime)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.RhsTime.Equal(that1.RhsTime) {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsStringArray) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsStringArray)
+	if !ok {
+		that2, ok := that.(Expression_RhsStringArray)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.RhsStringArray.Equal(that1.RhsStringArray) {
+		return false
+	}
+	return true
+}
+func (this *Expression_RhsAmount) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Expression_RhsAmount)
+	if !ok {
+		that2, ok := that.(Expression_RhsAmount)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.RhsAmount.Equal(that1.RhsAmount) {
+		return false
+	}
+	return true
+}
+func (this *RepeatedString) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*RepeatedString)
+	if !ok {
+		that2, ok := that.(RepeatedString)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Items) != len(that1.Items) {
+		return false
+	}
+	for i := range this.Items {
+		if this.Items[i] != that1.Items[i] {
+			return false
+		}
 	}
 	return true
 }
@@ -302,10 +672,78 @@ func (this *Expression) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 6)
+	s := make([]string, 0, 12)
 	s = append(s, "&v1.Expression{")
 	s = append(s, "Op: "+fmt.Sprintf("%#v", this.Op)+",\n")
-	s = append(s, "Rhs: "+fmt.Sprintf("%#v", this.Rhs)+",\n")
+	if this.RhsOneof != nil {
+		s = append(s, "RhsOneof: "+fmt.Sprintf("%#v", this.RhsOneof)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *Expression_RhsString) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsString{` +
+		`RhsString:` + fmt.Sprintf("%#v", this.RhsString) + `}`}, ", ")
+	return s
+}
+func (this *Expression_RhsDouble) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsDouble{` +
+		`RhsDouble:` + fmt.Sprintf("%#v", this.RhsDouble) + `}`}, ", ")
+	return s
+}
+func (this *Expression_RhsBool) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsBool{` +
+		`RhsBool:` + fmt.Sprintf("%#v", this.RhsBool) + `}`}, ", ")
+	return s
+}
+func (this *Expression_RhsInt) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsInt{` +
+		`RhsInt:` + fmt.Sprintf("%#v", this.RhsInt) + `}`}, ", ")
+	return s
+}
+func (this *Expression_RhsTime) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsTime{` +
+		`RhsTime:` + fmt.Sprintf("%#v", this.RhsTime) + `}`}, ", ")
+	return s
+}
+func (this *Expression_RhsStringArray) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsStringArray{` +
+		`RhsStringArray:` + fmt.Sprintf("%#v", this.RhsStringArray) + `}`}, ", ")
+	return s
+}
+func (this *Expression_RhsAmount) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.Expression_RhsAmount{` +
+		`RhsAmount:` + fmt.Sprintf("%#v", this.RhsAmount) + `}`}, ", ")
+	return s
+}
+func (this *RepeatedString) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&v1.RepeatedString{")
+	s = append(s, "Items: "+fmt.Sprintf("%#v", this.Items)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -385,12 +823,14 @@ func (m *Expression) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Rhs) > 0 {
-		i -= len(m.Rhs)
-		copy(dAtA[i:], m.Rhs)
-		i = encodeVarintCommon(dAtA, i, uint64(len(m.Rhs)))
-		i--
-		dAtA[i] = 0x12
+	if m.RhsOneof != nil {
+		{
+			size := m.RhsOneof.Size()
+			i -= size
+			if _, err := m.RhsOneof.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
 	}
 	if len(m.Op) > 0 {
 		i -= len(m.Op)
@@ -398,6 +838,157 @@ func (m *Expression) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i = encodeVarintCommon(dAtA, i, uint64(len(m.Op)))
 		i--
 		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Expression_RhsString) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsString) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.RhsString)
+	copy(dAtA[i:], m.RhsString)
+	i = encodeVarintCommon(dAtA, i, uint64(len(m.RhsString)))
+	i--
+	dAtA[i] = 0x12
+	return len(dAtA) - i, nil
+}
+func (m *Expression_RhsDouble) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsDouble) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 8
+	encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.RhsDouble))))
+	i--
+	dAtA[i] = 0x19
+	return len(dAtA) - i, nil
+}
+func (m *Expression_RhsBool) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsBool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i--
+	if m.RhsBool {
+		dAtA[i] = 1
+	} else {
+		dAtA[i] = 0
+	}
+	i--
+	dAtA[i] = 0x20
+	return len(dAtA) - i, nil
+}
+func (m *Expression_RhsInt) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsInt) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = encodeVarintCommon(dAtA, i, uint64(m.RhsInt))
+	i--
+	dAtA[i] = 0x28
+	return len(dAtA) - i, nil
+}
+func (m *Expression_RhsTime) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsTime) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.RhsTime != nil {
+		{
+			size, err := m.RhsTime.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x32
+	}
+	return len(dAtA) - i, nil
+}
+func (m *Expression_RhsStringArray) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsStringArray) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.RhsStringArray != nil {
+		{
+			size, err := m.RhsStringArray.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x3a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *Expression_RhsAmount) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Expression_RhsAmount) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.RhsAmount != nil {
+		{
+			size, err := m.RhsAmount.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintCommon(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x42
+	}
+	return len(dAtA) - i, nil
+}
+func (m *RepeatedString) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RepeatedString) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RepeatedString) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for iNdEx := len(m.Items) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Items[iNdEx])
+			copy(dAtA[i:], m.Items[iNdEx])
+			i = encodeVarintCommon(dAtA, i, uint64(len(m.Items[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
 	}
 	return len(dAtA) - i, nil
 }
@@ -476,9 +1067,96 @@ func (m *Expression) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovCommon(uint64(l))
 	}
-	l = len(m.Rhs)
-	if l > 0 {
+	if m.RhsOneof != nil {
+		n += m.RhsOneof.Size()
+	}
+	return n
+}
+
+func (m *Expression_RhsString) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.RhsString)
+	n += 1 + l + sovCommon(uint64(l))
+	return n
+}
+func (m *Expression_RhsDouble) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += 9
+	return n
+}
+func (m *Expression_RhsBool) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += 2
+	return n
+}
+func (m *Expression_RhsInt) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += 1 + sovCommon(uint64(m.RhsInt))
+	return n
+}
+func (m *Expression_RhsTime) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RhsTime != nil {
+		l = m.RhsTime.Size()
 		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+func (m *Expression_RhsStringArray) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RhsStringArray != nil {
+		l = m.RhsStringArray.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+func (m *Expression_RhsAmount) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RhsAmount != nil {
+		l = m.RhsAmount.Size()
+		n += 1 + l + sovCommon(uint64(l))
+	}
+	return n
+}
+func (m *RepeatedString) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, s := range m.Items {
+			l = len(s)
+			n += 1 + l + sovCommon(uint64(l))
+		}
 	}
 	return n
 }
@@ -521,7 +1199,87 @@ func (this *Expression) String() string {
 	}
 	s := strings.Join([]string{`&Expression{`,
 		`Op:` + fmt.Sprintf("%v", this.Op) + `,`,
-		`Rhs:` + fmt.Sprintf("%v", this.Rhs) + `,`,
+		`RhsOneof:` + fmt.Sprintf("%v", this.RhsOneof) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsString) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsString{`,
+		`RhsString:` + fmt.Sprintf("%v", this.RhsString) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsDouble) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsDouble{`,
+		`RhsDouble:` + fmt.Sprintf("%v", this.RhsDouble) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsBool) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsBool{`,
+		`RhsBool:` + fmt.Sprintf("%v", this.RhsBool) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsInt) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsInt{`,
+		`RhsInt:` + fmt.Sprintf("%v", this.RhsInt) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsTime) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsTime{`,
+		`RhsTime:` + strings.Replace(fmt.Sprintf("%v", this.RhsTime), "Timestamp", "types.Timestamp", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsStringArray) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsStringArray{`,
+		`RhsStringArray:` + strings.Replace(fmt.Sprintf("%v", this.RhsStringArray), "RepeatedString", "RepeatedString", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *Expression_RhsAmount) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Expression_RhsAmount{`,
+		`RhsAmount:` + strings.Replace(fmt.Sprintf("%v", this.RhsAmount), "Amount", "Amount", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *RepeatedString) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&RepeatedString{`,
+		`Items:` + fmt.Sprintf("%v", this.Items) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -708,7 +1466,7 @@ func (m *Expression) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Rhs", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsString", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -736,7 +1494,249 @@ func (m *Expression) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Rhs = string(dAtA[iNdEx:postIndex])
+			m.RhsOneof = &Expression_RhsString{string(dAtA[iNdEx:postIndex])}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsDouble", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.RhsOneof = &Expression_RhsDouble{float64(math.Float64frombits(v))}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsBool", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			b := bool(v != 0)
+			m.RhsOneof = &Expression_RhsBool{b}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsInt", wireType)
+			}
+			var v int64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.RhsOneof = &Expression_RhsInt{v}
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsTime", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &types.Timestamp{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.RhsOneof = &Expression_RhsTime{v}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsStringArray", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &RepeatedString{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.RhsOneof = &Expression_RhsStringArray{v}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RhsAmount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &Amount{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.RhsOneof = &Expression_RhsAmount{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipCommon(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RepeatedString) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowCommon
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RepeatedString: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RepeatedString: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowCommon
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthCommon
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthCommon
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Items = append(m.Items, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

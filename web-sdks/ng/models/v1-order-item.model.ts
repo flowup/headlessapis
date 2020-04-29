@@ -5,6 +5,6 @@ import {
 
 export interface V1OrderItem {
   count?: number;
-  orderId?: string;
+  order_id?: string;
   product?: V1Product;
 }

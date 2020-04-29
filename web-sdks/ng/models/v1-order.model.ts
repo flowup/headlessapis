@@ -5,6 +5,6 @@ import {
 
 export interface V1Order {
   items?: V1OrderItem[];
-  orderId?: string;
+  order_id?: string;
   status?: string;
 }

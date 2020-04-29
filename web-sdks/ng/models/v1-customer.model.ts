@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 export interface V1Customer {
-  customerId?: string;
+  customer_id?: string;
   name?: string;
   thumbnail?: string;
 }

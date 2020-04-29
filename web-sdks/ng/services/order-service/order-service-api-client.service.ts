@@ -51,14 +51,14 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1OrderList> {
-    const path = `/orders`;
+    const path = `/order`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
     };
 
     if ('orderId' in args) {
-      options.params = options.params.set('orderId', String(args.orderId));
+      options.params = options.params.set('order_id', String(args.orderId));
     }
     return this.sendRequest<models.V1OrderList>('GET', path, options);
   }
@@ -72,7 +72,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/orders`;
+    const path = `/order`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -91,7 +91,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/orders/${args.orderId}/items:add`;
+    const path = `/order/${args.orderId}/item:add`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -110,7 +110,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/orders/${args.orderId}/items:remove`;
+    const path = `/order/${args.orderId}/item:remove`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -125,7 +125,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
   getActiveOrder(
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/orders:active`;
+    const path = `/order:active`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,

@@ -9,7 +9,7 @@ SHELL=/bin/bash
 PROTO_INCLUDES=-Iproto -I3rdparty -I=. -I=$${GOPATH}/src -I=$${GOPATH}/src/github.com/gogo/protobuf/protobuf
 PROTO_GOGOSLICK_ARGS=Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,plugins=grpc,paths=source_relative
 PROTO_GRPC_GATEWAY_ARGS=logtostderr=true,allow_patch_feature=false,paths=source_relative
-PROTO_SWAGGER_ARGS=logtostderr=true
+PROTO_SWAGGER_ARGS=logtostderr=true,json_names_for_fields=true
 ##
 ##  \e[1mTargets\e[0m
 ##   \e[34mhelp\e[0m

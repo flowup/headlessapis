@@ -3,7 +3,7 @@
 export interface V1Store {
   address?: string;
   description?: string;
-  merchant_id?: string;
+  merchantId?: string;
   name?: string;
-  store_id?: string;
+  storeId?: string;
 }

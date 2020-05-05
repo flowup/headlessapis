@@ -13,6 +13,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/golang/protobuf/descriptor"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -23,11 +24,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// Suppress "imported and not used" errors
 var _ codes.Code
 var _ io.Reader
 var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
+var _ = descriptor.ForMessage
 
 func request_AuthService_SignInWithPassword_0(ctx context.Context, marshaler runtime.Marshaler, client AuthServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq EmailPassword
@@ -97,18 +100,123 @@ func local_request_AuthService_SignUpWithPassword_0(ctx context.Context, marshal
 
 }
 
+func request_StoreService_GetStore_0(ctx context.Context, marshaler runtime.Marshaler, client StoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetStoreRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["merchant_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	msg, err := client.GetStore(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_StoreService_GetStore_0(ctx context.Context, marshaler runtime.Marshaler, server StoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetStoreRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["merchant_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	msg, err := server.GetStore(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 var (
-	filter_ProductService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_StoreService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{"merchant_id": 0, "store_id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_ProductService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client ProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_StoreService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client StoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["merchant_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProductService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StoreService_ListProducts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -117,11 +225,43 @@ func request_ProductService_ListProducts_0(ctx context.Context, marshaler runtim
 
 }
 
-func local_request_ProductService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server ProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_StoreService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server StoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ProductService_ListProducts_0); err != nil {
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["merchant_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StoreService_ListProducts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -130,12 +270,8 @@ func local_request_ProductService_ListProducts_0(ctx context.Context, marshaler 
 
 }
 
-var (
-	filter_ProductService_GetProduct_0 = &utilities.DoubleArray{Encoding: map[string]int{"productId": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
-
-func request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client ProductServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ProductFilter
+func request_StoreService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client StoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProductRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -145,22 +281,37 @@ func request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.
 		_   = err
 	)
 
-	val, ok = pathParams["productId"]
+	val, ok = pathParams["merchant_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "productId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	val, ok = pathParams["product_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
 	}
 
 	protoReq.ProductId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "productId", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProductService_GetProduct_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
 	}
 
 	msg, err := client.GetProduct(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -168,8 +319,8 @@ func request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_ProductService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server ProductServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ProductFilter
+func local_request_StoreService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server StoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProductRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -179,19 +330,37 @@ func local_request_ProductService_GetProduct_0(ctx context.Context, marshaler ru
 		_   = err
 	)
 
-	val, ok = pathParams["productId"]
+	val, ok = pathParams["merchant_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "productId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["store_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "store_id")
+	}
+
+	protoReq.StoreId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
+	}
+
+	val, ok = pathParams["product_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
 	}
 
 	protoReq.ProductId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "productId", err)
-	}
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_ProductService_GetProduct_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
 	}
 
 	msg, err := server.GetProduct(ctx, &protoReq)
@@ -236,15 +405,15 @@ func request_OrderService_AddItemToOrder_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["orderId"]
+	val, ok = pathParams["order_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "orderId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "order_id")
 	}
 
 	protoReq.OrderId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "orderId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_id", err)
 	}
 
 	msg, err := client.AddItemToOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -271,15 +440,15 @@ func local_request_OrderService_AddItemToOrder_0(ctx context.Context, marshaler 
 		_   = err
 	)
 
-	val, ok = pathParams["orderId"]
+	val, ok = pathParams["order_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "orderId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "order_id")
 	}
 
 	protoReq.OrderId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "orderId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_id", err)
 	}
 
 	msg, err := server.AddItemToOrder(ctx, &protoReq)
@@ -306,15 +475,15 @@ func request_OrderService_RemoveItemFromOrder_0(ctx context.Context, marshaler r
 		_   = err
 	)
 
-	val, ok = pathParams["orderId"]
+	val, ok = pathParams["order_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "orderId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "order_id")
 	}
 
 	protoReq.OrderId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "orderId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_id", err)
 	}
 
 	msg, err := client.RemoveItemFromOrder(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -341,15 +510,15 @@ func local_request_OrderService_RemoveItemFromOrder_0(ctx context.Context, marsh
 		_   = err
 	)
 
-	val, ok = pathParams["orderId"]
+	val, ok = pathParams["order_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "orderId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "order_id")
 	}
 
 	protoReq.OrderId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "orderId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "order_id", err)
 	}
 
 	msg, err := server.RemoveItemFromOrder(ctx, &protoReq)
@@ -415,7 +584,10 @@ func local_request_OrderService_ListOrders_0(ctx context.Context, marshaler runt
 	var protoReq OrderFilter
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_OrderService_ListOrders_0); err != nil {
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_OrderService_ListOrders_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -472,12 +644,12 @@ func RegisterAuthServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 	return nil
 }
 
-// RegisterProductServiceHandlerServer registers the http handlers for service ProductService to "mux".
-// UnaryRPC     :call ProductServiceServer directly.
+// RegisterStoreServiceHandlerServer registers the http handlers for service StoreService to "mux".
+// UnaryRPC     :call StoreServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-func RegisterProductServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProductServiceServer) error {
+func RegisterStoreServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server StoreServiceServer) error {
 
-	mux.Handle("GET", pattern_ProductService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_StoreService_GetStore_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -486,18 +658,18 @@ func RegisterProductServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ProductService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_StoreService_GetStore_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ProductService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StoreService_GetStore_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_ProductService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_StoreService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -506,14 +678,34 @@ func RegisterProductServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ProductService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_StoreService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ProductService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StoreService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_StoreService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_StoreService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_StoreService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -710,9 +902,9 @@ func RegisterAuthServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 }
 
 var (
-	pattern_AuthService_SignInWithPassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"accounts"}, "signIn", runtime.AssumeColonVerbOpt(true)))
+	pattern_AuthService_SignInWithPassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"account"}, "signIn", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_AuthService_SignUpWithPassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"accounts"}, "signUp", runtime.AssumeColonVerbOpt(true)))
+	pattern_AuthService_SignUpWithPassword_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"account"}, "signUp", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -721,9 +913,9 @@ var (
 	forward_AuthService_SignUpWithPassword_0 = runtime.ForwardResponseMessage
 )
 
-// RegisterProductServiceHandlerFromEndpoint is same as RegisterProductServiceHandler but
+// RegisterStoreServiceHandlerFromEndpoint is same as RegisterStoreServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterProductServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterStoreServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -743,23 +935,23 @@ func RegisterProductServiceHandlerFromEndpoint(ctx context.Context, mux *runtime
 		}()
 	}()
 
-	return RegisterProductServiceHandler(ctx, mux, conn)
+	return RegisterStoreServiceHandler(ctx, mux, conn)
 }
 
-// RegisterProductServiceHandler registers the http handlers for service ProductService to "mux".
+// RegisterStoreServiceHandler registers the http handlers for service StoreService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterProductServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterProductServiceHandlerClient(ctx, mux, NewProductServiceClient(conn))
+func RegisterStoreServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterStoreServiceHandlerClient(ctx, mux, NewStoreServiceClient(conn))
 }
 
-// RegisterProductServiceHandlerClient registers the http handlers for service ProductService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProductServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProductServiceClient"
+// RegisterStoreServiceHandlerClient registers the http handlers for service StoreService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "StoreServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "StoreServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "ProductServiceClient" to call the correct interceptors.
-func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProductServiceClient) error {
+// "StoreServiceClient" to call the correct interceptors.
+func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client StoreServiceClient) error {
 
-	mux.Handle("GET", pattern_ProductService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_StoreService_GetStore_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -768,18 +960,18 @@ func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ProductService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_StoreService_GetStore_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ProductService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StoreService_GetStore_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_ProductService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_StoreService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -788,14 +980,34 @@ func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ProductService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_StoreService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ProductService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_StoreService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_StoreService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_StoreService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_StoreService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -803,15 +1015,19 @@ func RegisterProductServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ProductService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"products"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_StoreService_GetStore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"merchant", "merchant_id", "store", "store_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProductService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"products", "productId"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_StoreService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchant", "merchant_id", "store", "store_id", "product"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_StoreService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchant", "merchant_id", "store", "store_id", "product", "product_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_ProductService_ListProducts_0 = runtime.ForwardResponseMessage
+	forward_StoreService_GetStore_0 = runtime.ForwardResponseMessage
 
-	forward_ProductService_GetProduct_0 = runtime.ForwardResponseMessage
+	forward_StoreService_ListProducts_0 = runtime.ForwardResponseMessage
+
+	forward_StoreService_GetProduct_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrderServiceHandlerFromEndpoint is same as RegisterOrderServiceHandler but
@@ -956,15 +1172,15 @@ func RegisterOrderServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_OrderService_GetActiveOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"orders"}, "active", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_GetActiveOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"order"}, "active", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_AddItemToOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"orders", "orderId", "items"}, "add", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_AddItemToOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"order", "order_id", "item"}, "add", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_RemoveItemFromOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"orders", "orderId", "items"}, "remove", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_RemoveItemFromOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"order", "order_id", "item"}, "remove", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_SubmitOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"orders"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_SubmitOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"order"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_ListOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"orders"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_ListOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"order"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

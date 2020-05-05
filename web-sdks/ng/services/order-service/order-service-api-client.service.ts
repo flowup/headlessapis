@@ -58,7 +58,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     };
 
     if ('orderId' in args) {
-      options.params = options.params.set('order_id', String(args.orderId));
+      options.params = options.params.set('orderId', String(args.orderId));
     }
     return this.sendRequest<models.V1OrderList>('GET', path, options);
   }

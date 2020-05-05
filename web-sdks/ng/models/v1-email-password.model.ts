@@ -2,6 +2,6 @@
 
 export interface V1EmailPassword {
   email?: string;
-  merchant_id?: string;
+  merchantId?: string;
   password?: string;
 }

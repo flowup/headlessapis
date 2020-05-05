@@ -79,7 +79,7 @@ export class StoreServiceAPIClient implements StoreServiceAPIClientInterface {
     };
 
     if ('productId' in args) {
-      options.params = options.params.set('product_id', String(args.productId));
+      options.params = options.params.set('productId', String(args.productId));
     }
     return this.sendRequest<models.V1StoreItemList>('GET', path, options);
   }

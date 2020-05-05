@@ -7,9 +7,9 @@ import {
 export interface V1StoreItem {
   amount?: V1Amount;
   count?: number;
-  created_at?: string;
-  inventory_id?: string;
-  merchant_id?: string;
+  createdAt?: string;
+  inventoryId?: string;
+  merchantId?: string;
   product?: V1Product;
-  product_id?: string;
+  productId?: string;
 }

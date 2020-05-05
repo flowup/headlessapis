@@ -31,8 +31,8 @@ export function isV1Customer(arg: any): arg is models.V1Customer {
   return (
   arg != null &&
   typeof arg === 'object' &&
-    // customer_id?: string
-    ( typeof arg.customer_id === 'undefined' || typeof arg.customer_id === 'string' ) &&
+    // customerId?: string
+    ( typeof arg.customerId === 'undefined' || typeof arg.customerId === 'string' ) &&
     // name?: string
     ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
     // thumbnail?: string
@@ -48,8 +48,8 @@ export function isV1EmailPassword(arg: any): arg is models.V1EmailPassword {
   typeof arg === 'object' &&
     // email?: string
     ( typeof arg.email === 'undefined' || typeof arg.email === 'string' ) &&
-    // merchant_id?: string
-    ( typeof arg.merchant_id === 'undefined' || typeof arg.merchant_id === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
     // password?: string
     ( typeof arg.password === 'undefined' || typeof arg.password === 'string' ) &&
 
@@ -63,8 +63,8 @@ export function isV1Order(arg: any): arg is models.V1Order {
   typeof arg === 'object' &&
     // items?: V1OrderItem[]
     ( typeof arg.items === 'undefined' || (Array.isArray(arg.items) && arg.items.every((item: unknown) => isV1OrderItem(item))) ) &&
-    // order_id?: string
-    ( typeof arg.order_id === 'undefined' || typeof arg.order_id === 'string' ) &&
+    // orderId?: string
+    ( typeof arg.orderId === 'undefined' || typeof arg.orderId === 'string' ) &&
     // status?: string
     ( typeof arg.status === 'undefined' || typeof arg.status === 'string' ) &&
 
@@ -78,8 +78,8 @@ export function isV1OrderItem(arg: any): arg is models.V1OrderItem {
   typeof arg === 'object' &&
     // count?: number
     ( typeof arg.count === 'undefined' || typeof arg.count === 'number' ) &&
-    // order_id?: string
-    ( typeof arg.order_id === 'undefined' || typeof arg.order_id === 'string' ) &&
+    // orderId?: string
+    ( typeof arg.orderId === 'undefined' || typeof arg.orderId === 'string' ) &&
     // product?: V1Product
     ( typeof arg.product === 'undefined' || isV1Product(arg.product) ) &&
 
@@ -110,12 +110,12 @@ export function isV1Product(arg: any): arg is models.V1Product {
     ( typeof arg.images === 'undefined' || (Array.isArray(arg.images) && arg.images.every((item: unknown) => typeof item === 'string')) ) &&
     // labels?: { [key: string]: string }
     ( typeof arg.labels === 'undefined' || typeof arg.labels === 'string' ) &&
-    // merchant_id?: string
-    ( typeof arg.merchant_id === 'undefined' || typeof arg.merchant_id === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
     // name?: string
     ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
-    // product_id?: string
-    ( typeof arg.product_id === 'undefined' || typeof arg.product_id === 'string' ) &&
+    // productId?: string
+    ( typeof arg.productId === 'undefined' || typeof arg.productId === 'string' ) &&
 
   true
   );
@@ -129,12 +129,12 @@ export function isV1Store(arg: any): arg is models.V1Store {
     ( typeof arg.address === 'undefined' || typeof arg.address === 'string' ) &&
     // description?: string
     ( typeof arg.description === 'undefined' || typeof arg.description === 'string' ) &&
-    // merchant_id?: string
-    ( typeof arg.merchant_id === 'undefined' || typeof arg.merchant_id === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
     // name?: string
     ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
-    // store_id?: string
-    ( typeof arg.store_id === 'undefined' || typeof arg.store_id === 'string' ) &&
+    // storeId?: string
+    ( typeof arg.storeId === 'undefined' || typeof arg.storeId === 'string' ) &&
 
   true
   );
@@ -148,16 +148,16 @@ export function isV1StoreItem(arg: any): arg is models.V1StoreItem {
     ( typeof arg.amount === 'undefined' || isV1Amount(arg.amount) ) &&
     // count?: number
     ( typeof arg.count === 'undefined' || typeof arg.count === 'number' ) &&
-    // created_at?: string
-    ( typeof arg.created_at === 'undefined' || typeof arg.created_at === 'string' ) &&
-    // inventory_id?: string
-    ( typeof arg.inventory_id === 'undefined' || typeof arg.inventory_id === 'string' ) &&
-    // merchant_id?: string
-    ( typeof arg.merchant_id === 'undefined' || typeof arg.merchant_id === 'string' ) &&
+    // createdAt?: string
+    ( typeof arg.createdAt === 'undefined' || typeof arg.createdAt === 'string' ) &&
+    // inventoryId?: string
+    ( typeof arg.inventoryId === 'undefined' || typeof arg.inventoryId === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
     // product?: V1Product
     ( typeof arg.product === 'undefined' || isV1Product(arg.product) ) &&
-    // product_id?: string
-    ( typeof arg.product_id === 'undefined' || typeof arg.product_id === 'string' ) &&
+    // productId?: string
+    ( typeof arg.productId === 'undefined' || typeof arg.productId === 'string' ) &&
 
   true
   );

@@ -5,7 +5,7 @@ export interface V1Product {
   description?: string;
   images?: string[];
   labels?: { [key: string]: string };
-  merchant_id?: string;
+  merchantId?: string;
   name?: string;
-  product_id?: string;
+  productId?: string;
 }

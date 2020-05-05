@@ -4,6 +4,10 @@
     "title": "v1/admin_api.proto",
     "version": "version not set"
   },
+  "schemes": [
+    "http",
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -14,18 +18,12 @@
     "/merchants": {
       "get": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
-        "operationId": "MerchantService_GetMerchants",
+        "operationId": "GetMerchants",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1MerchantList"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -35,18 +33,12 @@
       },
       "post": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
-        "operationId": "MerchantService_CreateMerchant",
+        "operationId": "CreateMerchant",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Merchant"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -65,27 +57,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/customers": {
+    "/merchants/{merchantId}/customers": {
       "get": {
-        "summary": "GetProviders returns all providers that the user has access to",
-        "operationId": "CustomerService_GetCustomers",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "GetCustomers",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1CustomerList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -96,25 +82,19 @@
         ]
       },
       "post": {
-        "summary": "CreateProvider creates a provider for the particular merchant",
-        "operationId": "CustomerService_CreateCustomer",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateCustomer",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Customer"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -133,33 +113,27 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/inventories/{inventory_id}/items": {
+    "/merchants/{merchantId}/inventories/{inventoryId}/items": {
       "get": {
-        "summary": "Loads all items from given inventory.",
-        "operationId": "InventoryService_ListInventoryItems",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "ListInventoryItems",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1InventoryItemList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "inventory_id",
+            "name": "inventoryId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -170,31 +144,25 @@
         ]
       },
       "post": {
-        "summary": "Adds an inventory item into the inventory of a merchant.",
-        "operationId": "InventoryService_AddInventoryItem",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "AddInventoryItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1InventoryItem"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "inventory_id",
+            "name": "inventoryId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -213,39 +181,33 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/inventories/{inventory_id}/items/{product_id}": {
+    "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}": {
       "put": {
-        "summary": "Updates data stored in inventory Firestore collection",
-        "operationId": "InventoryService_UpdateInventoryItem",
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "UpdateInventoryItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1InventoryItem"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "inventory_id",
+            "name": "inventoryId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "product_id",
+            "name": "productId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -264,32 +226,27 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/orders": {
+    "/merchants/{merchantId}/orders": {
       "get": {
-        "operationId": "OrderService_ListOrders",
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "ListOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1OrderList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "order_id",
+            "name": "orderId",
             "in": "query",
             "required": false,
             "type": "string"
@@ -313,7 +270,7 @@
             "collectionFormat": "multi"
           },
           {
-            "name": "store_id",
+            "name": "storeId",
             "in": "query",
             "required": false,
             "type": "string"
@@ -324,27 +281,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/products": {
+    "/merchants/{merchantId}/products": {
       "get": {
-        "summary": "Returns all products assigned to a particular merchant",
-        "operationId": "ProductService_ListProducts",
+        "summary": "GetUsers returns all users present in the merchant",
+        "operationId": "ListProducts",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ProductList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
@@ -356,25 +307,19 @@
         ]
       },
       "post": {
-        "summary": "CreateProduct creates a product in the firestore for a particular merchant",
-        "operationId": "ProductService_CreateProduct",
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "CreateProduct",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Product"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
@@ -394,25 +339,19 @@
         ]
       },
       "put": {
-        "summary": "UpdateProduct updates a product in the firestore for a particular merchant",
-        "operationId": "ProductService_UpdateProduct",
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "UpdateProduct",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Product"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
@@ -432,34 +371,28 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/products/{product_id}": {
+    "/merchants/{merchantId}/products/{productId}": {
       "get": {
         "summary": "Loads single product from a given merchant",
-        "operationId": "ProductService_GetProduct",
+        "operationId": "GetProduct",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Product"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "description": "Required. Id of the merchant to which the product is assigned",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "product_id",
+            "name": "productId",
             "description": "Required. Id of the product",
             "in": "path",
             "required": true,
@@ -471,27 +404,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/providers": {
+    "/merchants/{merchantId}/providers": {
       "get": {
-        "summary": "UpdateOrder update an attributes in order",
-        "operationId": "ProviderService_GetProviders",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "GetProviders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ProviderList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -502,25 +429,19 @@
         ]
       },
       "post": {
-        "summary": "CreateOrder creates an order for the particular user in the store",
-        "operationId": "ProviderService_CreateProvider",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateProvider",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Provider"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -539,27 +460,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/schemas": {
+    "/merchants/{merchantId}/schemas": {
       "post": {
-        "summary": "CreateProductSchema creates the product schema in the system",
-        "operationId": "ProductService_CreateProductSchema",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "CreateProductSchema",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ProductSchema"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -578,27 +493,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/schemas:dry": {
+    "/merchants/{merchantId}/schemas:dry": {
       "post": {
-        "summary": "CreateProductSchemaDry validates provided product schema and returns a list\nof errors or the product schema on success",
-        "operationId": "ProductService_CreateProductSchemaDry",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateProductSchemaDry",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ProductSchema"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -617,27 +526,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/stores": {
+    "/merchants/{merchantId}/stores": {
       "get": {
-        "summary": "Loads all stores from given merchant",
-        "operationId": "StoreService_ListStores",
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "ListStores",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1StoreList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -648,25 +551,19 @@
         ]
       },
       "post": {
-        "summary": "Create store creates the store for the particular merchant and returns\nthe store object back to the caller",
-        "operationId": "StoreService_CreateStore",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "CreateStore",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Store"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -685,25 +582,19 @@
         ]
       },
       "put": {
-        "summary": "Update store creates the store for the particular merchant and returns\nthe store object back to the caller",
-        "operationId": "StoreService_UpdateStore",
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "UpdateStore",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Store"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -722,33 +613,27 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/stores/{store_id}": {
+    "/merchants/{merchantId}/stores/{storeId}": {
       "get": {
-        "summary": "Loads single store from a given merchant",
-        "operationId": "StoreService_GetStore",
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "GetStore",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1StoreDetails"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "store_id",
+            "name": "storeId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -759,32 +644,27 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/stores/{store_id}/orders": {
+    "/merchants/{merchantId}/stores/{storeId}/orders": {
       "post": {
-        "operationId": "OrderService_CreateOrder",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "store_id",
+            "name": "storeId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -803,38 +683,33 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/stores/{store_id}/orders/{order_id}": {
+    "/merchants/{merchantId}/stores/{storeId}/orders/{orderId}": {
       "delete": {
-        "operationId": "OrderService_CancelOrder",
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "CancelOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "store_id",
+            "name": "storeId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "order_id",
+            "name": "orderId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -845,36 +720,31 @@
         ]
       },
       "put": {
-        "operationId": "OrderService_UpdateOrder",
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "UpdateOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "store_id",
+            "name": "storeId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "order_id",
+            "name": "orderId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -893,27 +763,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/stores:dry": {
+    "/merchants/{merchantId}/stores:dry": {
       "post": {
-        "summary": "CreateStoreDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the store\nfor the particular merchant",
-        "operationId": "StoreService_CreateStoreDry",
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateStoreDry",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Store"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -932,27 +796,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/upload": {
+    "/merchants/{merchantId}/upload": {
       "post": {
-        "summary": "CreateUpload creates an upload link for the merchant gallery",
-        "operationId": "ProductService_CreateUpload",
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "CreateUpload",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UploadMeta"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -971,27 +829,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/users": {
+    "/merchants/{merchantId}/users": {
       "get": {
         "summary": "GetUsers returns all users present in the merchant",
-        "operationId": "MerchantService_GetUsers",
+        "operationId": "GetUsers",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UserList"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "description": "[Required] merchant_id can be set only once and is unchangeable during lifetime",
             "in": "path",
             "required": true,
@@ -1011,24 +863,18 @@
       },
       "post": {
         "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
-        "operationId": "MerchantService_InviteUser",
+        "operationId": "InviteUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1User"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1047,27 +893,21 @@
         ]
       }
     },
-    "/merchants/{merchant_id}/users:dry": {
+    "/merchants/{merchantId}/users:dry": {
       "post": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
-        "operationId": "MerchantService_InviteUserDry",
+        "operationId": "InviteUserDry",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1User"
             }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
           }
         },
         "parameters": [
           {
-            "name": "merchant_id",
+            "name": "merchantId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1089,18 +929,12 @@
     "/merchants:dry": {
       "post": {
         "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "MerchantService_CreateMerchantDry",
+        "operationId": "CreateMerchantDry",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Merchant"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1121,49 +955,16 @@
     }
   },
   "definitions": {
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "runtimeError": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "type": "string"
-        },
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
     "v1AddInventoryItemRequest": {
       "type": "object",
       "properties": {
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "inventory_id": {
+        "inventoryId": {
           "type": "string"
         },
-        "product_id": {
+        "productId": {
           "type": "string"
         },
         "amount": {
@@ -1192,7 +993,7 @@
     "v1CreateOrderRequest": {
       "type": "object",
       "properties": {
-        "order_id": {
+        "orderId": {
           "type": "string"
         },
         "status": {
@@ -1207,13 +1008,13 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "total_amount": {
+        "totalAmount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "store_id": {
+        "storeId": {
           "type": "string"
         }
       }
@@ -1221,20 +1022,20 @@
     "v1CreateProductRequest": {
       "type": "object",
       "properties": {
-        "product_id": {
+        "productId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string",
           "title": "Required. Id of the merchant to which the product is assigned"
         },
-        "store_ids": {
+        "storeIds": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "provider_id": {
+        "providerId": {
           "type": "string"
         },
         "name": {
@@ -1243,7 +1044,7 @@
         "description": {
           "type": "string"
         },
-        "default_amount": {
+        "defaultAmount": {
           "$ref": "#/definitions/v1Amount"
         },
         "images": {
@@ -1270,11 +1071,11 @@
     "v1CreateStoreRequest": {
       "type": "object",
       "properties": {
-        "store_id": {
+        "storeId": {
           "type": "string",
           "title": "Optional custom ID"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
         "name": {
@@ -1293,10 +1094,10 @@
     "v1Customer": {
       "type": "object",
       "properties": {
-        "customer_id": {
+        "customerId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         }
       }
@@ -1311,35 +1112,35 @@
           "type": "string",
           "title": "Operator used in expression"
         },
-        "rhs_string": {
+        "rhsString": {
           "type": "string"
         },
-        "rhs_double": {
+        "rhsDouble": {
           "type": "number",
           "format": "double"
         },
-        "rhs_bool": {
+        "rhsBool": {
           "type": "boolean",
           "format": "boolean"
         },
-        "rhs_int": {
+        "rhsInt": {
           "type": "string",
           "format": "int64"
         },
-        "rhs_time": {
+        "rhsTime": {
           "type": "string",
           "format": "date-time"
         },
-        "rhs_string_array": {
+        "rhsStringArray": {
           "$ref": "#/definitions/v1RepeatedString"
         },
-        "rhs_amount": {
+        "rhsAmount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "rhs_ref": {
+        "rhsRef": {
           "type": "string"
         },
-        "rhs_ref_array": {
+        "rhsRefArray": {
           "$ref": "#/definitions/v1RepeatedString"
         }
       },
@@ -1360,16 +1161,16 @@
     "v1InventoryItem": {
       "type": "object",
       "properties": {
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "product_id": {
+        "productId": {
           "type": "string"
         },
-        "inventory_id": {
+        "inventoryId": {
           "type": "string"
         },
-        "created_at": {
+        "createdAt": {
           "type": "string",
           "format": "date-time"
         },
@@ -1400,7 +1201,7 @@
     "v1Merchant": {
       "type": "object",
       "properties": {
-        "merchant_id": {
+        "merchantId": {
           "type": "string",
           "title": "[Required] merchant_id can be set only once and is unchangeable during lifetime"
         },
@@ -1424,7 +1225,7 @@
     "v1Order": {
       "type": "object",
       "properties": {
-        "order_id": {
+        "orderId": {
           "type": "string"
         },
         "status": {
@@ -1439,17 +1240,17 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "total_amount": {
+        "totalAmount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "created_at": {
+        "createdAt": {
           "type": "string",
           "format": "int64"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "store_id": {
+        "storeId": {
           "type": "string"
         }
       }
@@ -1467,7 +1268,7 @@
         "amount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "order_id": {
+        "orderId": {
           "type": "string"
         }
       }
@@ -1498,22 +1299,22 @@
     "v1Product": {
       "type": "object",
       "properties": {
-        "product_id": {
+        "productId": {
           "type": "string"
         },
-        "product_schema_id": {
+        "productSchemaId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "store_ids": {
+        "storeIds": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "provider_id": {
+        "providerId": {
           "type": "string"
         },
         "name": {
@@ -1522,7 +1323,7 @@
         "description": {
           "type": "string"
         },
-        "default_amount": {
+        "defaultAmount": {
           "$ref": "#/definitions/v1Amount"
         },
         "images": {
@@ -1560,17 +1361,17 @@
     "v1ProductSchema": {
       "type": "object",
       "properties": {
-        "product_schema_id": {
+        "productSchemaId": {
           "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "created_by": {
+        "createdBy": {
           "$ref": "#/definitions/v1User",
           "title": "createdBy is a reference to the user that created this product schema"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
         "labels": {
@@ -1591,10 +1392,10 @@
     "v1Provider": {
       "type": "object",
       "properties": {
-        "provider_id": {
+        "providerId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         }
       }
@@ -1617,13 +1418,13 @@
     "v1Store": {
       "type": "object",
       "properties": {
-        "store_id": {
+        "storeId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "created_at": {
+        "createdAt": {
           "type": "string",
           "format": "date-time"
         },
@@ -1637,7 +1438,7 @@
         "description": {
           "type": "string"
         },
-        "inventory_ids": {
+        "inventoryIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1648,13 +1449,13 @@
     "v1StoreDetails": {
       "type": "object",
       "properties": {
-        "store_id": {
+        "storeId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "created_at": {
+        "createdAt": {
           "type": "string",
           "format": "date-time"
         },
@@ -1668,15 +1469,15 @@
         "description": {
           "type": "string"
         },
-        "product_counter": {
+        "productCounter": {
           "type": "integer",
           "format": "int64"
         },
-        "item_counter": {
+        "itemCounter": {
           "type": "integer",
           "format": "int64"
         },
-        "inventory_ids": {
+        "inventoryIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1704,13 +1505,13 @@
     "v1UpdateInventoryItemRequest": {
       "type": "object",
       "properties": {
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "inventory_id": {
+        "inventoryId": {
           "type": "string"
         },
-        "product_id": {
+        "productId": {
           "type": "string"
         },
         "amount": {
@@ -1726,7 +1527,7 @@
     "v1UpdateOrderRequest": {
       "type": "object",
       "properties": {
-        "order_id": {
+        "orderId": {
           "type": "string"
         },
         "status": {
@@ -1741,13 +1542,13 @@
             "$ref": "#/definitions/v1OrderItem"
           }
         },
-        "total_amount": {
+        "totalAmount": {
           "$ref": "#/definitions/v1Amount"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
-        "store_id": {
+        "storeId": {
           "type": "string"
         }
       }
@@ -1755,20 +1556,20 @@
     "v1UpdateProductRequest": {
       "type": "object",
       "properties": {
-        "product_id": {
+        "productId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string",
           "title": "Required. Id of the merchant to which the product is assigned"
         },
-        "store_ids": {
+        "storeIds": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "provider_id": {
+        "providerId": {
           "type": "string"
         },
         "name": {
@@ -1777,7 +1578,7 @@
         "description": {
           "type": "string"
         },
-        "default_amount": {
+        "defaultAmount": {
           "$ref": "#/definitions/v1Amount"
         },
         "images": {
@@ -1804,10 +1605,10 @@
     "v1UpdateStoreRequest": {
       "type": "object",
       "properties": {
-        "store_id": {
+        "storeId": {
           "type": "string"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
         "name": {
@@ -1820,7 +1621,7 @@
         "description": {
           "type": "string"
         },
-        "inventory_ids": {
+        "inventoryIds": {
           "type": "array",
           "items": {
             "type": "string"
@@ -1832,7 +1633,7 @@
     "v1UploadMeta": {
       "type": "object",
       "properties": {
-        "file_name": {
+        "fileName": {
           "type": "string",
           "title": "[Required] fileName is searchable throughout the system"
         },
@@ -1840,7 +1641,7 @@
           "type": "string",
           "title": "[Output Only] this is being provided by the system after the file is uploaded"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
         "labels": {
@@ -1863,11 +1664,11 @@
         "email": {
           "type": "string"
         },
-        "invited_by_id": {
+        "invitedById": {
           "type": "string",
           "title": "id of the user this user was invited by into the system"
         },
-        "merchant_id": {
+        "merchantId": {
           "type": "string"
         },
         "thumbnail": {

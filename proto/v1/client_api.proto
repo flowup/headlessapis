@@ -92,6 +92,7 @@ message StoreItem {
 message Product {
     string product_id = 1;
     string merchant_id = 2;
+    string store_id = 3;
 
     string name = 10;
     string description = 11;

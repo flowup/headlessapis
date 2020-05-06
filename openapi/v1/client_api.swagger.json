@@ -542,6 +542,9 @@
         "merchantId": {
           "type": "string"
         },
+        "storeId": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         },

@@ -116,6 +116,8 @@ export function isV1Product(arg: any): arg is models.V1Product {
     ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
     // productId?: string
     ( typeof arg.productId === 'undefined' || typeof arg.productId === 'string' ) &&
+    // storeId?: string
+    ( typeof arg.storeId === 'undefined' || typeof arg.storeId === 'string' ) &&
 
   true
   );

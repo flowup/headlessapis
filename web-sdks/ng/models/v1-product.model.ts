@@ -8,4 +8,5 @@ export interface V1Product {
   merchantId?: string;
   name?: string;
   productId?: string;
+  storeId?: string;
 }

@@ -24,7 +24,6 @@ export interface StoreServiceAPIClientInterface {
     args: {
       merchantId: string,
       storeId: string,
-      productId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItemList>;

@@ -68,7 +68,6 @@ export class StoreServiceAPIClient implements StoreServiceAPIClientInterface {
     args: {
       merchantId: string,
       storeId: string,
-      productId?: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItemList> {
@@ -78,9 +77,6 @@ export class StoreServiceAPIClient implements StoreServiceAPIClientInterface {
       ...requestHttpOptions,
     };
 
-    if ('productId' in args) {
-      options.params = options.params.set('productId', String(args.productId));
-    }
     return this.sendRequest<models.V1StoreItemList>('GET', path, options);
   }
 

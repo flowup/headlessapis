@@ -111,9 +111,8 @@ message GetProductRequest {
 
 // Request for filtering product in a store
 message ProductFilter {
-    string product_id = 1;
-    string merchant_id = 2;
-    string store_id = 3;
+    string merchant_id = 1;
+    string store_id = 2;
 
     // Generic filter where the keys are paths in the Product json
     map<string, common.v1.ExpressionList> filter = 10;

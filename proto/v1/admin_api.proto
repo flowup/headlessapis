@@ -236,9 +236,12 @@ service InventoryService {
     }
 }
 
+// Request for filtering the inventory items
 message ListInventoryItemsRequest {
     string merchant_id = 1;
     string inventory_id = 2;
+
+    map<string, common.v1.ExpressionList> filter = 10;
 }
 
 // Request for adding product items within inventory.

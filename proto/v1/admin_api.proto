@@ -241,6 +241,16 @@ message ListInventoryItemsRequest {
     string merchant_id = 1;
     string inventory_id = 2;
 
+    // Possible attributes on which expressions can be built on:
+    // - "product.createdAt"
+    // - "product.name"
+    // - "product.description"
+    // - "product.labels"
+    // - "product.attributes"
+    // - "amount"
+    // - "amount.value"
+    // - "amount.currency"
+    // - "count"
     map<string, common.v1.ExpressionList> filter = 10;
 }
 

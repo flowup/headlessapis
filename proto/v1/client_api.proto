@@ -45,14 +45,14 @@ service StoreService {
         };
     }
 
-    // Lists all products for given store with brief details
+    // Lists all products for a given store with brief details
     rpc ListProducts (ProductFilter) returns (StoreItemList) {
         option (google.api.http) = {
             get: "/merchant/{merchant_id}/store/{store_id}/product"
         };
     }
 
-    // Retrieves more detailed information about product
+    // Retrieves more detailed information about the product
     rpc GetProduct(GetProductRequest) returns (StoreItem) {
         option (google.api.http) = {
             get: "/merchant/{merchant_id}/store/{store_id}/product/{product_id}"
@@ -71,7 +71,7 @@ message Store {
     string description = 13;
 }
 
-// Request for loading single store by ID from given merchant.
+// Request for loading a single store by ID from a given merchant.
 message GetStoreRequest {
     string store_id = 1;
     string merchant_id = 2;
@@ -79,7 +79,7 @@ message GetStoreRequest {
 
 message StoreItem {
     string merchant_id = 1;
-    string product_id = 2;
+    string store_item_id = 2;
     string inventory_id = 3;
     google.protobuf.Timestamp created_at = 4;
 
@@ -114,7 +114,16 @@ message ProductFilter {
     string merchant_id = 1;
     string store_id = 2;
 
-    // Generic filter where the keys are paths in the Product json
+    // Possible attributes on which expressions can be built on:
+    // - "product.createdAt"
+    // - "product.name"
+    // - "product.description"
+    // - "product.labels"
+    // - "product.attributes"
+    // - "amount"
+    // - "amount.value"
+    // - "amount.currency"
+    // - "count"
     map<string, common.v1.ExpressionList> filter = 10;
 }
 

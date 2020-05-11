@@ -803,9 +803,19 @@ func (m *StoreList) GetItems() []*Store {
 
 // Request for filtering the inventory items
 type ListInventoryItemsRequest struct {
-	MerchantId  string                        `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
-	InventoryId string                        `protobuf:"bytes,2,opt,name=inventory_id,json=inventoryId,proto3" json:"inventory_id,omitempty"`
-	Filter      map[string]*v1.ExpressionList `protobuf:"bytes,10,rep,name=filter,proto3" json:"filter,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	MerchantId  string `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
+	InventoryId string `protobuf:"bytes,2,opt,name=inventory_id,json=inventoryId,proto3" json:"inventory_id,omitempty"`
+	// Possible attributes on which expressions can be built on:
+	// - "product.createdAt"
+	// - "product.name"
+	// - "product.description"
+	// - "product.labels"
+	// - "product.attributes"
+	// - "amount"
+	// - "amount.value"
+	// - "amount.currency"
+	// - "count"
+	Filter map[string]*v1.ExpressionList `protobuf:"bytes,10,rep,name=filter,proto3" json:"filter,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
 
 func (m *ListInventoryItemsRequest) Reset()      { *m = ListInventoryItemsRequest{} }

@@ -11,5 +11,5 @@ export interface V1StoreItem {
   inventoryId?: string;
   merchantId?: string;
   product?: V1Product;
-  productId?: string;
+  storeItemId?: string;
 }

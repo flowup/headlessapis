@@ -38,7 +38,7 @@ message Customer {
 }
 
 service StoreService {
-    // Retrieves basic information about given store
+    // Retrieves basic information about a given store
     rpc GetStore (GetStoreRequest) returns (Store) {
         option (google.api.http) = {
             get: "/merchant/{merchant_id}/store/{store_id}"

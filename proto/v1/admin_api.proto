@@ -355,7 +355,7 @@ message ListProductsRequest {
     string merchant_id = 1;
 
     // Expressions used for filtering, key specifies filtered attribute
-    map<string, common.v1.ExpressionList> filter = 2;
+    map<string, string> filter = 2;
 }
 
 message ProductList {

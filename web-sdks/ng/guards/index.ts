@@ -14,6 +14,19 @@ return arg != null && typeof arg.lastModified === 'number' && typeof arg.name ==
 
 /* generated type guards */
 
+export function isV1Amount(arg: any): arg is models.V1Amount {
+  return (
+  arg != null &&
+  typeof arg === 'object' &&
+    // currency?: string
+    ( typeof arg.currency === 'undefined' || typeof arg.currency === 'string' ) &&
+    // value?: number
+    ( typeof arg.value === 'undefined' || typeof arg.value === 'number' ) &&
+
+  true
+  );
+  }
+
 export function isV1Customer(arg: any): arg is models.V1Customer {
   return (
   arg != null &&
@@ -91,8 +104,14 @@ export function isV1Product(arg: any): arg is models.V1Product {
   typeof arg === 'object' &&
     // attributes?: { [key: string]: string }
     ( typeof arg.attributes === 'undefined' || typeof arg.attributes === 'string' ) &&
+    // description?: string
+    ( typeof arg.description === 'undefined' || typeof arg.description === 'string' ) &&
+    // images?: string[]
+    ( typeof arg.images === 'undefined' || (Array.isArray(arg.images) && arg.images.every((item: unknown) => typeof item === 'string')) ) &&
     // labels?: { [key: string]: string }
     ( typeof arg.labels === 'undefined' || typeof arg.labels === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
     // name?: string
     ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
     // productId?: string
@@ -104,12 +123,54 @@ export function isV1Product(arg: any): arg is models.V1Product {
   );
   }
 
-export function isV1ProductList(arg: any): arg is models.V1ProductList {
+export function isV1Store(arg: any): arg is models.V1Store {
   return (
   arg != null &&
   typeof arg === 'object' &&
-    // data?: V1Product[]
-    ( typeof arg.data === 'undefined' || (Array.isArray(arg.data) && arg.data.every((item: unknown) => isV1Product(item))) ) &&
+    // address?: string
+    ( typeof arg.address === 'undefined' || typeof arg.address === 'string' ) &&
+    // description?: string
+    ( typeof arg.description === 'undefined' || typeof arg.description === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
+    // name?: string
+    ( typeof arg.name === 'undefined' || typeof arg.name === 'string' ) &&
+    // storeId?: string
+    ( typeof arg.storeId === 'undefined' || typeof arg.storeId === 'string' ) &&
+
+  true
+  );
+  }
+
+export function isV1StoreItem(arg: any): arg is models.V1StoreItem {
+  return (
+  arg != null &&
+  typeof arg === 'object' &&
+    // amount?: V1Amount
+    ( typeof arg.amount === 'undefined' || isV1Amount(arg.amount) ) &&
+    // count?: number
+    ( typeof arg.count === 'undefined' || typeof arg.count === 'number' ) &&
+    // createdAt?: string
+    ( typeof arg.createdAt === 'undefined' || typeof arg.createdAt === 'string' ) &&
+    // inventoryId?: string
+    ( typeof arg.inventoryId === 'undefined' || typeof arg.inventoryId === 'string' ) &&
+    // merchantId?: string
+    ( typeof arg.merchantId === 'undefined' || typeof arg.merchantId === 'string' ) &&
+    // product?: V1Product
+    ( typeof arg.product === 'undefined' || isV1Product(arg.product) ) &&
+    // storeItemId?: string
+    ( typeof arg.storeItemId === 'undefined' || typeof arg.storeItemId === 'string' ) &&
+
+  true
+  );
+  }
+
+export function isV1StoreItemList(arg: any): arg is models.V1StoreItemList {
+  return (
+  arg != null &&
+  typeof arg === 'object' &&
+    // items?: V1StoreItem[]
+    ( typeof arg.items === 'undefined' || (Array.isArray(arg.items) && arg.items.every((item: unknown) => isV1StoreItem(item))) ) &&
 
   true
   );

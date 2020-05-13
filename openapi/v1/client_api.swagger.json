@@ -4,10 +4,6 @@
     "title": "v1/client_api.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -15,14 +11,20 @@
     "application/json"
   ],
   "paths": {
-    "/accounts:signIn": {
+    "/account:signIn": {
       "post": {
-        "operationId": "SignInWithPassword",
+        "operationId": "AuthService_SignInWithPassword",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Customer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -41,14 +43,20 @@
         ]
       }
     },
-    "/accounts:signUp": {
+    "/account:signUp": {
       "post": {
-        "operationId": "SignUpWithPassword",
+        "operationId": "AuthService_SignUpWithPassword",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Customer"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -67,15 +75,138 @@
         ]
       }
     },
-    "/orders": {
+    "/merchant/{merchantId}/store/{storeId}": {
+      "get": {
+        "summary": "Retrieves basic information about given store",
+        "operationId": "StoreService_GetStore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Store"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      }
+    },
+    "/merchant/{merchantId}/store/{storeId}/product": {
+      "get": {
+        "summary": "Lists all products for a given store with brief details",
+        "operationId": "StoreService_ListProducts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1StoreItemList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      }
+    },
+    "/merchant/{merchantId}/store/{storeId}/product/{productId}": {
+      "get": {
+        "summary": "Retrieves more detailed information about the product",
+        "operationId": "StoreService_GetProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1StoreItem"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StoreService"
+        ]
+      }
+    },
+    "/order": {
       "get": {
         "summary": "ListOrders returns all orders that the client has access to",
-        "operationId": "ListOrders",
+        "operationId": "OrderService_ListOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1OrderList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -93,12 +224,18 @@
       },
       "post": {
         "summary": "SubmitOrder submits the order to the system and creates it if it's possible,\notherwise returns errors why the creation failed",
-        "operationId": "SubmitOrder",
+        "operationId": "OrderService_SubmitOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -117,14 +254,21 @@
         ]
       }
     },
-    "/orders/{orderId}/items:add": {
+    "/order/{orderId}/item:add": {
       "post": {
-        "operationId": "AddItemToOrder",
+        "summary": "AddItemToOrder adds an item to the currently active order",
+        "operationId": "OrderService_AddItemToOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -149,15 +293,21 @@
         ]
       }
     },
-    "/orders/{orderId}/items:remove": {
+    "/order/{orderId}/item:remove": {
       "post": {
         "summary": "RemoveItemFromOrder removes an item from the currently active order",
-        "operationId": "RemoveItemFromOrder",
+        "operationId": "OrderService_RemoveItemFromOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -182,108 +332,77 @@
         ]
       }
     },
-    "/orders:active": {
+    "/order:active": {
       "get": {
-        "operationId": "GetActiveOrder",
+        "summary": "GetActiveOrder returns the current order that the client has active.\nIn case there's no active order, an empty order is returned",
+        "operationId": "OrderService_GetActiveOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "tags": [
           "OrderService"
-        ]
-      }
-    },
-    "/products": {
-      "get": {
-        "operationId": "ListProducts",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ProductList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "merchantId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ProductService"
-        ]
-      }
-    },
-    "/products/{productId}": {
-      "get": {
-        "operationId": "GetProduct",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Product"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "merchantId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ProductService"
         ]
       }
     }
   },
   "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1Amount": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "title": "Message representing a value of something in a particular currency"
+    },
     "v1Customer": {
       "type": "object",
       "properties": {
@@ -311,6 +430,59 @@
           "type": "string"
         }
       }
+    },
+    "v1Expression": {
+      "type": "object",
+      "properties": {
+        "op": {
+          "type": "string",
+          "title": "Operator used in expression"
+        },
+        "rhsString": {
+          "type": "string"
+        },
+        "rhsDouble": {
+          "type": "number",
+          "format": "double"
+        },
+        "rhsBool": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "rhsInt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rhsTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "rhsStringArray": {
+          "$ref": "#/definitions/v1RepeatedString"
+        },
+        "rhsAmount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "rhsRef": {
+          "type": "string"
+        },
+        "rhsRefArray": {
+          "$ref": "#/definitions/v1RepeatedString"
+        }
+      },
+      "title": "Message representing an expression to be used especially in filter operations"
+    },
+    "v1ExpressionList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Expression"
+          }
+        }
+      },
+      "title": "List of expressions"
     },
     "v1Order": {
       "type": "object",
@@ -361,11 +533,23 @@
         "productId": {
           "type": "string"
         },
-        "name": {
+        "merchantId": {
           "type": "string"
         },
         "storeId": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "labels": {
           "type": "object",
@@ -377,18 +561,78 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          },
-          "title": "attributes are custom key-value pairs provided for the product"
+          }
         }
       }
     },
-    "v1ProductList": {
+    "v1RepeatedString": {
       "type": "object",
       "properties": {
-        "data": {
+        "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1Product"
+            "type": "string"
+          }
+        }
+      },
+      "title": "List of strings for use in oneofs"
+    },
+    "v1Store": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "merchantId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string",
+          "title": "string location = 11;"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "v1StoreItem": {
+      "type": "object",
+      "properties": {
+        "merchantId": {
+          "type": "string"
+        },
+        "storeItemId": {
+          "type": "string"
+        },
+        "inventoryId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "amount": {
+          "$ref": "#/definitions/v1Amount"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "product": {
+          "$ref": "#/definitions/v1Product"
+        }
+      }
+    },
+    "v1StoreItemList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1StoreItem"
           }
         }
       }

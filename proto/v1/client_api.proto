@@ -6,18 +6,20 @@ option go_package = "github.com/flowup/headlessapis/go-sdk/client/v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "v1/common.proto";
 
 service AuthService {
     rpc SignInWithPassword (EmailPassword) returns (Customer) {
         option (google.api.http) = {
-            post: "/accounts:signIn"
+            post: "/account:signIn"
             body: "*"
         };
     }
 
     rpc SignUpWithPassword (EmailPassword) returns (Customer) {
         option (google.api.http) = {
-            post: "/accounts:signUp"
+            post: "/account:signUp"
             body: "*"
         };
     }
@@ -26,50 +28,107 @@ service AuthService {
 message EmailPassword {
     string email = 1;
     string password = 2;
-    string merchantId = 3;
+    string merchant_id = 3;
 }
 
 message Customer {
-    string customerId = 1;
+    string customer_id = 1;
     string name = 2;
     string thumbnail = 3;
 }
 
-service ProductService {
-    rpc ListProducts (ProductFilter) returns (ProductList) {
+service StoreService {
+    // Retrieves basic information about a given store
+    rpc GetStore (GetStoreRequest) returns (Store) {
         option (google.api.http) = {
-            get: "/products"
+            get: "/merchant/{merchant_id}/store/{store_id}"
         };
     }
 
-    rpc GetProduct(ProductFilter) returns (Product) {
+    // Lists all products for a given store with brief details
+    rpc ListProducts (ProductFilter) returns (StoreItemList) {
         option (google.api.http) = {
-            get: "/products/{productId}"
+            get: "/merchant/{merchant_id}/store/{store_id}/product"
         };
     }
+
+    // Retrieves more detailed information about the product
+    rpc GetProduct(GetProductRequest) returns (StoreItem) {
+        option (google.api.http) = {
+            get: "/merchant/{merchant_id}/store/{store_id}/product/{product_id}"
+        };
+    }
+}
+
+message Store {
+    string store_id = 1;
+    string merchant_id = 2;
+
+    string name = 10;
+    reserved 11;
+    //    string location = 11;
+    string address = 12;
+    string description = 13;
+}
+
+// Request for loading a single store by ID from a given merchant.
+message GetStoreRequest {
+    string store_id = 1;
+    string merchant_id = 2;
+}
+
+message StoreItem {
+    string merchant_id = 1;
+    string store_item_id = 2;
+    string inventory_id = 3;
+    google.protobuf.Timestamp created_at = 4;
+
+    common.v1.Amount amount = 10;
+    uint32 count = 11;
+
+    Product product = 50;
 }
 
 message Product {
-    string productId = 1;
-    string name = 2;
+    string product_id = 1;
+    string merchant_id = 2;
+    string store_id = 3;
 
-    string storeId = 11;
+    string name = 10;
+    string description = 11;
+    repeated string images = 12;
 
-    map<string, string> labels = 20;
-
-    // attributes are custom key-value pairs provided for the product
-    map<string, string> attributes = 100;
+    map<string, string> labels = 100;
+    map<string, string> attributes = 101;
 }
 
+// Request for loading a product directly by its ID
+message GetProductRequest {
+    string product_id = 1;
+    string merchant_id = 2;
+    string store_id = 3;
+}
+
+// Request for filtering product in a store
 message ProductFilter {
-    string productId = 1;
-    string name = 2;
-    string merchantId = 3;
-    string storeId = 4;
+    string merchant_id = 1;
+    string store_id = 2;
+
+    // Possible attributes on which expressions can be built on:
+    // - "product.createdAt"
+    // - "product.name"
+    // - "product.description"
+    // - "product.labels"
+    // - "product.attributes"
+    // - "amount"
+    // - "amount.value"
+    // - "amount.currency"
+    // - "count"
+    map<string, common.v1.ExpressionList> filter = 10;
 }
 
-message ProductList {
-    repeated Product data = 1;
+message StoreItemList {
+    repeated StoreItem items = 1;
 }
 
 service OrderService {
@@ -77,14 +136,14 @@ service OrderService {
     // In case there's no active order, an empty order is returned
     rpc GetActiveOrder (google.protobuf.Empty) returns (Order) {
         option (google.api.http) = {
-            get: "/orders:active"
+            get: "/order:active"
         };
     }
 
     // AddItemToOrder adds an item to the currently active order
     rpc AddItemToOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            post: "/orders/{orderId}/items:add"
+            post: "/order/{order_id}/item:add"
             body: "*"
         };
     }
@@ -92,7 +151,7 @@ service OrderService {
     // RemoveItemFromOrder removes an item from the currently active order
     rpc RemoveItemFromOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            post: "/orders/{orderId}/items:remove"
+            post: "/order/{order_id}/item:remove"
             body: "*"
         };
     }
@@ -101,7 +160,7 @@ service OrderService {
     // otherwise returns errors why the creation failed
     rpc SubmitOrder (Order) returns (Order) {
         option (google.api.http) = {
-            post: "/orders"
+            post: "/order"
             body: "*"
         };
     }
@@ -109,13 +168,13 @@ service OrderService {
     // ListOrders returns all orders that the client has access to
     rpc ListOrders (OrderFilter) returns (OrderList) {
         option (google.api.http) = {
-            get: "/orders"
+            get: "/order"
         };
     }
 }
 
 message Order {
-    string orderId = 1;
+    string order_id = 1;
     repeated OrderItem items = 2;
 
     string status = 3;
@@ -125,7 +184,7 @@ message OrderItem {
     Product product = 1;
     int32 count = 2;
 
-    string orderId = 10;
+    string order_id = 10;
 }
 
 message OrderList {
@@ -133,5 +192,5 @@ message OrderList {
 }
 
 message OrderFilter {
-    string orderId = 1;
+    string order_id = 1;
 }

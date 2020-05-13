@@ -3,12 +3,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { DefaultHttpOptions, HttpOptions, AuthServiceAPIClientInterface } from './';
+import { DefaultHttpOptions, HttpOptions, StoreServiceAPIClientInterface } from './';
 
 import * as models from '../../models';
 
-export const USE_DOMAIN = new InjectionToken<string>('AuthServiceAPIClient_USE_DOMAIN');
-export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('AuthServiceAPIClient_USE_HTTP_OPTIONS');
+export const USE_DOMAIN = new InjectionToken<string>('StoreServiceAPIClient_USE_DOMAIN');
+export const USE_HTTP_OPTIONS = new InjectionToken<HttpOptions>('StoreServiceAPIClient_USE_HTTP_OPTIONS');
 
 type APIHttpOptions = HttpOptions & {
   headers: HttpHeaders;
@@ -20,7 +20,7 @@ type APIHttpOptions = HttpOptions & {
  * Created with https://github.com/flowup/api-client-generator
  */
 @Injectable()
-export class AuthServiceAPIClient implements AuthServiceAPIClientInterface {
+export class StoreServiceAPIClient implements StoreServiceAPIClientInterface {
 
   readonly options: APIHttpOptions;
 
@@ -45,37 +45,59 @@ export class AuthServiceAPIClient implements AuthServiceAPIClientInterface {
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  signInWithPassword(
+  getStore(
     args: {
-      body: models.V1EmailPassword,
+      merchantId: string,
+      storeId: string,
     },
     requestHttpOptions?: HttpOptions
-  ): Observable<models.V1Customer> {
-    const path = `/account:signIn`;
+  ): Observable<models.V1Store> {
+    const path = `/merchant/${args.merchantId}/store/${args.storeId}`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
     };
 
-    return this.sendRequest<models.V1Customer>('POST', path, options, JSON.stringify(args.body));
+    return this.sendRequest<models.V1Store>('GET', path, options);
   }
 
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  signUpWithPassword(
+  listProducts(
     args: {
-      body: models.V1EmailPassword,
+      merchantId: string,
+      storeId: string,
     },
     requestHttpOptions?: HttpOptions
-  ): Observable<models.V1Customer> {
-    const path = `/account:signUp`;
+  ): Observable<models.V1StoreItemList> {
+    const path = `/merchant/${args.merchantId}/store/${args.storeId}/product`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
     };
 
-    return this.sendRequest<models.V1Customer>('POST', path, options, JSON.stringify(args.body));
+    return this.sendRequest<models.V1StoreItemList>('GET', path, options);
+  }
+
+  /**
+   * Response generated for [ 200 ] HTTP response code.
+   */
+  getProduct(
+    args: {
+      merchantId: string,
+      storeId: string,
+      productId: string,
+    },
+    requestHttpOptions?: HttpOptions
+  ): Observable<models.V1StoreItem> {
+    const path = `/merchant/${args.merchantId}/store/${args.storeId}/product/${args.productId}`;
+    const options: APIHttpOptions = {
+      ...this.options,
+      ...requestHttpOptions,
+    };
+
+    return this.sendRequest<models.V1StoreItem>('GET', path, options);
   }
 
   private sendRequest<T>(method: string, path: string, options: HttpOptions, body?: any): Observable<T> {

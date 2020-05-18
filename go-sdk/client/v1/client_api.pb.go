@@ -1724,7 +1724,7 @@ var _AuthService_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type StoreServiceClient interface {
-	// Retrieves basic information about given store
+	// Retrieves basic information about a given store
 	GetStore(ctx context.Context, in *GetStoreRequest, opts ...grpc.CallOption) (*Store, error)
 	// Lists all products for a given store with brief details
 	ListProducts(ctx context.Context, in *ProductFilter, opts ...grpc.CallOption) (*StoreItemList, error)
@@ -1769,7 +1769,7 @@ func (c *storeServiceClient) GetProduct(ctx context.Context, in *GetProductReque
 
 // StoreServiceServer is the server API for StoreService service.
 type StoreServiceServer interface {
-	// Retrieves basic information about given store
+	// Retrieves basic information about a given store
 	GetStore(context.Context, *GetStoreRequest) (*Store, error)
 	// Lists all products for a given store with brief details
 	ListProducts(context.Context, *ProductFilter) (*StoreItemList, error)

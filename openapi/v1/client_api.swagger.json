@@ -123,13 +123,12 @@
           }
         ],
         "tags": [
-          "StoreService"
+          "InventoryItemService"
         ]
       }
     },
     "/merchant/{merchantId}/store/{storeId}/product/{productId}": {
       "get": {
-        "summary": "Retrieves more detailed information about the product",
         "operationId": "GetProduct",
         "responses": {
           "200": {
@@ -160,7 +159,7 @@
           }
         ],
         "tags": [
-          "StoreService"
+          "InventoryItemService"
         ]
       }
     },
@@ -248,7 +247,7 @@
     },
     "/order/{orderId}/item:remove": {
       "post": {
-        "summary": "Retrieves more detailed information about the product",
+        "summary": "RemoveItemFromOrder removes an item from the currently active order",
         "operationId": "RemoveItemFromOrder",
         "responses": {
           "200": {

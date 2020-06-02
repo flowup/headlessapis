@@ -632,3 +632,12 @@ message CustomerFilter {
 message CustomerList {
 
 }
+
+message Manager {
+    string id = 1;
+    string name = 2;
+    repeated string users = 3;
+    string invited_by_id = 4;
+    repeated Merchant merchants = 5;
+    string thumbnail = 6;
+}

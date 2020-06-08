@@ -243,7 +243,7 @@ message Inventory {
     string name = 3;
     string description = 4;
     string address = 5;
-    uint64 inventory_item_count = 6;
+    uint32 inventory_item_count = 6;
 }
 
 // List of inventory items

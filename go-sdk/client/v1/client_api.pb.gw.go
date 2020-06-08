@@ -174,10 +174,10 @@ func local_request_StoreService_GetStore_0(ctx context.Context, marshaler runtim
 }
 
 var (
-	filter_StoreService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{"merchant_id": 0, "store_id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+	filter_InventoryItemService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{"merchant_id": 0, "store_id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_StoreService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client StoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_InventoryItemService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
@@ -213,7 +213,7 @@ func request_StoreService_ListProducts_0(ctx context.Context, marshaler runtime.
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_StoreService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InventoryItemService_ListProducts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -222,7 +222,7 @@ func request_StoreService_ListProducts_0(ctx context.Context, marshaler runtime.
 
 }
 
-func local_request_StoreService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server StoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_InventoryItemService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
@@ -255,7 +255,7 @@ func local_request_StoreService_ListProducts_0(ctx context.Context, marshaler ru
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_StoreService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_InventoryItemService_ListProducts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -264,7 +264,7 @@ func local_request_StoreService_ListProducts_0(ctx context.Context, marshaler ru
 
 }
 
-func request_StoreService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client StoreServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_InventoryItemService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetProductRequest
 	var metadata runtime.ServerMetadata
 
@@ -313,7 +313,7 @@ func request_StoreService_GetProduct_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func local_request_StoreService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server StoreServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_InventoryItemService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetProductRequest
 	var metadata runtime.ServerMetadata
 
@@ -660,7 +660,15 @@ func RegisterStoreServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
-	mux.Handle("GET", pattern_StoreService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	return nil
+}
+
+// RegisterInventoryItemServiceHandlerServer registers the http handlers for service InventoryItemService to "mux".
+// UnaryRPC     :call InventoryItemServiceServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+func RegisterInventoryItemServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server InventoryItemServiceServer) error {
+
+	mux.Handle("GET", pattern_InventoryItemService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -669,18 +677,18 @@ func RegisterStoreServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_StoreService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_InventoryItemService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_StoreService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_StoreService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryItemService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -689,14 +697,14 @@ func RegisterStoreServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_StoreService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_InventoryItemService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_StoreService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -962,7 +970,56 @@ func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
-	mux.Handle("GET", pattern_StoreService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	return nil
+}
+
+var (
+	pattern_StoreService_GetStore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"merchant", "merchant_id", "store", "store_id"}, "", runtime.AssumeColonVerbOpt(true)))
+)
+
+var (
+	forward_StoreService_GetStore_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterInventoryItemServiceHandlerFromEndpoint is same as RegisterInventoryItemServiceHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterInventoryItemServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterInventoryItemServiceHandler(ctx, mux, conn)
+}
+
+// RegisterInventoryItemServiceHandler registers the http handlers for service InventoryItemService to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterInventoryItemServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterInventoryItemServiceHandlerClient(ctx, mux, NewInventoryItemServiceClient(conn))
+}
+
+// RegisterInventoryItemServiceHandlerClient registers the http handlers for service InventoryItemService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "InventoryItemServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "InventoryItemServiceClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "InventoryItemServiceClient" to call the correct interceptors.
+func RegisterInventoryItemServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client InventoryItemServiceClient) error {
+
+	mux.Handle("GET", pattern_InventoryItemService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -971,18 +1028,18 @@ func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_StoreService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_InventoryItemService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_StoreService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_StoreService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryItemService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -991,14 +1048,14 @@ func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_StoreService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_InventoryItemService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_StoreService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1006,19 +1063,15 @@ func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_StoreService_GetStore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"merchant", "merchant_id", "store", "store_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_InventoryItemService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchant", "merchant_id", "store", "store_id", "product"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_StoreService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchant", "merchant_id", "store", "store_id", "product"}, "", runtime.AssumeColonVerbOpt(true)))
-
-	pattern_StoreService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchant", "merchant_id", "store", "store_id", "product", "product_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_InventoryItemService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchant", "merchant_id", "store", "store_id", "product", "product_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_StoreService_GetStore_0 = runtime.ForwardResponseMessage
+	forward_InventoryItemService_ListProducts_0 = runtime.ForwardResponseMessage
 
-	forward_StoreService_ListProducts_0 = runtime.ForwardResponseMessage
-
-	forward_StoreService_GetProduct_0 = runtime.ForwardResponseMessage
+	forward_InventoryItemService_GetProduct_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrderServiceHandlerFromEndpoint is same as RegisterOrderServiceHandler but

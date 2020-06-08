@@ -61,45 +61,6 @@ export class StoreServiceAPIClient implements StoreServiceAPIClientInterface {
     return this.sendRequest<models.V1Store>('GET', path, options);
   }
 
-  /**
-   * Response generated for [ 200 ] HTTP response code.
-   */
-  listProducts(
-    args: {
-      merchantId: string,
-      storeId: string,
-    },
-    requestHttpOptions?: HttpOptions
-  ): Observable<models.V1StoreItemList> {
-    const path = `/merchant/${args.merchantId}/store/${args.storeId}/product`;
-    const options: APIHttpOptions = {
-      ...this.options,
-      ...requestHttpOptions,
-    };
-
-    return this.sendRequest<models.V1StoreItemList>('GET', path, options);
-  }
-
-  /**
-   * Response generated for [ 200 ] HTTP response code.
-   */
-  getProduct(
-    args: {
-      merchantId: string,
-      storeId: string,
-      productId: string,
-    },
-    requestHttpOptions?: HttpOptions
-  ): Observable<models.V1StoreItem> {
-    const path = `/merchant/${args.merchantId}/store/${args.storeId}/product/${args.productId}`;
-    const options: APIHttpOptions = {
-      ...this.options,
-      ...requestHttpOptions,
-    };
-
-    return this.sendRequest<models.V1StoreItem>('GET', path, options);
-  }
-
   private sendRequest<T>(method: string, path: string, options: HttpOptions, body?: any): Observable<T> {
     switch (method) {
       case 'DELETE':

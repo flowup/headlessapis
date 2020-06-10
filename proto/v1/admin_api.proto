@@ -280,6 +280,7 @@ message InventoryItem {
     string product_id = 2;
     string inventory_id = 3;
     google.protobuf.Timestamp created_at = 4;
+    string item_id = 5;
 
     common.v1.Amount amount = 10;
     uint32 count = 11;

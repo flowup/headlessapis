@@ -4,10 +4,6 @@
     "title": "v1/client_api.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],

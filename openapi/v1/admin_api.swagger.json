@@ -4,10 +4,6 @@
     "title": "v1/admin_api.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -217,7 +213,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}": {
+    "/merchants/{merchantId}/inventories/{inventoryId}/items/{itemId}": {
       "put": {
         "summary": "Updates data stored in inventory Firestore collection",
         "operationId": "InventoryService_UpdateInventoryItem",
@@ -249,7 +245,7 @@
             "type": "string"
           },
           {
-            "name": "productId",
+            "name": "itemId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1724,6 +1720,9 @@
           "type": "string"
         },
         "productId": {
+          "type": "string"
+        },
+        "itemId": {
           "type": "string"
         },
         "amount": {

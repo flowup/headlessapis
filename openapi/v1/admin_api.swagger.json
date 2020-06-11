@@ -287,36 +287,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "ORDER_STATUS_UNDEFINED",
-                "NOT_SUBMITTED",
-                "SUBMITTED",
-                "PAID",
-                "SENT",
-                "CANCEL"
-              ]
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [

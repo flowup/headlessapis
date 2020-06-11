@@ -565,11 +565,14 @@ message OrderList {
 }
 
 message ListOrdersRequest {
-    string order_id = 1;
-    repeated OrderStatus status = 2;
+    string merchant_id = 1;
 
-    string merchant_id = 10;
-    string store_id = 11;
+    // Possible attributes on which expressions can be built on:
+    // - "id"
+    // - "status"
+    // - "userId"
+    // - "storeRef""
+    map<string, common.v1.ExpressionList> filter = 10;
 }
 
 service ProviderService {

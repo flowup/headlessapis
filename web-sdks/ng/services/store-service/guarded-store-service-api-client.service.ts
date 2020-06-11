@@ -33,27 +33,4 @@ export class GuardedStoreServiceAPIClient extends StoreServiceAPIClient {
       .pipe(tap((res: any) => guards.isV1Store(res) || console.error(`TypeGuard for response 'V1Store' caught inconsistency.`, res)));
   }
 
-  listProducts(
-    args: {
-      merchantId: string,
-      storeId: string,
-    },
-    requestHttpOptions?: HttpOptions
-  ): Observable<models.V1StoreItemList> {
-    return super.listProducts(args, requestHttpOptions)
-      .pipe(tap((res: any) => guards.isV1StoreItemList(res) || console.error(`TypeGuard for response 'V1StoreItemList' caught inconsistency.`, res)));
-  }
-
-  getProduct(
-    args: {
-      merchantId: string,
-      storeId: string,
-      productId: string,
-    },
-    requestHttpOptions?: HttpOptions
-  ): Observable<models.V1StoreItem> {
-    return super.getProduct(args, requestHttpOptions)
-      .pipe(tap((res: any) => guards.isV1StoreItem(res) || console.error(`TypeGuard for response 'V1StoreItem' caught inconsistency.`, res)));
-  }
-
 }

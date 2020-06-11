@@ -213,7 +213,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}": {
+    "/merchants/{merchantId}/inventories/{inventoryId}/items/{itemId}": {
       "put": {
         "summary": "Updates data stored in inventory Firestore collection",
         "operationId": "InventoryService_UpdateInventoryItem",
@@ -245,7 +245,7 @@
             "type": "string"
           },
           {
-            "name": "productId",
+            "name": "itemId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1349,6 +1349,9 @@
           "type": "string",
           "format": "date-time"
         },
+        "itemId": {
+          "type": "string"
+        },
         "amount": {
           "$ref": "#/definitions/v1Amount"
         },
@@ -1687,6 +1690,9 @@
           "type": "string"
         },
         "productId": {
+          "type": "string"
+        },
+        "itemId": {
           "type": "string"
         },
         "amount": {

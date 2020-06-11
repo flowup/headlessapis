@@ -44,7 +44,9 @@ service StoreService {
             get: "/merchant/{merchant_id}/store/{store_id}"
         };
     }
+}
 
+service InventoryItemService {
     // Lists all products for a given store with brief details
     rpc ListProducts (ProductFilter) returns (StoreItemList) {
         option (google.api.http) = {

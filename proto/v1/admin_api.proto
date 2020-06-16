@@ -229,7 +229,7 @@ service InventoryService {
     }
 
     // Loads all inventories of a merchant
-    rpc ListInventoryItems (ListInventoriesRequest) returns (InventoryList) {
+    rpc ListInventories (ListInventoriesRequest) returns (InventoryList) {
         option (google.api.http) = {
             get: "/merchants/{merchant_id}/inventories"
         };

@@ -5,6 +5,7 @@ package v1
 
 import (
 	context "context"
+	encoding_binary "encoding/binary"
 	fmt "fmt"
 	v1 "github.com/flowup/headlessapis/go-sdk/common/v1"
 	proto "github.com/gogo/protobuf/proto"
@@ -952,7 +953,6 @@ type UpdateInventoryItemRequest struct {
 	MerchantId  string     `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
 	InventoryId string     `protobuf:"bytes,2,opt,name=inventory_id,json=inventoryId,proto3" json:"inventory_id,omitempty"`
 	ProductId   string     `protobuf:"bytes,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	ItemId      string     `protobuf:"bytes,5,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
 	Amount      *v1.Amount `protobuf:"bytes,50,opt,name=amount,proto3" json:"amount,omitempty"`
 	Count       uint32     `protobuf:"varint,51,opt,name=count,proto3" json:"count,omitempty"`
 }
@@ -1010,13 +1010,6 @@ func (m *UpdateInventoryItemRequest) GetProductId() string {
 	return ""
 }
 
-func (m *UpdateInventoryItemRequest) GetItemId() string {
-	if m != nil {
-		return m.ItemId
-	}
-	return ""
-}
-
 func (m *UpdateInventoryItemRequest) GetAmount() *v1.Amount {
 	if m != nil {
 		return m.Amount
@@ -1037,7 +1030,6 @@ type InventoryItem struct {
 	ProductId   string           `protobuf:"bytes,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	InventoryId string           `protobuf:"bytes,3,opt,name=inventory_id,json=inventoryId,proto3" json:"inventory_id,omitempty"`
 	CreatedAt   *types.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ItemId      string           `protobuf:"bytes,5,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
 	Amount      *v1.Amount       `protobuf:"bytes,10,opt,name=amount,proto3" json:"amount,omitempty"`
 	Count       uint32           `protobuf:"varint,11,opt,name=count,proto3" json:"count,omitempty"`
 	Product     *Product         `protobuf:"bytes,50,opt,name=product,proto3" json:"product,omitempty"`
@@ -1101,13 +1093,6 @@ func (m *InventoryItem) GetCreatedAt() *types.Timestamp {
 		return m.CreatedAt
 	}
 	return nil
-}
-
-func (m *InventoryItem) GetItemId() string {
-	if m != nil {
-		return m.ItemId
-	}
-	return ""
 }
 
 func (m *InventoryItem) GetAmount() *v1.Amount {
@@ -2399,13 +2384,10 @@ func (m *OrderList) GetItems() []*Order {
 }
 
 type ListOrdersRequest struct {
-	MerchantId string `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
-	// Possible attributes on which expressions can be built on:
-	// - "id"
-	// - "status"
-	// - "userId"
-	// - "storeRef""
-	Filter map[string]*v1.ExpressionList `protobuf:"bytes,10,rep,name=filter,proto3" json:"filter,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	OrderId    string        `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	Status     []OrderStatus `protobuf:"varint,2,rep,packed,name=status,proto3,enum=admin.v1.OrderStatus" json:"status,omitempty"`
+	MerchantId string        `protobuf:"bytes,10,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
+	StoreId    string        `protobuf:"bytes,11,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 }
 
 func (m *ListOrdersRequest) Reset()      { *m = ListOrdersRequest{} }
@@ -2440,6 +2422,20 @@ func (m *ListOrdersRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ListOrdersRequest proto.InternalMessageInfo
 
+func (m *ListOrdersRequest) GetOrderId() string {
+	if m != nil {
+		return m.OrderId
+	}
+	return ""
+}
+
+func (m *ListOrdersRequest) GetStatus() []OrderStatus {
+	if m != nil {
+		return m.Status
+	}
+	return nil
+}
+
 func (m *ListOrdersRequest) GetMerchantId() string {
 	if m != nil {
 		return m.MerchantId
@@ -2447,11 +2443,11 @@ func (m *ListOrdersRequest) GetMerchantId() string {
 	return ""
 }
 
-func (m *ListOrdersRequest) GetFilter() map[string]*v1.ExpressionList {
+func (m *ListOrdersRequest) GetStoreId() string {
 	if m != nil {
-		return m.Filter
+		return m.StoreId
 	}
-	return nil
+	return ""
 }
 
 type Provider struct {
@@ -2712,26 +2708,24 @@ func (m *CustomerList) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CustomerList proto.InternalMessageInfo
 
-type Manager struct {
-	Id          string      `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name        string      `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Users       []string    `protobuf:"bytes,3,rep,name=users,proto3" json:"users,omitempty"`
-	InvitedById string      `protobuf:"bytes,4,opt,name=invited_by_id,json=invitedById,proto3" json:"invited_by_id,omitempty"`
-	Merchants   []*Merchant `protobuf:"bytes,5,rep,name=merchants,proto3" json:"merchants,omitempty"`
-	Thumbnail   string      `protobuf:"bytes,6,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
+type ContentModelGetRequest struct {
+	// Content model ID
+	ContentModelId string `protobuf:"bytes,1,opt,name=content_model_id,json=contentModelId,proto3" json:"content_model_id,omitempty"`
+	// Version ID
+	ContentModelVersionId string `protobuf:"bytes,2,opt,name=content_model_version_id,json=contentModelVersionId,proto3" json:"content_model_version_id,omitempty"`
 }
 
-func (m *Manager) Reset()      { *m = Manager{} }
-func (*Manager) ProtoMessage() {}
-func (*Manager) Descriptor() ([]byte, []int) {
+func (m *ContentModelGetRequest) Reset()      { *m = ContentModelGetRequest{} }
+func (*ContentModelGetRequest) ProtoMessage() {}
+func (*ContentModelGetRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_667592b98ca79aba, []int{40}
 }
-func (m *Manager) XXX_Unmarshal(b []byte) error {
+func (m *ContentModelGetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Manager) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ContentModelGetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Manager.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ContentModelGetRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -2741,58 +2735,979 @@ func (m *Manager) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Manager) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Manager.Merge(m, src)
+func (m *ContentModelGetRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelGetRequest.Merge(m, src)
 }
-func (m *Manager) XXX_Size() int {
+func (m *ContentModelGetRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *Manager) XXX_DiscardUnknown() {
-	xxx_messageInfo_Manager.DiscardUnknown(m)
+func (m *ContentModelGetRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelGetRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Manager proto.InternalMessageInfo
+var xxx_messageInfo_ContentModelGetRequest proto.InternalMessageInfo
 
-func (m *Manager) GetId() string {
+func (m *ContentModelGetRequest) GetContentModelId() string {
 	if m != nil {
-		return m.Id
+		return m.ContentModelId
 	}
 	return ""
 }
 
-func (m *Manager) GetName() string {
+func (m *ContentModelGetRequest) GetContentModelVersionId() string {
 	if m != nil {
-		return m.Name
+		return m.ContentModelVersionId
 	}
 	return ""
 }
 
-func (m *Manager) GetUsers() []string {
+type ContentModelVersion struct {
+	// Content model ID
+	ContentModelId string `protobuf:"bytes,1,opt,name=content_model_id,json=contentModelId,proto3" json:"content_model_id,omitempty"`
+	// Version ID
+	ContentModelVersionId string `protobuf:"bytes,2,opt,name=content_model_version_id,json=contentModelVersionId,proto3" json:"content_model_version_id,omitempty"`
+	// Creation timestamp
+	CreatedAt *types.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// ID of the previous content model version
+	PreviousVersionId string `protobuf:"bytes,5,opt,name=previous_version_id,json=previousVersionId,proto3" json:"previous_version_id,omitempty"`
+	// ID of the newer content model version
+	NextVersionId string `protobuf:"bytes,6,opt,name=next_version_id,json=nextVersionId,proto3" json:"next_version_id,omitempty"`
+	// Top level object schema
+	Schema *ContentModelObject `protobuf:"bytes,10,opt,name=schema,proto3" json:"schema,omitempty"`
+}
+
+func (m *ContentModelVersion) Reset()      { *m = ContentModelVersion{} }
+func (*ContentModelVersion) ProtoMessage() {}
+func (*ContentModelVersion) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{41}
+}
+func (m *ContentModelVersion) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelVersion) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelVersion.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelVersion) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelVersion.Merge(m, src)
+}
+func (m *ContentModelVersion) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelVersion) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelVersion.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelVersion proto.InternalMessageInfo
+
+func (m *ContentModelVersion) GetContentModelId() string {
 	if m != nil {
-		return m.Users
+		return m.ContentModelId
+	}
+	return ""
+}
+
+func (m *ContentModelVersion) GetContentModelVersionId() string {
+	if m != nil {
+		return m.ContentModelVersionId
+	}
+	return ""
+}
+
+func (m *ContentModelVersion) GetCreatedAt() *types.Timestamp {
+	if m != nil {
+		return m.CreatedAt
 	}
 	return nil
 }
 
-func (m *Manager) GetInvitedById() string {
+func (m *ContentModelVersion) GetPreviousVersionId() string {
 	if m != nil {
-		return m.InvitedById
+		return m.PreviousVersionId
 	}
 	return ""
 }
 
-func (m *Manager) GetMerchants() []*Merchant {
+func (m *ContentModelVersion) GetNextVersionId() string {
 	if m != nil {
-		return m.Merchants
+		return m.NextVersionId
+	}
+	return ""
+}
+
+func (m *ContentModelVersion) GetSchema() *ContentModelObject {
+	if m != nil {
+		return m.Schema
 	}
 	return nil
 }
 
-func (m *Manager) GetThumbnail() string {
+type ContentModelUpdateRequest struct {
+	// Content model ID
+	ContentModelId string `protobuf:"bytes,1,opt,name=content_model_id,json=contentModelId,proto3" json:"content_model_id,omitempty"`
+	// Top level object schema
+	Schema *ContentModelObject `protobuf:"bytes,10,opt,name=schema,proto3" json:"schema,omitempty"`
+}
+
+func (m *ContentModelUpdateRequest) Reset()      { *m = ContentModelUpdateRequest{} }
+func (*ContentModelUpdateRequest) ProtoMessage() {}
+func (*ContentModelUpdateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{42}
+}
+func (m *ContentModelUpdateRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelUpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelUpdateRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelUpdateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelUpdateRequest.Merge(m, src)
+}
+func (m *ContentModelUpdateRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelUpdateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelUpdateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelUpdateRequest proto.InternalMessageInfo
+
+func (m *ContentModelUpdateRequest) GetContentModelId() string {
 	if m != nil {
-		return m.Thumbnail
+		return m.ContentModelId
 	}
 	return ""
+}
+
+func (m *ContentModelUpdateRequest) GetSchema() *ContentModelObject {
+	if m != nil {
+		return m.Schema
+	}
+	return nil
+}
+
+type ContentModelVersionList struct {
+	// List of content model versions
+	Versions []*ContentModelVersion `protobuf:"bytes,1,rep,name=versions,proto3" json:"versions,omitempty"`
+}
+
+func (m *ContentModelVersionList) Reset()      { *m = ContentModelVersionList{} }
+func (*ContentModelVersionList) ProtoMessage() {}
+func (*ContentModelVersionList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{43}
+}
+func (m *ContentModelVersionList) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelVersionList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelVersionList.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelVersionList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelVersionList.Merge(m, src)
+}
+func (m *ContentModelVersionList) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelVersionList) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelVersionList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelVersionList proto.InternalMessageInfo
+
+func (m *ContentModelVersionList) GetVersions() []*ContentModelVersion {
+	if m != nil {
+		return m.Versions
+	}
+	return nil
+}
+
+type ContentModelMetaInfo struct {
+	// Name or a short description of the object
+	Title string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	// Descriptive text about the object
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	// Custom globally unique identifier
+	// Unset by default but can be set and used as a reference to the element of the content model
+	CustomId string `protobuf:"bytes,3,opt,name=custom_id,json=customId,proto3" json:"custom_id,omitempty"`
+	// Comment left by the content modeler
+	Comment string `protobuf:"bytes,4,opt,name=comment,proto3" json:"comment,omitempty"`
+}
+
+func (m *ContentModelMetaInfo) Reset()      { *m = ContentModelMetaInfo{} }
+func (*ContentModelMetaInfo) ProtoMessage() {}
+func (*ContentModelMetaInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{44}
+}
+func (m *ContentModelMetaInfo) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelMetaInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelMetaInfo.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelMetaInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelMetaInfo.Merge(m, src)
+}
+func (m *ContentModelMetaInfo) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelMetaInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelMetaInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelMetaInfo proto.InternalMessageInfo
+
+func (m *ContentModelMetaInfo) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *ContentModelMetaInfo) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *ContentModelMetaInfo) GetCustomId() string {
+	if m != nil {
+		return m.CustomId
+	}
+	return ""
+}
+
+func (m *ContentModelMetaInfo) GetComment() string {
+	if m != nil {
+		return m.Comment
+	}
+	return ""
+}
+
+type ContentModelElement struct {
+	// Element meta information
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Element type
+	//
+	// Types that are valid to be assigned to Type:
+	//	*ContentModelElement_Object
+	//	*ContentModelElement_Array
+	//	*ContentModelElement_Int
+	//	*ContentModelElement_Double
+	//	*ContentModelElement_String_
+	//	*ContentModelElement_Bool
+	Type isContentModelElement_Type `protobuf_oneof:"type"`
+}
+
+func (m *ContentModelElement) Reset()      { *m = ContentModelElement{} }
+func (*ContentModelElement) ProtoMessage() {}
+func (*ContentModelElement) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{45}
+}
+func (m *ContentModelElement) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelElement) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelElement.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelElement) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelElement.Merge(m, src)
+}
+func (m *ContentModelElement) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelElement) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelElement.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelElement proto.InternalMessageInfo
+
+type isContentModelElement_Type interface {
+	isContentModelElement_Type()
+	Equal(interface{}) bool
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type ContentModelElement_Object struct {
+	Object *ContentModelObject `protobuf:"bytes,10,opt,name=object,proto3,oneof" json:"object,omitempty"`
+}
+type ContentModelElement_Array struct {
+	Array *ContentModelArray `protobuf:"bytes,11,opt,name=array,proto3,oneof" json:"array,omitempty"`
+}
+type ContentModelElement_Int struct {
+	Int *ContentModelInteger `protobuf:"bytes,12,opt,name=int,proto3,oneof" json:"int,omitempty"`
+}
+type ContentModelElement_Double struct {
+	Double *ContentModelDouble `protobuf:"bytes,13,opt,name=double,proto3,oneof" json:"double,omitempty"`
+}
+type ContentModelElement_String_ struct {
+	String_ *ContentModelString `protobuf:"bytes,14,opt,name=string,proto3,oneof" json:"string,omitempty"`
+}
+type ContentModelElement_Bool struct {
+	Bool *ContentModelBool `protobuf:"bytes,15,opt,name=bool,proto3,oneof" json:"bool,omitempty"`
+}
+
+func (*ContentModelElement_Object) isContentModelElement_Type()  {}
+func (*ContentModelElement_Array) isContentModelElement_Type()   {}
+func (*ContentModelElement_Int) isContentModelElement_Type()     {}
+func (*ContentModelElement_Double) isContentModelElement_Type()  {}
+func (*ContentModelElement_String_) isContentModelElement_Type() {}
+func (*ContentModelElement_Bool) isContentModelElement_Type()    {}
+
+func (m *ContentModelElement) GetType() isContentModelElement_Type {
+	if m != nil {
+		return m.Type
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetObject() *ContentModelObject {
+	if x, ok := m.GetType().(*ContentModelElement_Object); ok {
+		return x.Object
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetArray() *ContentModelArray {
+	if x, ok := m.GetType().(*ContentModelElement_Array); ok {
+		return x.Array
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetInt() *ContentModelInteger {
+	if x, ok := m.GetType().(*ContentModelElement_Int); ok {
+		return x.Int
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetDouble() *ContentModelDouble {
+	if x, ok := m.GetType().(*ContentModelElement_Double); ok {
+		return x.Double
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetString_() *ContentModelString {
+	if x, ok := m.GetType().(*ContentModelElement_String_); ok {
+		return x.String_
+	}
+	return nil
+}
+
+func (m *ContentModelElement) GetBool() *ContentModelBool {
+	if x, ok := m.GetType().(*ContentModelElement_Bool); ok {
+		return x.Bool
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ContentModelElement) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*ContentModelElement_Object)(nil),
+		(*ContentModelElement_Array)(nil),
+		(*ContentModelElement_Int)(nil),
+		(*ContentModelElement_Double)(nil),
+		(*ContentModelElement_String_)(nil),
+		(*ContentModelElement_Bool)(nil),
+	}
+}
+
+type ContentModelField struct {
+	// Field meta information
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Field name, dictionary key
+	Key string `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	// Field type and related attributes
+	//
+	// Types that are valid to be assigned to Type:
+	//	*ContentModelField_Object
+	//	*ContentModelField_Array
+	//	*ContentModelField_Int
+	//	*ContentModelField_Double
+	//	*ContentModelField_String_
+	//	*ContentModelField_Bool
+	Type isContentModelField_Type `protobuf_oneof:"type"`
+}
+
+func (m *ContentModelField) Reset()      { *m = ContentModelField{} }
+func (*ContentModelField) ProtoMessage() {}
+func (*ContentModelField) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{46}
+}
+func (m *ContentModelField) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelField) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelField.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelField) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelField.Merge(m, src)
+}
+func (m *ContentModelField) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelField) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelField.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelField proto.InternalMessageInfo
+
+type isContentModelField_Type interface {
+	isContentModelField_Type()
+	Equal(interface{}) bool
+	MarshalTo([]byte) (int, error)
+	Size() int
+}
+
+type ContentModelField_Object struct {
+	Object *ContentModelObject `protobuf:"bytes,10,opt,name=object,proto3,oneof" json:"object,omitempty"`
+}
+type ContentModelField_Array struct {
+	Array *ContentModelArray `protobuf:"bytes,11,opt,name=array,proto3,oneof" json:"array,omitempty"`
+}
+type ContentModelField_Int struct {
+	Int *ContentModelInteger `protobuf:"bytes,12,opt,name=int,proto3,oneof" json:"int,omitempty"`
+}
+type ContentModelField_Double struct {
+	Double *ContentModelDouble `protobuf:"bytes,13,opt,name=double,proto3,oneof" json:"double,omitempty"`
+}
+type ContentModelField_String_ struct {
+	String_ *ContentModelString `protobuf:"bytes,14,opt,name=string,proto3,oneof" json:"string,omitempty"`
+}
+type ContentModelField_Bool struct {
+	Bool *ContentModelBool `protobuf:"bytes,15,opt,name=bool,proto3,oneof" json:"bool,omitempty"`
+}
+
+func (*ContentModelField_Object) isContentModelField_Type()  {}
+func (*ContentModelField_Array) isContentModelField_Type()   {}
+func (*ContentModelField_Int) isContentModelField_Type()     {}
+func (*ContentModelField_Double) isContentModelField_Type()  {}
+func (*ContentModelField_String_) isContentModelField_Type() {}
+func (*ContentModelField_Bool) isContentModelField_Type()    {}
+
+func (m *ContentModelField) GetType() isContentModelField_Type {
+	if m != nil {
+		return m.Type
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *ContentModelField) GetObject() *ContentModelObject {
+	if x, ok := m.GetType().(*ContentModelField_Object); ok {
+		return x.Object
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetArray() *ContentModelArray {
+	if x, ok := m.GetType().(*ContentModelField_Array); ok {
+		return x.Array
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetInt() *ContentModelInteger {
+	if x, ok := m.GetType().(*ContentModelField_Int); ok {
+		return x.Int
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetDouble() *ContentModelDouble {
+	if x, ok := m.GetType().(*ContentModelField_Double); ok {
+		return x.Double
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetString_() *ContentModelString {
+	if x, ok := m.GetType().(*ContentModelField_String_); ok {
+		return x.String_
+	}
+	return nil
+}
+
+func (m *ContentModelField) GetBool() *ContentModelBool {
+	if x, ok := m.GetType().(*ContentModelField_Bool); ok {
+		return x.Bool
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ContentModelField) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*ContentModelField_Object)(nil),
+		(*ContentModelField_Array)(nil),
+		(*ContentModelField_Int)(nil),
+		(*ContentModelField_Double)(nil),
+		(*ContentModelField_String_)(nil),
+		(*ContentModelField_Bool)(nil),
+	}
+}
+
+type ContentModelObject struct {
+	// Object meta information
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// List of object fields
+	Fields []*ContentModelField `protobuf:"bytes,2,rep,name=fields,proto3" json:"fields,omitempty"`
+}
+
+func (m *ContentModelObject) Reset()      { *m = ContentModelObject{} }
+func (*ContentModelObject) ProtoMessage() {}
+func (*ContentModelObject) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{47}
+}
+func (m *ContentModelObject) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelObject) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelObject.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelObject) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelObject.Merge(m, src)
+}
+func (m *ContentModelObject) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelObject) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelObject.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelObject proto.InternalMessageInfo
+
+func (m *ContentModelObject) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelObject) GetFields() []*ContentModelField {
+	if m != nil {
+		return m.Fields
+	}
+	return nil
+}
+
+type ContentModelArray struct {
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Schema of a array item
+	// Could be of any type
+	ItemSchema *ContentModelElement `protobuf:"bytes,2,opt,name=item_schema,json=itemSchema,proto3" json:"item_schema,omitempty"`
+}
+
+func (m *ContentModelArray) Reset()      { *m = ContentModelArray{} }
+func (*ContentModelArray) ProtoMessage() {}
+func (*ContentModelArray) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{48}
+}
+func (m *ContentModelArray) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelArray) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelArray.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelArray) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelArray.Merge(m, src)
+}
+func (m *ContentModelArray) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelArray) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelArray.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelArray proto.InternalMessageInfo
+
+func (m *ContentModelArray) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelArray) GetItemSchema() *ContentModelElement {
+	if m != nil {
+		return m.ItemSchema
+	}
+	return nil
+}
+
+type ContentModelInteger struct {
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Default value for integer property
+	Default *types.Int64Value `protobuf:"bytes,10,opt,name=default,proto3" json:"default,omitempty"`
+	// Minimum integer value, defaults to negative infinity
+	Minimum *types.Int64Value `protobuf:"bytes,11,opt,name=minimum,proto3" json:"minimum,omitempty"`
+	// Maximum integer value, defaults to positive infinity
+	Maximum *types.Int64Value `protobuf:"bytes,12,opt,name=maximum,proto3" json:"maximum,omitempty"`
+	// Array of possible values for the property
+	Enum []int64 `protobuf:"varint,13,rep,packed,name=enum,proto3" json:"enum,omitempty"`
+}
+
+func (m *ContentModelInteger) Reset()      { *m = ContentModelInteger{} }
+func (*ContentModelInteger) ProtoMessage() {}
+func (*ContentModelInteger) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{49}
+}
+func (m *ContentModelInteger) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelInteger) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelInteger.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelInteger) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelInteger.Merge(m, src)
+}
+func (m *ContentModelInteger) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelInteger) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelInteger.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelInteger proto.InternalMessageInfo
+
+func (m *ContentModelInteger) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelInteger) GetDefault() *types.Int64Value {
+	if m != nil {
+		return m.Default
+	}
+	return nil
+}
+
+func (m *ContentModelInteger) GetMinimum() *types.Int64Value {
+	if m != nil {
+		return m.Minimum
+	}
+	return nil
+}
+
+func (m *ContentModelInteger) GetMaximum() *types.Int64Value {
+	if m != nil {
+		return m.Maximum
+	}
+	return nil
+}
+
+func (m *ContentModelInteger) GetEnum() []int64 {
+	if m != nil {
+		return m.Enum
+	}
+	return nil
+}
+
+type ContentModelDouble struct {
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Default value of the floating point number
+	Default *types.DoubleValue `protobuf:"bytes,10,opt,name=default,proto3" json:"default,omitempty"`
+	// Minimum float value, defaults to negative infinity
+	Minimum *types.DoubleValue `protobuf:"bytes,11,opt,name=minimum,proto3" json:"minimum,omitempty"`
+	// Maximum float value, defaults to positive infinity
+	Maximum *types.DoubleValue `protobuf:"bytes,12,opt,name=maximum,proto3" json:"maximum,omitempty"`
+	// Array of possible values for the property
+	Enum []float64 `protobuf:"fixed64,13,rep,packed,name=enum,proto3" json:"enum,omitempty"`
+}
+
+func (m *ContentModelDouble) Reset()      { *m = ContentModelDouble{} }
+func (*ContentModelDouble) ProtoMessage() {}
+func (*ContentModelDouble) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{50}
+}
+func (m *ContentModelDouble) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelDouble) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelDouble.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelDouble) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelDouble.Merge(m, src)
+}
+func (m *ContentModelDouble) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelDouble) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelDouble.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelDouble proto.InternalMessageInfo
+
+func (m *ContentModelDouble) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelDouble) GetDefault() *types.DoubleValue {
+	if m != nil {
+		return m.Default
+	}
+	return nil
+}
+
+func (m *ContentModelDouble) GetMinimum() *types.DoubleValue {
+	if m != nil {
+		return m.Minimum
+	}
+	return nil
+}
+
+func (m *ContentModelDouble) GetMaximum() *types.DoubleValue {
+	if m != nil {
+		return m.Maximum
+	}
+	return nil
+}
+
+func (m *ContentModelDouble) GetEnum() []float64 {
+	if m != nil {
+		return m.Enum
+	}
+	return nil
+}
+
+type ContentModelString struct {
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Default value for string
+	Default *types.StringValue `protobuf:"bytes,10,opt,name=default,proto3" json:"default,omitempty"`
+	// Regular expression that defines a language to which the value of this property must belong
+	Regex string `protobuf:"bytes,11,opt,name=regex,proto3" json:"regex,omitempty"`
+	// Array of possible values for the property
+	Enum []string `protobuf:"bytes,12,rep,name=enum,proto3" json:"enum,omitempty"`
+}
+
+func (m *ContentModelString) Reset()      { *m = ContentModelString{} }
+func (*ContentModelString) ProtoMessage() {}
+func (*ContentModelString) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{51}
+}
+func (m *ContentModelString) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelString) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelString.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelString) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelString.Merge(m, src)
+}
+func (m *ContentModelString) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelString) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelString.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelString proto.InternalMessageInfo
+
+func (m *ContentModelString) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelString) GetDefault() *types.StringValue {
+	if m != nil {
+		return m.Default
+	}
+	return nil
+}
+
+func (m *ContentModelString) GetRegex() string {
+	if m != nil {
+		return m.Regex
+	}
+	return ""
+}
+
+func (m *ContentModelString) GetEnum() []string {
+	if m != nil {
+		return m.Enum
+	}
+	return nil
+}
+
+type ContentModelBool struct {
+	Meta *ContentModelMetaInfo `protobuf:"bytes,1,opt,name=meta,proto3" json:"meta,omitempty"`
+	// Default value for boolean
+	Default *types.BoolValue `protobuf:"bytes,10,opt,name=default,proto3" json:"default,omitempty"`
+}
+
+func (m *ContentModelBool) Reset()      { *m = ContentModelBool{} }
+func (*ContentModelBool) ProtoMessage() {}
+func (*ContentModelBool) Descriptor() ([]byte, []int) {
+	return fileDescriptor_667592b98ca79aba, []int{52}
+}
+func (m *ContentModelBool) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ContentModelBool) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ContentModelBool.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ContentModelBool) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContentModelBool.Merge(m, src)
+}
+func (m *ContentModelBool) XXX_Size() int {
+	return m.Size()
+}
+func (m *ContentModelBool) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContentModelBool.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContentModelBool proto.InternalMessageInfo
+
+func (m *ContentModelBool) GetMeta() *ContentModelMetaInfo {
+	if m != nil {
+		return m.Meta
+	}
+	return nil
+}
+
+func (m *ContentModelBool) GetDefault() *types.BoolValue {
+	if m != nil {
+		return m.Default
+	}
+	return nil
 }
 
 func init() {
@@ -2842,179 +3757,232 @@ func init() {
 	proto.RegisterType((*OrderItem)(nil), "admin.v1.OrderItem")
 	proto.RegisterType((*OrderList)(nil), "admin.v1.OrderList")
 	proto.RegisterType((*ListOrdersRequest)(nil), "admin.v1.ListOrdersRequest")
-	proto.RegisterMapType((map[string]*v1.ExpressionList)(nil), "admin.v1.ListOrdersRequest.FilterEntry")
 	proto.RegisterType((*Provider)(nil), "admin.v1.Provider")
 	proto.RegisterType((*ProviderFilter)(nil), "admin.v1.ProviderFilter")
 	proto.RegisterType((*ProviderList)(nil), "admin.v1.ProviderList")
 	proto.RegisterType((*Customer)(nil), "admin.v1.Customer")
 	proto.RegisterType((*CustomerFilter)(nil), "admin.v1.CustomerFilter")
 	proto.RegisterType((*CustomerList)(nil), "admin.v1.CustomerList")
-	proto.RegisterType((*Manager)(nil), "admin.v1.Manager")
+	proto.RegisterType((*ContentModelGetRequest)(nil), "admin.v1.ContentModelGetRequest")
+	proto.RegisterType((*ContentModelVersion)(nil), "admin.v1.ContentModelVersion")
+	proto.RegisterType((*ContentModelUpdateRequest)(nil), "admin.v1.ContentModelUpdateRequest")
+	proto.RegisterType((*ContentModelVersionList)(nil), "admin.v1.ContentModelVersionList")
+	proto.RegisterType((*ContentModelMetaInfo)(nil), "admin.v1.ContentModelMetaInfo")
+	proto.RegisterType((*ContentModelElement)(nil), "admin.v1.ContentModelElement")
+	proto.RegisterType((*ContentModelField)(nil), "admin.v1.ContentModelField")
+	proto.RegisterType((*ContentModelObject)(nil), "admin.v1.ContentModelObject")
+	proto.RegisterType((*ContentModelArray)(nil), "admin.v1.ContentModelArray")
+	proto.RegisterType((*ContentModelInteger)(nil), "admin.v1.ContentModelInteger")
+	proto.RegisterType((*ContentModelDouble)(nil), "admin.v1.ContentModelDouble")
+	proto.RegisterType((*ContentModelString)(nil), "admin.v1.ContentModelString")
+	proto.RegisterType((*ContentModelBool)(nil), "admin.v1.ContentModelBool")
 }
 
 func init() { proto.RegisterFile("v1/admin_api.proto", fileDescriptor_667592b98ca79aba) }
 
 var fileDescriptor_667592b98ca79aba = []byte{
-	// 2534 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x1a, 0x4b, 0x6c, 0x1b, 0xc7,
-	0x55, 0x4b, 0x51, 0x1f, 0x3e, 0x92, 0xfa, 0x8c, 0x1c, 0x9b, 0x5e, 0xdb, 0xb4, 0xbc, 0x76, 0x22,
-	0x59, 0x89, 0x48, 0x8b, 0x4e, 0x0d, 0xdb, 0x49, 0x1b, 0x50, 0x9f, 0xa8, 0x2a, 0x2c, 0xd9, 0xa0,
-	0xa4, 0x06, 0xc8, 0xa1, 0xc2, 0x8a, 0x3b, 0x92, 0x16, 0x26, 0xb9, 0xcc, 0xee, 0x52, 0x2d, 0x2b,
-	0x18, 0x08, 0x02, 0xf4, 0xdc, 0x02, 0xcd, 0xa5, 0xa7, 0xa2, 0x48, 0x51, 0x14, 0xbd, 0xe4, 0x52,
-	0xa0, 0xa7, 0x9e, 0x7a, 0x29, 0x90, 0x43, 0x0d, 0xe4, 0x92, 0xde, 0x6a, 0xb9, 0x87, 0x1c, 0x7a,
-	0xc8, 0xb5, 0x28, 0x50, 0x14, 0xfb, 0x66, 0x66, 0xff, 0xcc, 0x52, 0x96, 0x91, 0xb8, 0x6d, 0x6e,
-	0x9c, 0xb7, 0x6f, 0xde, 0x6f, 0xde, 0xbc, 0x79, 0x1f, 0x02, 0x39, 0x5c, 0x28, 0xab, 0x5a, 0x53,
-	0x6f, 0xed, 0xa8, 0x6d, 0xbd, 0xd4, 0x36, 0x0d, 0xdb, 0x20, 0xa3, 0x08, 0x28, 0x1d, 0x2e, 0xc8,
-	0x17, 0xf7, 0x0d, 0x63, 0xbf, 0x41, 0xcb, 0x6a, 0x5b, 0x2f, 0xab, 0xad, 0x96, 0x61, 0xab, 0xb6,
-	0x6e, 0xb4, 0x2c, 0x86, 0x27, 0x5f, 0xe0, 0x5f, 0x71, 0xb5, 0xdb, 0xd9, 0x2b, 0xd3, 0x66, 0xdb,
-	0xee, 0xf2, 0x8f, 0x97, 0xc3, 0x1f, 0x6d, 0xbd, 0x49, 0x2d, 0x5b, 0x6d, 0xb6, 0x39, 0xc2, 0xf8,
-	0xe1, 0x42, 0xb9, 0x6e, 0x34, 0x9b, 0x46, 0x8b, 0x01, 0x94, 0xb7, 0x60, 0x74, 0x9d, 0x9a, 0xf5,
-	0x03, 0xb5, 0x65, 0x93, 0xcb, 0x90, 0x6d, 0xf2, 0xdf, 0x3b, 0xba, 0x56, 0x90, 0xa6, 0xa5, 0xd9,
-	0x4c, 0x0d, 0x04, 0x68, 0x4d, 0x23, 0x04, 0xd2, 0x2d, 0xb5, 0x49, 0x0b, 0x29, 0xfc, 0x82, 0xbf,
-	0x95, 0xdb, 0x90, 0x13, 0x04, 0xee, 0xe9, 0x96, 0x4d, 0x66, 0x61, 0x48, 0xb7, 0x69, 0xd3, 0x2a,
-	0x48, 0xd3, 0x83, 0xb3, 0xd9, 0x0a, 0x29, 0x09, 0xbd, 0x4a, 0x02, 0xad, 0xc6, 0x10, 0x94, 0x8f,
-	0x24, 0x48, 0x6f, 0x5b, 0xd4, 0x24, 0x63, 0x90, 0x72, 0xd9, 0xa5, 0xf4, 0x58, 0x36, 0xe4, 0x0c,
-	0x0c, 0xd1, 0xa6, 0xaa, 0x37, 0x0a, 0x69, 0x04, 0xb2, 0x05, 0x51, 0x20, 0xaf, 0xb7, 0x0e, 0x75,
-	0x9b, 0x6a, 0x3b, 0xbb, 0x5d, 0x47, 0xe6, 0x21, 0xfc, 0x9a, 0xe5, 0xc0, 0xc5, 0xee, 0x9a, 0x16,
-	0xd6, 0x0a, 0x22, 0x5a, 0x5d, 0x84, 0x8c, 0x7d, 0xd0, 0x69, 0xee, 0xb6, 0x1c, 0xf2, 0x15, 0xfc,
-	0xec, 0x01, 0x94, 0x1b, 0x30, 0xea, 0x08, 0x89, 0xba, 0x5d, 0x0b, 0xea, 0x36, 0xe6, 0xe9, 0xe6,
-	0xa0, 0x08, 0xbd, 0x5e, 0x87, 0x49, 0x07, 0x7b, 0xd3, 0x36, 0x4c, 0x6a, 0xd5, 0xe8, 0x7b, 0x1d,
-	0x6a, 0x45, 0x6c, 0x9b, 0x0a, 0x4b, 0xa1, 0xac, 0xc3, 0xf8, 0x2a, 0x65, 0x9b, 0xc4, 0x9e, 0xf3,
-	0x30, 0x6a, 0x39, 0x6b, 0xef, 0x30, 0x46, 0x70, 0x1d, 0x55, 0x2a, 0x4a, 0xee, 0x37, 0x12, 0x90,
-	0x25, 0x93, 0xaa, 0x36, 0x7d, 0x5e, 0x24, 0xdd, 0x63, 0x01, 0xdf, 0xb1, 0x14, 0x60, 0x44, 0xd5,
-	0x34, 0x93, 0x5a, 0x56, 0x21, 0xc7, 0xc8, 0xf1, 0x25, 0x99, 0x86, 0xac, 0x46, 0xad, 0xba, 0xa9,
-	0xb7, 0x1d, 0xef, 0x2d, 0xe4, 0xd9, 0xc1, 0xf8, 0x40, 0xdf, 0x4b, 0x8f, 0x66, 0x27, 0x72, 0xca,
-	0x27, 0x12, 0x90, 0xed, 0xb6, 0xf6, 0x02, 0x0b, 0x4a, 0xae, 0xa2, 0x97, 0xd1, 0x96, 0x6d, 0x98,
-	0x8e, 0x93, 0x59, 0x85, 0xca, 0xf4, 0xe0, 0x6c, 0xa6, 0x96, 0x73, 0x81, 0x6b, 0x9a, 0xc5, 0xb5,
-	0xf9, 0xa7, 0x04, 0x43, 0xa8, 0xc7, 0xa9, 0x14, 0xb8, 0x03, 0x50, 0xc7, 0xb3, 0xd3, 0x76, 0x54,
-	0xbb, 0x30, 0x38, 0x2d, 0xcd, 0x66, 0x2b, 0x72, 0x89, 0xdd, 0xed, 0x92, 0xb8, 0xdb, 0xa5, 0x2d,
-	0x71, 0xb7, 0x6b, 0x19, 0x8e, 0x5d, 0xb5, 0xbf, 0x4e, 0xdd, 0xff, 0x95, 0x82, 0x1c, 0xea, 0xbe,
-	0x4c, 0x6d, 0x55, 0x6f, 0x58, 0xff, 0x2b, 0x26, 0x98, 0x81, 0xf1, 0xb6, 0x69, 0x68, 0x9d, 0xba,
-	0xbd, 0x53, 0x37, 0x3a, 0x2d, 0x9b, 0x9a, 0x85, 0xe2, 0xb4, 0x34, 0x9b, 0xaf, 0x8d, 0x71, 0xf0,
-	0x12, 0x83, 0x92, 0x2b, 0x90, 0x73, 0x22, 0x80, 0x8b, 0x75, 0x19, 0xb1, 0xb2, 0x0e, 0x4c, 0xa0,
-	0xf4, 0x63, 0x4e, 0x32, 0x2f, 0xc2, 0xcc, 0x4d, 0x0c, 0x33, 0xe7, 0xbc, 0x30, 0xb3, 0xe6, 0xa2,
-	0xd9, 0xb4, 0xc9, 0xe3, 0x0d, 0xb7, 0x7e, 0x05, 0x32, 0x68, 0x7c, 0x0c, 0x54, 0x2f, 0x07, 0x03,
-	0xd5, 0xb8, 0x47, 0x81, 0x5d, 0x32, 0x1e, 0xa9, 0xfe, 0x2d, 0xc1, 0x79, 0x07, 0x3f, 0x40, 0xb6,
-	0x57, 0xc8, 0x8a, 0x3e, 0x07, 0x8e, 0xbe, 0x3e, 0x65, 0xf8, 0x29, 0x66, 0x7d, 0xba, 0x90, 0x55,
-	0x18, 0xde, 0xd3, 0x1b, 0x8e, 0x31, 0x00, 0x25, 0x29, 0x7b, 0x92, 0xf4, 0x64, 0x5c, 0x7a, 0x1b,
-	0x77, 0xac, 0xb4, 0x6c, 0xb3, 0x5b, 0xe3, 0xdb, 0xe5, 0x2d, 0xc8, 0xfa, 0xc0, 0x64, 0x02, 0x06,
-	0x1f, 0xd2, 0x2e, 0x97, 0xc9, 0xf9, 0x49, 0xca, 0x30, 0x74, 0xa8, 0x36, 0x3a, 0xec, 0xd5, 0xc8,
-	0x56, 0xce, 0x97, 0xf8, 0x33, 0x77, 0xb8, 0x50, 0x5a, 0xf9, 0x51, 0xdb, 0x39, 0x6a, 0xdd, 0x68,
-	0x39, 0x3c, 0x6b, 0x0c, 0xef, 0x6e, 0xea, 0xb6, 0xa4, 0xfc, 0x51, 0x82, 0x73, 0x55, 0x4d, 0x0b,
-	0x9a, 0xf5, 0x39, 0xaa, 0x7f, 0x09, 0x40, 0xb8, 0x8e, 0xae, 0xa1, 0x17, 0x67, 0x6a, 0x19, 0x0e,
-	0x59, 0xd3, 0xc8, 0x75, 0x18, 0x56, 0x9b, 0x8e, 0x67, 0xe0, 0xb3, 0x93, 0xad, 0x4c, 0xfa, 0x84,
-	0xae, 0xe2, 0x87, 0x1a, 0x47, 0x70, 0xde, 0x3f, 0x74, 0xab, 0xc2, 0x4d, 0x74, 0x2a, 0xb6, 0x50,
-	0xfe, 0x2a, 0x81, 0xcc, 0x82, 0xe7, 0xd7, 0xa5, 0xc2, 0x39, 0x18, 0x41, 0x9f, 0x77, 0xdf, 0xde,
-	0x61, 0x67, 0xf9, 0x3c, 0x74, 0xfb, 0x7d, 0x0a, 0xf2, 0x01, 0xad, 0x92, 0xd5, 0x09, 0xca, 0x9a,
-	0x0a, 0xcb, 0x1a, 0xd6, 0x76, 0x30, 0xaa, 0x6d, 0x30, 0xec, 0xa4, 0x4f, 0x12, 0x76, 0xfa, 0xb0,
-	0x04, 0xf4, 0x6d, 0x89, 0xac, 0xcf, 0x12, 0xe4, 0x55, 0x18, 0xe1, 0x4a, 0xb8, 0xb6, 0x74, 0x6f,
-	0xd1, 0x03, 0xf6, 0xa1, 0x26, 0x30, 0x94, 0x45, 0x98, 0x0c, 0x58, 0x0d, 0xe3, 0xc1, 0x7c, 0x30,
-	0x1e, 0x24, 0x44, 0x14, 0xe5, 0x2f, 0x12, 0x4c, 0x39, 0xfb, 0x38, 0xf1, 0xfe, 0x23, 0x42, 0xd5,
-	0xbd, 0xee, 0x29, 0x64, 0x74, 0x3d, 0x78, 0xdd, 0x43, 0xf4, 0xbe, 0xc2, 0x8b, 0x7e, 0x0b, 0xb2,
-	0x9c, 0x39, 0xda, 0x63, 0x26, 0x68, 0x8f, 0x18, 0x7b, 0x72, 0x4b, 0xfc, 0x72, 0x10, 0xf2, 0x1c,
-	0xb4, 0x59, 0x3f, 0xa0, 0x4d, 0x95, 0xcc, 0xc1, 0xa4, 0xf0, 0x31, 0x0b, 0x21, 0x9e, 0x25, 0xc4,
-	0x33, 0xc1, 0x30, 0xe3, 0xf3, 0x65, 0x32, 0xef, 0x79, 0xd8, 0x6e, 0x97, 0x3f, 0x6c, 0xe1, 0x44,
-	0x52, 0x78, 0xd5, 0x62, 0x37, 0x39, 0x7b, 0x7d, 0x03, 0x86, 0x1b, 0xea, 0x2e, 0x6d, 0x58, 0x05,
-	0x0d, 0x75, 0xb9, 0x1a, 0xd1, 0x85, 0x89, 0x53, 0xba, 0x87, 0x58, 0xdc, 0xd8, 0x6c, 0x0b, 0x59,
-	0x05, 0x50, 0x6d, 0xdb, 0xd4, 0x77, 0x3b, 0x36, 0xb5, 0x0a, 0x14, 0x09, 0xcc, 0xf4, 0x22, 0x50,
-	0x75, 0x31, 0x19, 0x11, 0xdf, 0x56, 0xf9, 0x0e, 0x64, 0x7d, 0xf4, 0x63, 0x4e, 0xed, 0x8c, 0xff,
-	0xd4, 0x32, 0xbe, 0xa3, 0x91, 0xbf, 0x0d, 0xe3, 0x21, 0xca, 0x27, 0xd9, 0xae, 0x6c, 0xc2, 0xe4,
-	0x2a, 0x15, 0x9e, 0x25, 0x1c, 0x35, 0x18, 0x08, 0xa4, 0x70, 0x20, 0x48, 0xcc, 0x9e, 0x7f, 0x97,
-	0x86, 0x33, 0x2c, 0x7b, 0x3e, 0x15, 0xe1, 0xe8, 0x69, 0x5d, 0x80, 0x8c, 0x48, 0x89, 0xac, 0x42,
-	0x16, 0xdf, 0xfe, 0x51, 0x9e, 0x13, 0x59, 0xce, 0xee, 0xb6, 0x69, 0x1c, 0xea, 0x1a, 0x35, 0x9d,
-	0xdd, 0x2c, 0x51, 0x01, 0x01, 0xf2, 0xf9, 0x53, 0xde, 0xe7, 0x4f, 0xa1, 0xfc, 0x65, 0x2c, 0x9a,
-	0xbf, 0xdc, 0x86, 0x31, 0x8d, 0xee, 0xa9, 0x9d, 0x86, 0xbd, 0xc3, 0xe3, 0xd0, 0x78, 0xaf, 0x38,
-	0x94, 0xe7, 0x88, 0x6c, 0x49, 0xce, 0xc2, 0xb0, 0xde, 0x54, 0xf7, 0xa9, 0x55, 0x98, 0x40, 0x51,
-	0xf9, 0x8a, 0x2c, 0x86, 0x7c, 0x6e, 0xce, 0x73, 0x99, 0x38, 0xab, 0xc5, 0xba, 0xde, 0x46, 0x8c,
-	0xeb, 0x95, 0x12, 0xe8, 0xbc, 0x98, 0x1e, 0xe8, 0x38, 0x0b, 0x7b, 0x84, 0xbf, 0x71, 0x96, 0x93,
-	0x39, 0x4b, 0x9c, 0xd5, 0x9e, 0xc5, 0x59, 0x62, 0xe9, 0xbc, 0x98, 0xce, 0xf2, 0x71, 0x1a, 0x46,
-	0xb8, 0xa0, 0x49, 0xfe, 0x11, 0xfb, 0xd2, 0xa4, 0xe2, 0x5f, 0x9a, 0xff, 0x13, 0x5f, 0xfa, 0x56,
-	0xc8, 0x97, 0x2e, 0x45, 0xde, 0xaa, 0x58, 0xf7, 0xa9, 0xc6, 0xb8, 0xcf, 0x95, 0xe8, 0xd6, 0x17,
-	0xd3, 0x63, 0x3e, 0x95, 0x00, 0xb6, 0xdb, 0x0d, 0x43, 0xd5, 0xd6, 0xa9, 0xad, 0x3a, 0x07, 0xb9,
-	0xa7, 0x37, 0xe8, 0x0e, 0x9e, 0x07, 0x23, 0x30, 0xea, 0x00, 0x36, 0x9c, 0x33, 0x21, 0x90, 0x6e,
-	0xe8, 0xad, 0x87, 0x22, 0xe1, 0x70, 0x7e, 0x27, 0xbb, 0xc6, 0x6d, 0xd7, 0xa8, 0x67, 0xd0, 0x32,
-	0xd3, 0xfe, 0x8b, 0x25, 0xf8, 0xc6, 0xd9, 0xf5, 0x14, 0x46, 0x51, 0xb2, 0x90, 0x79, 0x47, 0x35,
-	0xe9, 0x81, 0xd1, 0xb1, 0xa8, 0x32, 0x09, 0xe3, 0xee, 0x82, 0x25, 0x7f, 0xca, 0x5d, 0xc8, 0xbb,
-	0x20, 0x4c, 0xd9, 0xae, 0x07, 0x53, 0xb6, 0x29, 0x4f, 0x48, 0x17, 0x4f, 0x24, 0x6d, 0xbf, 0x4a,
-	0xc1, 0xd0, 0x7d, 0x53, 0xa3, 0x26, 0x39, 0x0f, 0xa3, 0x86, 0xc9, 0xbd, 0x9a, 0x77, 0x20, 0x70,
-	0xbd, 0xa6, 0x91, 0x79, 0x18, 0xb6, 0x6c, 0xd5, 0xee, 0x58, 0x28, 0xdb, 0x58, 0xe5, 0x25, 0x8f,
-	0x20, 0xee, 0xdd, 0xc4, 0x8f, 0x35, 0x8e, 0x84, 0x37, 0xc0, 0xb0, 0x29, 0xaf, 0x19, 0xf0, 0xb7,
-	0x27, 0x52, 0x3a, 0x2c, 0x12, 0x52, 0xf0, 0x65, 0xd4, 0xe4, 0x75, 0xc8, 0xd9, 0x86, 0xad, 0x36,
-	0xc4, 0x45, 0x18, 0xea, 0x75, 0x11, 0xb2, 0x88, 0xc6, 0xaf, 0xc1, 0xa5, 0x40, 0x35, 0x32, 0x3c,
-	0x2d, 0xcd, 0x0e, 0xfa, 0x2b, 0x8e, 0xc4, 0x93, 0xf5, 0x37, 0x60, 0xb2, 0x81, 0x06, 0x8c, 0xf2,
-	0x10, 0xc8, 0x92, 0xda, 0xaa, 0xd3, 0x06, 0x8a, 0xea, 0xeb, 0xba, 0xf5, 0xb2, 0xd7, 0x69, 0x98,
-	0xfd, 0x34, 0x25, 0x7a, 0x7c, 0xfd, 0x72, 0xfb, 0x6f, 0x38, 0x9d, 0xd3, 0x5a, 0x84, 0xa5, 0x38,
-	0xdf, 0x58, 0x84, 0x59, 0xe4, 0x43, 0x09, 0x32, 0xae, 0x18, 0xfe, 0x92, 0x57, 0x4a, 0x2a, 0x79,
-	0xbd, 0xaa, 0xd9, 0xb1, 0xcc, 0x90, 0xa8, 0x9a, 0xbd, 0xb2, 0x7b, 0x30, 0xa9, 0xec, 0xf6, 0x9b,
-	0x1d, 0x02, 0x66, 0x57, 0x2a, 0x5c, 0xaa, 0x84, 0xb6, 0x1a, 0x3b, 0x45, 0x1e, 0x7f, 0x3e, 0x91,
-	0xd8, 0x04, 0x00, 0x81, 0xfd, 0x17, 0xcf, 0x6f, 0x85, 0x7a, 0x65, 0x33, 0xc1, 0xe2, 0x39, 0x40,
-	0xed, 0x2b, 0x2c, 0x9d, 0xef, 0xc1, 0xe8, 0x03, 0x9e, 0x09, 0x84, 0x13, 0x05, 0x29, 0x92, 0x28,
-	0x24, 0x79, 0x80, 0xb2, 0x00, 0x63, 0x82, 0x1a, 0x93, 0x35, 0x79, 0xcb, 0x18, 0xe4, 0xc4, 0x16,
-	0x47, 0x36, 0x47, 0xa0, 0xa5, 0x8e, 0x65, 0x1b, 0x4d, 0xb6, 0xb9, 0xce, 0x7f, 0xfb, 0x04, 0x12,
-	0xa0, 0x3e, 0x05, 0x12, 0xd4, 0x4e, 0x20, 0x90, 0xd8, 0x82, 0x02, 0xfd, 0x41, 0x82, 0x91, 0x75,
-	0xb5, 0xa5, 0xee, 0xf7, 0x3f, 0xcb, 0xea, 0x58, 0xd4, 0xb4, 0x0a, 0x83, 0x98, 0xdc, 0xb0, 0x45,
-	0x74, 0x96, 0x95, 0x8e, 0xce, 0xb2, 0x6e, 0x40, 0x46, 0xc8, 0x61, 0x15, 0x86, 0x7a, 0x0e, 0xd8,
-	0x3c, 0xa4, 0xe0, 0x70, 0x6b, 0x38, 0x34, 0xdc, 0x9a, 0x7b, 0x08, 0x59, 0x5f, 0xf0, 0x20, 0x32,
-	0x9c, 0xbd, 0x5f, 0x5b, 0x5e, 0xa9, 0xed, 0x6c, 0x6e, 0x55, 0xb7, 0xb6, 0x37, 0x77, 0xb6, 0x37,
-	0x96, 0x57, 0xde, 0x5e, 0xdb, 0x58, 0x59, 0x9e, 0x18, 0x20, 0x93, 0x90, 0xdf, 0xb8, 0xbf, 0xb5,
-	0xb3, 0xb9, 0xbd, 0xb8, 0xbe, 0xb6, 0xb5, 0xb5, 0xb2, 0x3c, 0x21, 0x91, 0x3c, 0x64, 0xbc, 0x65,
-	0x8a, 0x8c, 0x42, 0xfa, 0x41, 0x75, 0x6d, 0x79, 0x62, 0xd0, 0xf9, 0xb5, 0xb9, 0xb2, 0xb1, 0x35,
-	0x91, 0x26, 0x00, 0xc3, 0x4b, 0xd5, 0x8d, 0xa5, 0x95, 0x7b, 0x13, 0x43, 0x95, 0x8f, 0xd2, 0x30,
-	0x2e, 0x44, 0xdc, 0xa4, 0xe6, 0xa1, 0x5e, 0xa7, 0xe4, 0xfb, 0x30, 0xc9, 0xc2, 0xa0, 0xf8, 0xb0,
-	0x6c, 0x76, 0x49, 0x8c, 0x4a, 0x72, 0x0c, 0x4c, 0x39, 0xff, 0xc1, 0xa7, 0x7f, 0xff, 0x79, 0x6a,
-	0x4a, 0x19, 0x2b, 0xbb, 0xfa, 0xde, 0xd5, 0xcc, 0xee, 0x5d, 0x69, 0x8e, 0xdc, 0x87, 0xb1, 0x20,
-	0xdd, 0xbe, 0x89, 0xbe, 0x84, 0x44, 0xc7, 0x15, 0xf0, 0x11, 0x95, 0xe6, 0x48, 0x0d, 0x72, 0xab,
-	0xd4, 0x5e, 0x77, 0xed, 0x7a, 0x36, 0xd2, 0x14, 0x5c, 0x69, 0xb6, 0xed, 0xae, 0x7c, 0x36, 0x4a,
-	0x12, 0x7d, 0x84, 0x20, 0xd9, 0x1c, 0xf1, 0x91, 0x25, 0x3f, 0xc0, 0x06, 0xa7, 0x6e, 0xd3, 0x6d,
-	0x8b, 0x9a, 0x8e, 0xe2, 0xa1, 0x3e, 0x90, 0x1c, 0x5a, 0x2b, 0xf3, 0x48, 0x64, 0x46, 0x51, 0x3c,
-	0x22, 0xe5, 0x23, 0x9f, 0xaf, 0x3e, 0x2a, 0xa3, 0x2b, 0x09, 0x23, 0xbc, 0x03, 0xe0, 0xd1, 0x4f,
-	0x24, 0x7e, 0x1d, 0x89, 0x5f, 0x55, 0x8a, 0x09, 0xc4, 0xa5, 0x39, 0xf2, 0x2e, 0x8c, 0xae, 0x52,
-	0x7b, 0x1b, 0xdd, 0x36, 0xc1, 0xae, 0x62, 0x76, 0xaa, 0xbc, 0x82, 0xe4, 0xa7, 0x49, 0x02, 0xf9,
-	0xca, 0xc7, 0x69, 0x3e, 0x45, 0x12, 0x2e, 0x62, 0x88, 0xa3, 0x64, 0xb3, 0x25, 0xb3, 0x4b, 0x2e,
-	0x86, 0xdb, 0x04, 0xfe, 0xc9, 0xa1, 0x1c, 0x1e, 0x76, 0x28, 0x25, 0xe4, 0x3c, 0xab, 0x5c, 0xed,
-	0xc9, 0x19, 0xdf, 0x20, 0xd7, 0x6c, 0x07, 0x90, 0xf5, 0x91, 0x3d, 0x29, 0xb7, 0x39, 0xe4, 0x76,
-	0x4d, 0xb9, 0x9c, 0xc4, 0x8d, 0x71, 0xf2, 0x8d, 0x3e, 0xfd, 0x9c, 0xa2, 0x13, 0xd1, 0x9e, 0x9c,
-	0xe4, 0x7e, 0x38, 0xed, 0x03, 0x78, 0x33, 0x69, 0x72, 0x21, 0xf8, 0xb2, 0x04, 0x26, 0xd5, 0xf2,
-	0x54, 0x88, 0x0f, 0x9e, 0xde, 0x0c, 0xf2, 0xba, 0x42, 0x92, 0x78, 0x91, 0xf7, 0xd0, 0x35, 0xf8,
-	0x08, 0xd4, 0xa3, 0x14, 0x1a, 0x6d, 0xfb, 0xaf, 0x89, 0x7f, 0x64, 0xa8, 0x54, 0x90, 0xcf, 0x6b,
-	0x64, 0x2e, 0x81, 0x4f, 0xf9, 0x48, 0xe4, 0x11, 0x8f, 0x2a, 0xff, 0x18, 0x84, 0x09, 0xb7, 0x8d,
-	0x2d, 0xbc, 0xe6, 0x43, 0x09, 0x26, 0xc2, 0x93, 0x1d, 0xe2, 0xab, 0xf9, 0x7a, 0x4c, 0x7d, 0xe4,
-	0x5e, 0xad, 0x71, 0x65, 0x19, 0x25, 0xfb, 0x8e, 0x72, 0xa7, 0xa7, 0x64, 0x62, 0x8e, 0xa0, 0x3b,
-	0xe2, 0xf9, 0x07, 0x0d, 0x8f, 0xca, 0x98, 0x17, 0x38, 0xe7, 0xf0, 0x0b, 0x09, 0x48, 0x74, 0xf0,
-	0x45, 0xae, 0xf6, 0x31, 0x16, 0x93, 0x2f, 0xf4, 0x10, 0x0d, 0x0f, 0xa8, 0x8a, 0xe2, 0xbd, 0x41,
-	0x9e, 0x5d, 0x3c, 0xf2, 0x6b, 0x09, 0xa6, 0x62, 0x86, 0x49, 0xe4, 0x5a, 0xd8, 0x2d, 0x4f, 0x66,
-	0xb8, 0x0d, 0x94, 0xec, 0xbb, 0xf2, 0xd2, 0x33, 0x4b, 0x56, 0x3e, 0xe2, 0x83, 0x95, 0x47, 0x77,
-	0xa5, 0xb9, 0xca, 0x9f, 0x86, 0x31, 0x85, 0xc0, 0xf6, 0x07, 0x3f, 0xec, 0x23, 0x38, 0x1b, 0xe8,
-	0x17, 0xb2, 0xb6, 0x88, 0x13, 0x2a, 0xce, 0xf5, 0x68, 0x66, 0xcb, 0xbd, 0x3e, 0x28, 0x65, 0x14,
-	0xf7, 0xba, 0x72, 0xad, 0xb7, 0x07, 0x22, 0xa2, 0x1b, 0x2e, 0x6c, 0x98, 0x8a, 0x61, 0xfe, 0x0c,
-	0x9c, 0x5f, 0x45, 0xce, 0x2f, 0x2b, 0xd3, 0x89, 0x9c, 0xa5, 0x39, 0xb2, 0x07, 0x39, 0xc6, 0x95,
-	0x95, 0xe8, 0xe4, 0x4c, 0x5c, 0xd1, 0x2e, 0xc7, 0x42, 0xfb, 0x08, 0x51, 0x1d, 0x44, 0x76, 0xf8,
-	0xb4, 0x21, 0x1f, 0xd0, 0x8e, 0x14, 0xbf, 0xbc, 0x47, 0x2b, 0x47, 0x13, 0x75, 0xe5, 0x35, 0xe4,
-	0xf7, 0x8a, 0x72, 0xa5, 0x27, 0x3f, 0x9e, 0xc9, 0xa3, 0x66, 0x8f, 0x20, 0x1f, 0xe8, 0xe7, 0xf9,
-	0x39, 0xc6, 0x35, 0xfa, 0xe2, 0x38, 0xde, 0x41, 0x8e, 0x37, 0xe5, 0x52, 0x22, 0xc7, 0xf2, 0x91,
-	0xd7, 0x82, 0x73, 0xdc, 0x8b, 0x18, 0x90, 0xf3, 0x8f, 0xaa, 0xc8, 0xa5, 0x2f, 0x1d, 0x61, 0xc9,
-	0x2f, 0x45, 0x98, 0xe3, 0x75, 0xe4, 0x8f, 0x29, 0x49, 0x56, 0x99, 0xd8, 0x00, 0xde, 0x00, 0xc3,
-	0x1f, 0x9a, 0x23, 0x63, 0x8d, 0x38, 0x4d, 0x6f, 0x21, 0xa3, 0x1b, 0xe4, 0x84, 0x9a, 0x56, 0x08,
-	0x4c, 0xb8, 0x7d, 0x13, 0x7e, 0x8d, 0x2a, 0xef, 0xa7, 0x21, 0xc7, 0xd2, 0x41, 0x7e, 0xaf, 0x7e,
-	0x2c, 0x5e, 0x42, 0xd6, 0x4d, 0x89, 0xbc, 0x84, 0xfe, 0xda, 0x55, 0x0e, 0x57, 0x43, 0xca, 0x9b,
-	0x28, 0xda, 0x2d, 0x65, 0xa1, 0xff, 0x58, 0x5e, 0xc6, 0xb2, 0x0b, 0xdd, 0xe0, 0x27, 0x92, 0x78,
-	0x1c, 0x23, 0xcc, 0xa3, 0xad, 0x84, 0x28, 0xf3, 0x55, 0x64, 0x5e, 0x95, 0xdf, 0x3c, 0x31, 0xf3,
-	0xf2, 0x91, 0xa8, 0x05, 0xd1, 0x1f, 0x3e, 0x90, 0x20, 0xeb, 0xeb, 0x94, 0x04, 0x8c, 0x10, 0x69,
-	0xa0, 0x44, 0xe5, 0xe0, 0xcf, 0xc6, 0xdc, 0xa9, 0xe4, 0x10, 0xcf, 0x37, 0x2b, 0x01, 0xc3, 0xcf,
-	0x77, 0xa0, 0x30, 0x94, 0xc3, 0x55, 0x7d, 0x9f, 0xcf, 0x37, 0xe3, 0x59, 0xf9, 0x5c, 0x82, 0x71,
-	0x51, 0x6c, 0x09, 0x2f, 0xd8, 0x17, 0x09, 0x98, 0x5b, 0x06, 0x92, 0x80, 0x1f, 0x22, 0x4c, 0x8e,
-	0x81, 0xf5, 0x91, 0xaf, 0x8a, 0xd2, 0x11, 0x8f, 0xbc, 0x81, 0x39, 0xb6, 0xd8, 0x6d, 0x91, 0x42,
-	0x94, 0x24, 0x2b, 0xd1, 0xfc, 0xe9, 0x43, 0xa0, 0x34, 0xe4, 0x91, 0x8d, 0xf4, 0xc1, 0x10, 0x55,
-	0x15, 0x65, 0x5c, 0x44, 0x55, 0xb7, 0xc0, 0xf4, 0xa9, 0x25, 0x60, 0x72, 0x0c, 0xac, 0x0f, 0x55,
-	0x45, 0x51, 0xea, 0x53, 0x55, 0xec, 0x0e, 0xa8, 0x1a, 0xac, 0x46, 0xfd, 0xaa, 0x06, 0x8a, 0xce,
-	0x64, 0x55, 0x5d, 0x86, 0x8b, 0xda, 0xe3, 0x27, 0xc5, 0x81, 0xcf, 0x9e, 0x14, 0x07, 0xbe, 0x78,
-	0x52, 0x94, 0xde, 0x3f, 0x2e, 0x4a, 0xbf, 0x3d, 0x2e, 0x4a, 0x7f, 0x3e, 0x2e, 0x4a, 0x8f, 0x8f,
-	0x8b, 0xd2, 0xdf, 0x8e, 0x8b, 0xd2, 0xe7, 0xc7, 0xc5, 0x81, 0x2f, 0x8e, 0x8b, 0xd2, 0xcf, 0x9e,
-	0x16, 0x07, 0x1e, 0x3f, 0x2d, 0x0e, 0x7c, 0xf6, 0xb4, 0x38, 0xf0, 0x6e, 0x69, 0x5f, 0xb7, 0x0f,
-	0x3a, 0xbb, 0xa5, 0xba, 0xd1, 0x2c, 0xef, 0x35, 0x8c, 0x1f, 0x76, 0xda, 0xe5, 0x03, 0xaa, 0x6a,
-	0x0d, 0x6a, 0x59, 0x6a, 0x5b, 0xb7, 0xca, 0xfb, 0xc6, 0xbc, 0xa5, 0x3d, 0x64, 0x7f, 0x64, 0x2d,
-	0x1f, 0x2e, 0xec, 0x0e, 0x63, 0x29, 0x74, 0xf3, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x06, 0x41,
-	0x8a, 0x10, 0xde, 0x2a, 0x00, 0x00,
+	// 3207 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xec, 0x3b, 0x4b, 0x6c, 0x1b, 0xd7,
+	0xb5, 0x1a, 0x92, 0xa2, 0xa4, 0x43, 0xea, 0x77, 0x25, 0xcb, 0xf4, 0xc8, 0xa6, 0xe5, 0xb1, 0x13,
+	0xcb, 0x4a, 0x4c, 0x46, 0xb4, 0xa3, 0x67, 0x3b, 0x79, 0x79, 0x4f, 0x3f, 0xcb, 0x7c, 0xcf, 0x96,
+	0x53, 0x4a, 0x4a, 0x80, 0x2c, 0x2a, 0x8c, 0x38, 0x57, 0xd2, 0xd4, 0xe4, 0x0c, 0x33, 0x33, 0x54,
+	0xcc, 0xaa, 0x06, 0x82, 0x20, 0x41, 0x17, 0x5d, 0xb4, 0x40, 0xb2, 0x09, 0xba, 0x28, 0x82, 0x00,
+	0x6d, 0x91, 0x4d, 0xba, 0xea, 0xae, 0x40, 0xbb, 0x2b, 0xd0, 0x45, 0x03, 0x64, 0x93, 0x65, 0xa3,
+	0x74, 0x91, 0x5d, 0xb3, 0x2d, 0x0a, 0x14, 0xc5, 0xfd, 0x71, 0xbe, 0xd4, 0x50, 0x92, 0x9b, 0x3a,
+	0x6d, 0x76, 0x9c, 0x7b, 0xcf, 0xff, 0x9c, 0x7b, 0xef, 0xb9, 0xe7, 0x5c, 0x02, 0xda, 0x9b, 0x2d,
+	0xaa, 0x5a, 0x5d, 0x37, 0x36, 0xd5, 0x86, 0x5e, 0x68, 0x58, 0xa6, 0x63, 0xa2, 0x7e, 0x3a, 0x50,
+	0xd8, 0x9b, 0x95, 0xcf, 0xee, 0x98, 0xe6, 0x4e, 0x0d, 0x17, 0xd5, 0x86, 0x5e, 0x54, 0x0d, 0xc3,
+	0x74, 0x54, 0x47, 0x37, 0x0d, 0x9b, 0xc1, 0xc9, 0x93, 0x7c, 0x96, 0x7e, 0x6d, 0x35, 0xb7, 0x8b,
+	0xb8, 0xde, 0x70, 0x5a, 0x7c, 0xf2, 0x7c, 0x70, 0xd2, 0xd1, 0xeb, 0xd8, 0x76, 0xd4, 0x7a, 0x83,
+	0x03, 0xe4, 0x83, 0x00, 0x6f, 0x58, 0x6a, 0xa3, 0x81, 0x2d, 0x41, 0x7d, 0x78, 0x6f, 0xb6, 0x58,
+	0x35, 0xeb, 0x75, 0xd3, 0x60, 0x03, 0xca, 0xff, 0x40, 0xff, 0x3d, 0x6c, 0x55, 0x77, 0x55, 0xc3,
+	0x41, 0xe7, 0x21, 0x53, 0xe7, 0xbf, 0x37, 0x75, 0x2d, 0x27, 0x4d, 0x49, 0xd3, 0x03, 0x15, 0x10,
+	0x43, 0x65, 0x0d, 0x21, 0x48, 0x19, 0x6a, 0x1d, 0xe7, 0x12, 0x74, 0x86, 0xfe, 0x56, 0x6e, 0x40,
+	0x56, 0x10, 0xb8, 0xab, 0xdb, 0x0e, 0x9a, 0x86, 0x5e, 0xdd, 0xc1, 0x75, 0x3b, 0x27, 0x4d, 0x25,
+	0xa7, 0x33, 0x25, 0x54, 0x10, 0x7a, 0x17, 0x04, 0x58, 0x85, 0x01, 0x28, 0x1f, 0x4a, 0x90, 0xda,
+	0xb0, 0xb1, 0x85, 0x86, 0x20, 0xd1, 0x66, 0x97, 0xd0, 0x23, 0xd9, 0xa0, 0x71, 0xe8, 0xc5, 0x75,
+	0x55, 0xaf, 0xe5, 0x52, 0x74, 0x90, 0x7d, 0x20, 0x05, 0x06, 0x75, 0x63, 0x4f, 0x77, 0xb0, 0xb6,
+	0xb9, 0xd5, 0x22, 0x32, 0xf7, 0xd2, 0xd9, 0x0c, 0x1f, 0x5c, 0x68, 0x95, 0xb5, 0xa0, 0x56, 0x10,
+	0xd2, 0xea, 0x2c, 0x0c, 0x38, 0xbb, 0xcd, 0xfa, 0x96, 0x41, 0xc8, 0x97, 0xe8, 0xb4, 0x3b, 0xa0,
+	0x3c, 0x07, 0xfd, 0x44, 0x48, 0xaa, 0xdb, 0x25, 0xbf, 0x6e, 0x43, 0xae, 0x6e, 0x04, 0x44, 0xe8,
+	0x75, 0x1d, 0x46, 0x09, 0xf4, 0x9a, 0x63, 0x5a, 0xd8, 0xae, 0xe0, 0xd7, 0x9b, 0xd8, 0x0e, 0xd9,
+	0x36, 0x11, 0x94, 0x42, 0xb9, 0x07, 0xc3, 0x2b, 0x98, 0x21, 0x09, 0x9c, 0x33, 0xd0, 0x6f, 0x93,
+	0x6f, 0xd7, 0x19, 0x7d, 0xf4, 0x3b, 0xac, 0x54, 0x98, 0xdc, 0xcf, 0x25, 0x40, 0x8b, 0x16, 0x56,
+	0x1d, 0xfc, 0xb8, 0x48, 0xb6, 0xdd, 0x02, 0x1e, 0xb7, 0xe4, 0xa0, 0x4f, 0xd5, 0x34, 0x0b, 0xdb,
+	0x76, 0x2e, 0xcb, 0xc8, 0xf1, 0x4f, 0x34, 0x05, 0x19, 0x0d, 0xdb, 0x55, 0x4b, 0x6f, 0x90, 0xe8,
+	0xce, 0x0d, 0x32, 0xc7, 0x78, 0x86, 0xfe, 0x2f, 0xd5, 0x9f, 0x19, 0xc9, 0x2a, 0x7f, 0x90, 0x00,
+	0x6d, 0x34, 0xb4, 0x27, 0x58, 0x50, 0x74, 0x91, 0x46, 0x19, 0x36, 0x1c, 0xd3, 0x22, 0x41, 0x66,
+	0xe7, 0x4a, 0x53, 0xc9, 0xe9, 0x81, 0x4a, 0xb6, 0x3d, 0x58, 0xd6, 0x6c, 0xae, 0xcd, 0x5f, 0x25,
+	0xe8, 0xa5, 0x7a, 0x9c, 0x48, 0x81, 0x9b, 0x00, 0x55, 0xea, 0x3b, 0x6d, 0x53, 0x75, 0x72, 0xc9,
+	0x29, 0x69, 0x3a, 0x53, 0x92, 0x0b, 0x6c, 0x69, 0x17, 0xc4, 0xd2, 0x2e, 0xac, 0x8b, 0xb5, 0x5f,
+	0x19, 0xe0, 0xd0, 0xf3, 0xce, 0xbf, 0x52, 0xf7, 0xbf, 0x25, 0x20, 0x4b, 0x75, 0x5f, 0xc2, 0x8e,
+	0xaa, 0xd7, 0xec, 0x7f, 0x17, 0x13, 0x5c, 0x86, 0xe1, 0x86, 0x65, 0x6a, 0xcd, 0xaa, 0xb3, 0x59,
+	0x35, 0x9b, 0x86, 0x83, 0xad, 0x5c, 0x7e, 0x4a, 0x9a, 0x1e, 0xac, 0x0c, 0xf1, 0xe1, 0x45, 0x36,
+	0x8a, 0x2e, 0x40, 0x96, 0xec, 0x00, 0x6d, 0xa8, 0xf3, 0x14, 0x2a, 0x43, 0xc6, 0x04, 0x48, 0x37,
+	0xe6, 0x44, 0x57, 0xc5, 0x36, 0x73, 0x8d, 0x6e, 0x33, 0xa7, 0xdd, 0x6d, 0xa6, 0xdc, 0x06, 0x73,
+	0x70, 0x9d, 0xef, 0x37, 0xdc, 0xfa, 0x25, 0x18, 0xa0, 0xc6, 0xa7, 0x1b, 0xd5, 0x53, 0xfe, 0x8d,
+	0x6a, 0xd8, 0xa5, 0xc0, 0x16, 0x19, 0xdf, 0xa9, 0xfe, 0x2e, 0xc1, 0x19, 0x02, 0xef, 0x23, 0xdb,
+	0x69, 0xcb, 0x0a, 0x1f, 0x07, 0x44, 0x5f, 0x8f, 0x32, 0xdc, 0x8b, 0x19, 0x8f, 0x2e, 0x68, 0x05,
+	0xd2, 0xdb, 0x7a, 0x8d, 0x18, 0x03, 0xa8, 0x24, 0x45, 0x57, 0x92, 0x8e, 0x8c, 0x0b, 0xb7, 0x29,
+	0xc6, 0xb2, 0xe1, 0x58, 0xad, 0x0a, 0x47, 0x97, 0xd7, 0x21, 0xe3, 0x19, 0x46, 0x23, 0x90, 0x7c,
+	0x80, 0x5b, 0x5c, 0x26, 0xf2, 0x13, 0x15, 0xa1, 0x77, 0x4f, 0xad, 0x35, 0xd9, 0xa9, 0x91, 0x29,
+	0x9d, 0x29, 0xf0, 0x63, 0x6e, 0x6f, 0xb6, 0xb0, 0xfc, 0xb0, 0x41, 0x5c, 0xad, 0x9b, 0x06, 0xe1,
+	0x59, 0x61, 0x70, 0xb7, 0x12, 0x37, 0x24, 0xe5, 0x37, 0x12, 0x9c, 0x9e, 0xd7, 0x34, 0xbf, 0x59,
+	0x1f, 0xa3, 0xfa, 0xe7, 0x00, 0x44, 0xe8, 0xe8, 0x1a, 0x8d, 0xe2, 0x81, 0xca, 0x00, 0x1f, 0x29,
+	0x6b, 0xe8, 0x0a, 0xa4, 0xd5, 0x3a, 0x89, 0x0c, 0x7a, 0xec, 0x64, 0x4a, 0xa3, 0x1e, 0xa1, 0xe7,
+	0xe9, 0x44, 0x85, 0x03, 0x90, 0xf3, 0x8f, 0x86, 0x55, 0xee, 0x1a, 0x0d, 0x2a, 0xf6, 0xa1, 0xfc,
+	0x56, 0x02, 0x99, 0x6d, 0x9e, 0xdf, 0x58, 0x15, 0x7e, 0x9a, 0x80, 0x41, 0x9f, 0xf0, 0xf1, 0x52,
+	0xfb, 0x45, 0x4a, 0x04, 0x45, 0x0a, 0x2a, 0x95, 0x0c, 0x2b, 0xe5, 0xdf, 0x5d, 0x52, 0x47, 0xd9,
+	0x5d, 0x5c, 0x85, 0xa1, 0x6b, 0x85, 0x33, 0x1e, 0x85, 0xd1, 0x33, 0xd0, 0xc7, 0x65, 0x6d, 0x9b,
+	0xac, 0xbd, 0x26, 0x5e, 0x66, 0x13, 0x15, 0x01, 0xa1, 0x2c, 0xc0, 0xa8, 0xcf, 0x38, 0x74, 0x75,
+	0x5f, 0xf5, 0xaf, 0xee, 0x98, 0xfd, 0x41, 0xf9, 0xa3, 0x04, 0x63, 0x04, 0x8f, 0x13, 0xef, 0x7e,
+	0x7d, 0xcf, 0xb7, 0x17, 0x6f, 0x82, 0x32, 0xba, 0xe2, 0x5f, 0xbc, 0x01, 0x7a, 0x5f, 0xe3, 0xb2,
+	0x9d, 0x83, 0x0c, 0x67, 0x4e, 0xed, 0x71, 0xd9, 0x6f, 0x8f, 0x08, 0x7b, 0x72, 0x4b, 0xfc, 0x2c,
+	0x09, 0x83, 0x7c, 0x68, 0xad, 0xba, 0x8b, 0xeb, 0x2a, 0x9a, 0x81, 0x51, 0x11, 0x4a, 0x36, 0x1d,
+	0x71, 0x2d, 0x21, 0x36, 0x7d, 0x06, 0x19, 0x9d, 0xfd, 0xa2, 0xab, 0x6e, 0x20, 0x6d, 0xb5, 0xf8,
+	0x31, 0x15, 0x4c, 0x0b, 0x45, 0xf0, 0x2c, 0xb4, 0xe2, 0x73, 0xd1, 0x17, 0x20, 0x5d, 0x53, 0xb7,
+	0x70, 0xcd, 0xce, 0x69, 0x54, 0x97, 0x8b, 0x21, 0x5d, 0x98, 0x38, 0x85, 0xbb, 0x14, 0x8a, 0x1b,
+	0x9b, 0xa1, 0xa0, 0x15, 0x00, 0xd5, 0x71, 0x2c, 0x7d, 0xab, 0xe9, 0x60, 0x3b, 0x87, 0x29, 0x81,
+	0xcb, 0x9d, 0x08, 0xcc, 0xb7, 0x21, 0x19, 0x11, 0x0f, 0xaa, 0x7c, 0x13, 0x32, 0x1e, 0xfa, 0x11,
+	0x5e, 0x1b, 0xf7, 0x7a, 0x6d, 0xc0, 0xe3, 0x1a, 0xf9, 0xbf, 0x61, 0x38, 0x40, 0xf9, 0x28, 0xe8,
+	0xca, 0x1a, 0x8c, 0xae, 0x60, 0x11, 0x59, 0x22, 0x50, 0xfd, 0xeb, 0x5d, 0x0a, 0xae, 0xf7, 0xd8,
+	0x5c, 0xf8, 0xa3, 0x14, 0x8c, 0xb3, 0x5c, 0xf8, 0x44, 0x84, 0xc3, 0xde, 0x9a, 0x84, 0x01, 0x91,
+	0xe0, 0xd8, 0xb9, 0x0c, 0x3d, 0xc9, 0xfb, 0x79, 0x86, 0x63, 0x13, 0xec, 0x86, 0x65, 0xee, 0xe9,
+	0x1a, 0xb6, 0x08, 0x36, 0x4b, 0x3b, 0x40, 0x0c, 0x79, 0xe2, 0x69, 0xd0, 0x13, 0x4f, 0x81, 0x6c,
+	0x64, 0x28, 0x9c, 0x8d, 0xdc, 0x80, 0x21, 0x0d, 0x6f, 0xab, 0xcd, 0x9a, 0xb3, 0xc9, 0xf7, 0xa1,
+	0xe1, 0x4e, 0xfb, 0xd0, 0x20, 0x07, 0x64, 0x9f, 0x68, 0x02, 0xd2, 0x7a, 0x5d, 0xdd, 0xc1, 0x76,
+	0x6e, 0x84, 0x8a, 0xca, 0xbf, 0xd0, 0x42, 0x20, 0xe6, 0x66, 0xdc, 0x90, 0x89, 0xb2, 0x5a, 0x64,
+	0xe8, 0xad, 0x46, 0x84, 0x5e, 0x21, 0x86, 0xce, 0x93, 0x19, 0x81, 0x24, 0x58, 0xd8, 0x91, 0xfa,
+	0x6d, 0xb0, 0x1c, 0x2d, 0x58, 0xa2, 0xac, 0x76, 0x9c, 0x60, 0x89, 0xa4, 0xf3, 0x64, 0x06, 0xcb,
+	0xc7, 0x29, 0xe8, 0xe3, 0x82, 0xc6, 0xc5, 0x47, 0xe4, 0x49, 0x93, 0x88, 0x3e, 0x69, 0xfe, 0x43,
+	0x62, 0xe9, 0xf9, 0x40, 0x2c, 0x9d, 0x0b, 0x9d, 0x55, 0x91, 0xe1, 0x33, 0x1f, 0x11, 0x3e, 0x17,
+	0xc2, 0xa8, 0x4f, 0x66, 0xc4, 0x7c, 0x2a, 0x01, 0x6c, 0x34, 0x6a, 0xa6, 0xaa, 0xdd, 0xc3, 0x8e,
+	0x4a, 0x1c, 0xb9, 0xad, 0xd7, 0xf0, 0x26, 0xf5, 0x07, 0x23, 0xd0, 0x4f, 0x06, 0x56, 0x89, 0x4f,
+	0x10, 0xa4, 0x6a, 0xba, 0xf1, 0x40, 0x24, 0x1c, 0xe4, 0x77, 0x7c, 0x68, 0xdc, 0x68, 0x1b, 0x75,
+	0x9c, 0x5a, 0x66, 0xca, 0xbb, 0xb0, 0x04, 0xdf, 0x28, 0xbb, 0x9e, 0xc0, 0x28, 0x4a, 0x06, 0x06,
+	0x5e, 0x55, 0x2d, 0xbc, 0x6b, 0x36, 0x6d, 0xac, 0x8c, 0xc2, 0x70, 0xfb, 0x83, 0x25, 0x7f, 0xca,
+	0x2d, 0x18, 0x6c, 0x0f, 0xd1, 0x94, 0xed, 0x8a, 0x3f, 0x65, 0x1b, 0x73, 0x85, 0x6c, 0xc3, 0x89,
+	0xa4, 0xed, 0x83, 0x04, 0xf4, 0xde, 0xb7, 0x34, 0x6c, 0xa1, 0x33, 0xd0, 0x6f, 0x5a, 0x3c, 0xaa,
+	0x79, 0x3d, 0x81, 0x7e, 0x97, 0x35, 0x74, 0x15, 0xd2, 0xb6, 0xa3, 0x3a, 0x4d, 0x9b, 0xca, 0x36,
+	0x54, 0x3a, 0xe5, 0x12, 0xa4, 0xb8, 0x6b, 0x74, 0xb2, 0xc2, 0x81, 0xe8, 0x0a, 0x30, 0x1d, 0xcc,
+	0xaf, 0x06, 0xf4, 0xb7, 0x2b, 0x52, 0x2a, 0x28, 0x12, 0xa5, 0xe0, 0xc9, 0xa8, 0xd1, 0x75, 0xc8,
+	0x3a, 0xa6, 0xa3, 0xd6, 0xc4, 0x42, 0xe8, 0xed, 0xb4, 0x10, 0x32, 0x14, 0x8c, 0x2f, 0x83, 0x73,
+	0xbe, 0x4b, 0x47, 0x7a, 0x4a, 0x9a, 0x4e, 0x7a, 0x2f, 0x16, 0xb1, 0x9e, 0xf5, 0x96, 0x53, 0x32,
+	0xbe, 0x72, 0x8a, 0xf2, 0x00, 0xd0, 0xa2, 0x6a, 0x54, 0x71, 0x8d, 0x8a, 0xea, 0xa9, 0xa1, 0x75,
+	0xb2, 0xd7, 0x49, 0x98, 0xfd, 0x38, 0x21, 0x2a, 0x76, 0xdd, 0x72, 0xfb, 0x26, 0x78, 0xe7, 0xa4,
+	0x16, 0x61, 0x29, 0xce, 0xb7, 0x16, 0x61, 0x16, 0x79, 0x4f, 0x82, 0x81, 0xb6, 0x18, 0xde, 0x2b,
+	0xaf, 0x14, 0x77, 0xe5, 0x75, 0x6f, 0xcd, 0xc4, 0x32, 0xbd, 0xe2, 0xd6, 0xec, 0x5e, 0xbb, 0x93,
+	0x71, 0xd7, 0x6e, 0xaf, 0xd9, 0xc1, 0x67, 0x76, 0xa5, 0xc4, 0xa5, 0x8a, 0x29, 0x92, 0x31, 0x2f,
+	0xf2, 0xfd, 0xe7, 0x7d, 0x89, 0xd5, 0xf3, 0xe9, 0xa0, 0x7d, 0x44, 0xdf, 0x26, 0xe3, 0x7d, 0x7b,
+	0x12, 0x33, 0xdf, 0x85, 0xfe, 0x97, 0xf9, 0xb9, 0x1e, 0x3c, 0xf6, 0xa5, 0xd0, 0xb1, 0x1f, 0xc7,
+	0x48, 0x99, 0x85, 0x21, 0x41, 0x8d, 0xed, 0xdb, 0xf1, 0x28, 0x43, 0x90, 0x15, 0x28, 0xc4, 0x46,
+	0x44, 0xa0, 0xc5, 0xa6, 0xed, 0x98, 0x75, 0x86, 0x5c, 0xe5, 0xbf, 0x3d, 0x02, 0x89, 0xa1, 0x2e,
+	0x05, 0x12, 0xd4, 0x8e, 0x20, 0x90, 0x40, 0xa1, 0x02, 0xed, 0xc3, 0xc4, 0xa2, 0x69, 0x38, 0xd8,
+	0x70, 0xee, 0x99, 0x1a, 0xae, 0xad, 0xe0, 0x76, 0x3e, 0x3f, 0x0d, 0x23, 0x55, 0x36, 0xb3, 0x59,
+	0x27, 0x53, 0xae, 0x8c, 0x43, 0x55, 0x0f, 0x46, 0x59, 0x43, 0xff, 0x05, 0x39, 0x3f, 0xe4, 0x1e,
+	0xb6, 0x6c, 0xdd, 0x34, 0xdc, 0x0c, 0xee, 0x94, 0x17, 0xe3, 0x15, 0x36, 0x5b, 0xd6, 0x94, 0xdf,
+	0x25, 0x60, 0x6c, 0x31, 0x3c, 0xf3, 0x35, 0xb0, 0x3e, 0x49, 0xfd, 0xbc, 0x00, 0x63, 0x0d, 0x0b,
+	0xef, 0xe9, 0x66, 0xd3, 0xf6, 0xb2, 0x63, 0xad, 0xb5, 0x51, 0x31, 0xe5, 0xb2, 0x7a, 0x1a, 0x86,
+	0x0d, 0xfc, 0xd0, 0xf1, 0xc2, 0xa6, 0x29, 0xec, 0x20, 0x19, 0x76, 0xe1, 0xae, 0x43, 0x9a, 0x65,
+	0xbe, 0xbc, 0x72, 0x76, 0xd6, 0x73, 0x3f, 0xf4, 0xe8, 0x70, 0x7f, 0xeb, 0x7b, 0xb8, 0xea, 0x54,
+	0x38, 0xac, 0xb2, 0x0f, 0x67, 0xbc, 0xb3, 0xec, 0xe0, 0x39, 0xba, 0x0f, 0x8f, 0xc7, 0x7c, 0x1d,
+	0x4e, 0x47, 0xf8, 0x8f, 0xee, 0x1e, 0x37, 0xa1, 0x9f, 0x2b, 0x2c, 0x36, 0x90, 0x73, 0xd1, 0x24,
+	0x39, 0x52, 0xa5, 0x0d, 0xae, 0xbc, 0x23, 0xc1, 0xb8, 0x17, 0x82, 0x64, 0x64, 0x65, 0x63, 0xdb,
+	0x24, 0x5b, 0x9f, 0xa3, 0x3b, 0x35, 0x91, 0x09, 0xb2, 0x8f, 0x60, 0x6a, 0x9e, 0x08, 0xa7, 0xe6,
+	0x93, 0x30, 0xc0, 0x96, 0x95, 0x5b, 0xee, 0xec, 0x67, 0x03, 0x65, 0x0d, 0xe5, 0xa0, 0x8f, 0x6c,
+	0x95, 0xd8, 0x70, 0x78, 0xef, 0x54, 0x7c, 0x2a, 0xef, 0x26, 0xfd, 0xe1, 0xb9, 0x5c, 0xc3, 0x64,
+	0x1c, 0x95, 0x20, 0x55, 0xc7, 0x8e, 0xca, 0xf7, 0xea, 0x7c, 0xb4, 0x5a, 0x42, 0xe8, 0x0a, 0x85,
+	0x45, 0x73, 0x90, 0x36, 0xa9, 0xed, 0xba, 0xb1, 0xef, 0x9d, 0x9e, 0x0a, 0x87, 0x46, 0xd7, 0xa0,
+	0x57, 0xb5, 0x2c, 0xb5, 0x45, 0x77, 0xb6, 0x4c, 0x69, 0x32, 0x1a, 0x6d, 0x9e, 0x80, 0xdc, 0xe9,
+	0xa9, 0x30, 0x58, 0x34, 0x0b, 0x49, 0xdd, 0x70, 0xe8, 0xcd, 0xa6, 0xa3, 0xd9, 0xcb, 0x86, 0x83,
+	0x77, 0xb0, 0x75, 0xa7, 0xa7, 0x42, 0x60, 0x89, 0x7c, 0x9a, 0xd9, 0xdc, 0xaa, 0xb1, 0x5b, 0x4f,
+	0x47, 0xf9, 0x96, 0x28, 0x0c, 0x91, 0x8f, 0x41, 0x13, 0x3c, 0xdb, 0xb1, 0x74, 0x63, 0x87, 0x5e,
+	0x89, 0x3a, 0xe2, 0xad, 0x51, 0x18, 0x82, 0xc7, 0xa0, 0xd1, 0x73, 0x90, 0xda, 0x32, 0xcd, 0x1a,
+	0xbf, 0x23, 0xc9, 0xd1, 0x58, 0x0b, 0xa6, 0x59, 0xbb, 0xd3, 0x53, 0xa1, 0x90, 0x0b, 0x69, 0x48,
+	0x39, 0xad, 0x06, 0x56, 0x3e, 0x4c, 0xc2, 0xa8, 0x17, 0xe8, 0xb6, 0x8e, 0x6b, 0xda, 0xb1, 0x7c,
+	0xc2, 0x33, 0xf8, 0x84, 0x9b, 0xc1, 0x7f, 0xeb, 0xa5, 0xc7, 0xe5, 0xa5, 0x47, 0x80, 0xc2, 0x16,
+	0x3b, 0x96, 0x97, 0xae, 0x41, 0x7a, 0x9b, 0xb8, 0xd8, 0xe6, 0x55, 0xf6, 0x0e, 0xc6, 0xa5, 0x61,
+	0x50, 0xe1, 0xa0, 0xca, 0x0f, 0x25, 0x7f, 0x90, 0x50, 0xd3, 0x1f, 0x8b, 0xfd, 0x4b, 0x40, 0x1b,
+	0x94, 0xbc, 0x28, 0xc1, 0xcb, 0xf0, 0x1d, 0xbc, 0xc5, 0x37, 0x88, 0x0a, 0x10, 0x0c, 0x56, 0xad,
+	0x50, 0xde, 0x0a, 0x9c, 0x71, 0xdc, 0xa3, 0xc7, 0x92, 0xe5, 0x79, 0xe8, 0xe3, 0x95, 0x03, 0x1e,
+	0x9f, 0x93, 0xa1, 0x13, 0xab, 0x6c, 0x38, 0x73, 0xd7, 0x5f, 0x21, 0x17, 0xcf, 0x8a, 0x80, 0x25,
+	0x68, 0x75, 0xdd, 0xd0, 0xeb, 0xcd, 0x7a, 0x3b, 0x3e, 0x0f, 0x43, 0xe3, 0xb0, 0x14, 0x4d, 0x7d,
+	0x48, 0xd1, 0xb2, 0xdd, 0xa0, 0x31, 0x58, 0x92, 0x8b, 0x63, 0xa3, 0x59, 0xcf, 0x0d, 0x4e, 0x25,
+	0xa7, 0x93, 0x15, 0xfa, 0x5b, 0x79, 0x3b, 0xe1, 0x0f, 0x07, 0x16, 0xa0, 0xc7, 0xdc, 0x48, 0x03,
+	0x36, 0x38, 0x1b, 0x92, 0x8a, 0x51, 0x0f, 0x18, 0x61, 0x2e, 0x68, 0x84, 0x18, 0x3c, 0x61, 0x85,
+	0xb9, 0xa0, 0x15, 0xe2, 0xf0, 0x22, 0xcc, 0x20, 0x71, 0x33, 0x7c, 0x24, 0xf9, 0xcd, 0xc0, 0xd6,
+	0xdb, 0x3f, 0xcb, 0x0c, 0x8c, 0x7a, 0xc0, 0x0c, 0xe3, 0xd0, 0x6b, 0xe1, 0x1d, 0xfc, 0x90, 0x67,
+	0xca, 0xec, 0xa3, 0x2d, 0x6c, 0x96, 0xd6, 0x9f, 0x98, 0xb0, 0x3f, 0x80, 0x91, 0xe0, 0x2a, 0x3f,
+	0x96, 0xa4, 0xd7, 0x83, 0x92, 0x86, 0xd3, 0x2c, 0x42, 0xdb, 0x2f, 0xe7, 0xcc, 0x03, 0xc8, 0x78,
+	0x2e, 0x03, 0x48, 0x86, 0x89, 0xfb, 0x95, 0xa5, 0xe5, 0xca, 0xe6, 0xda, 0xfa, 0xfc, 0xfa, 0xc6,
+	0xda, 0xe6, 0xc6, 0xea, 0xd2, 0xf2, 0xed, 0xf2, 0xea, 0xf2, 0xd2, 0x48, 0x0f, 0x1a, 0x85, 0xc1,
+	0xd5, 0xfb, 0xeb, 0x9b, 0x6b, 0x1b, 0x0b, 0xf7, 0xca, 0xeb, 0xeb, 0xcb, 0x4b, 0x23, 0x12, 0x1a,
+	0x84, 0x01, 0xf7, 0x33, 0x81, 0xfa, 0x21, 0xf5, 0xf2, 0x7c, 0x79, 0x69, 0x24, 0x49, 0x7e, 0xad,
+	0x2d, 0xaf, 0xae, 0x8f, 0xa4, 0x10, 0x40, 0x7a, 0x71, 0x7e, 0x75, 0x71, 0xf9, 0xee, 0x48, 0x6f,
+	0xe9, 0xc3, 0x14, 0x0c, 0x8b, 0xd7, 0x57, 0x6b, 0xd8, 0xda, 0xd3, 0xab, 0x18, 0xbd, 0x02, 0xa3,
+	0xec, 0xca, 0x2a, 0x26, 0x96, 0xac, 0x16, 0x8a, 0x78, 0xad, 0x25, 0x47, 0x8c, 0x29, 0x67, 0xde,
+	0xfa, 0xf4, 0xcf, 0xef, 0x26, 0xc6, 0x94, 0xa1, 0xa2, 0x48, 0xbd, 0xed, 0x5b, 0x9a, 0xd5, 0xba,
+	0x25, 0xcd, 0xa0, 0xfb, 0x30, 0xe4, 0xa7, 0xdb, 0x35, 0xd1, 0x53, 0x94, 0xe8, 0xb0, 0x02, 0x1e,
+	0xa2, 0xd2, 0x0c, 0xaa, 0x40, 0x76, 0x05, 0x3b, 0x02, 0xca, 0x46, 0x13, 0x21, 0xf3, 0x2e, 0xd7,
+	0x1b, 0x4e, 0x4b, 0x9e, 0x08, 0x93, 0xa4, 0x37, 0x00, 0x44, 0xc9, 0x66, 0x91, 0x87, 0x2c, 0xfa,
+	0x2e, 0xed, 0x39, 0xeb, 0x0e, 0xde, 0xb0, 0xb1, 0x45, 0x14, 0x0f, 0xf4, 0xec, 0xe4, 0xc0, 0xb7,
+	0x72, 0x95, 0x12, 0xb9, 0xac, 0x28, 0x2e, 0x91, 0xe2, 0xbe, 0xe7, 0x26, 0xf2, 0xa8, 0xd8, 0xb4,
+	0xb1, 0xd5, 0x36, 0xc2, 0xab, 0x00, 0x2e, 0xfd, 0x58, 0xe2, 0x57, 0x28, 0xf1, 0x8b, 0x4a, 0x3e,
+	0x86, 0xb8, 0x34, 0x83, 0x5e, 0x83, 0xfe, 0x15, 0xec, 0x10, 0x2c, 0x3b, 0xce, 0xae, 0xe2, 0xd5,
+	0x9a, 0xf2, 0x34, 0x25, 0x3f, 0x85, 0x62, 0xc8, 0x97, 0x3e, 0x4e, 0xf1, 0xf7, 0x3b, 0x22, 0x44,
+	0x4c, 0xe1, 0x4a, 0xf6, 0xaa, 0xc7, 0x6a, 0xa1, 0xb3, 0xc1, 0x96, 0x8e, 0xf7, 0xcd, 0x96, 0x1c,
+	0x7c, 0x66, 0xa2, 0x14, 0x28, 0xe7, 0x69, 0xe5, 0x62, 0x47, 0xce, 0xf4, 0x22, 0xdb, 0x36, 0xdb,
+	0x2e, 0x64, 0x3c, 0x64, 0x8f, 0xca, 0x6d, 0x86, 0x72, 0xbb, 0xa4, 0x9c, 0x8f, 0xe3, 0xc6, 0x38,
+	0x79, 0x1e, 0x9d, 0x79, 0x39, 0x85, 0xdf, 0xa2, 0x75, 0xe4, 0x24, 0x77, 0xc3, 0x69, 0x07, 0xc0,
+	0x7d, 0x0d, 0x88, 0x26, 0xfd, 0x2d, 0x74, 0xdf, 0x1b, 0x41, 0x79, 0x2c, 0xc0, 0x87, 0x7a, 0xef,
+	0x32, 0xe5, 0x75, 0x01, 0xc5, 0xf1, 0x42, 0xaf, 0xd3, 0xd0, 0xe0, 0x8f, 0xcf, 0x5c, 0x4a, 0x81,
+	0x47, 0x85, 0xde, 0x65, 0xe2, 0x7d, 0xac, 0xa5, 0x94, 0x28, 0x9f, 0x67, 0xd1, 0x4c, 0x0c, 0x9f,
+	0xe2, 0xbe, 0x28, 0x46, 0x3c, 0x2a, 0xfd, 0x25, 0x09, 0x23, 0xed, 0x27, 0x07, 0x22, 0x6a, 0xde,
+	0x93, 0x60, 0x24, 0xf8, 0xa6, 0x06, 0x79, 0xea, 0xf3, 0x1d, 0xde, 0xdb, 0xc8, 0x9d, 0x9e, 0x31,
+	0x28, 0x4b, 0x54, 0xb2, 0x97, 0x94, 0x9b, 0x1d, 0x25, 0x13, 0x4f, 0x3b, 0x74, 0x22, 0x9e, 0xf7,
+	0xed, 0xc7, 0xa3, 0x22, 0xad, 0xe1, 0x10, 0x3f, 0xbc, 0x2f, 0x01, 0x0a, 0x3f, 0x39, 0x42, 0x17,
+	0xbb, 0x78, 0x90, 0x24, 0x4f, 0x76, 0x10, 0x8d, 0x3a, 0x68, 0x9e, 0x8a, 0xf7, 0x02, 0x3a, 0xbe,
+	0x78, 0xe8, 0x17, 0x12, 0x8c, 0x45, 0x3c, 0xe3, 0x41, 0x97, 0x82, 0x61, 0x79, 0x34, 0xc3, 0x7d,
+	0x87, 0x4a, 0xf6, 0xff, 0xf2, 0xed, 0x63, 0x4b, 0x56, 0xdc, 0x77, 0x5b, 0x5a, 0x8f, 0x6e, 0x49,
+	0x33, 0xa5, 0x5f, 0xa7, 0x69, 0x8d, 0x88, 0x76, 0xab, 0xb8, 0xbf, 0xf7, 0x61, 0xc2, 0xd7, 0xde,
+	0x65, 0x79, 0x21, 0xd9, 0x2d, 0x4e, 0x77, 0x78, 0x7b, 0x20, 0x77, 0x9a, 0x50, 0x8a, 0x54, 0xe2,
+	0x2b, 0xca, 0xa5, 0xce, 0x41, 0x48, 0x01, 0xdb, 0x3b, 0x86, 0x03, 0x63, 0x11, 0xcc, 0x8f, 0xc1,
+	0xf9, 0x19, 0xca, 0xf9, 0x29, 0x65, 0x2a, 0x96, 0xb3, 0x34, 0x83, 0xb6, 0x21, 0xcb, 0xb8, 0xb2,
+	0x8e, 0x0a, 0x1a, 0x8f, 0xea, 0xb1, 0xc8, 0x91, 0xa3, 0x5d, 0xec, 0x52, 0x4d, 0x0a, 0x4c, 0xf8,
+	0x34, 0x60, 0xd0, 0xa7, 0x1d, 0xca, 0x1f, 0xde, 0x52, 0x97, 0xc3, 0x75, 0x55, 0xe5, 0x59, 0xca,
+	0xef, 0x69, 0xe5, 0x42, 0x47, 0x7e, 0xdc, 0xc5, 0x36, 0xe7, 0xe8, 0x6b, 0xbf, 0x7a, 0x39, 0x46,
+	0xf5, 0x65, 0x0f, 0xe1, 0x28, 0x77, 0xc7, 0xd1, 0x84, 0xac, 0xf7, 0x31, 0x11, 0x3a, 0x77, 0xe8,
+	0x23, 0x23, 0xf9, 0x54, 0x88, 0x1f, 0x5d, 0x84, 0xfc, 0x08, 0x45, 0xf1, 0x3c, 0x91, 0x03, 0xe0,
+	0x3e, 0x31, 0xf1, 0x6e, 0xc8, 0xa1, 0x87, 0x27, 0x51, 0xca, 0xcd, 0x51, 0x46, 0xcf, 0xa1, 0x42,
+	0x2c, 0x23, 0xdf, 0xda, 0x29, 0x21, 0x18, 0x69, 0x77, 0xb6, 0xf8, 0xca, 0x29, 0xbd, 0x99, 0x82,
+	0x2c, 0x4b, 0x02, 0xf9, 0x52, 0xfa, 0xbe, 0x38, 0xff, 0x58, 0xbf, 0x2b, 0x74, 0xfe, 0x79, 0xbb,
+	0x0b, 0x72, 0xb0, 0x5e, 0xad, 0xbc, 0x48, 0x45, 0x9b, 0x53, 0x66, 0xbb, 0xdf, 0xc1, 0x8b, 0xb4,
+	0x66, 0x4d, 0xfd, 0xf0, 0x8e, 0x24, 0x8e, 0xc4, 0x10, 0xf3, 0x70, 0xb3, 0x27, 0xcc, 0x7c, 0x85,
+	0x32, 0x9f, 0x97, 0x5f, 0x3c, 0x32, 0xf3, 0xe2, 0xbe, 0x28, 0xa4, 0x93, 0x1d, 0x06, 0xbd, 0x25,
+	0x41, 0xc6, 0xd3, 0xcb, 0xf2, 0x19, 0x21, 0xd4, 0xe2, 0x0a, 0xcb, 0xc1, 0x0f, 0x8b, 0x99, 0x13,
+	0xc9, 0x21, 0x0e, 0x6d, 0x56, 0xf2, 0x0f, 0x1e, 0xda, 0xbe, 0x46, 0x80, 0x1c, 0xec, 0xbb, 0x74,
+	0x79, 0x68, 0x33, 0x9e, 0xa5, 0x2f, 0x25, 0x18, 0x16, 0x05, 0x74, 0x11, 0x05, 0x3b, 0x22, 0xed,
+	0x6a, 0x97, 0xf6, 0x91, 0x2f, 0x0e, 0xe9, 0x98, 0x1c, 0x31, 0xd6, 0x45, 0x96, 0x2a, 0xda, 0x01,
+	0xd4, 0xe5, 0x35, 0x9a, 0x59, 0x0b, 0x6c, 0x1b, 0xe5, 0xc2, 0x24, 0x59, 0xd9, 0xdd, 0x9b, 0x34,
+	0xf8, 0xca, 0xfd, 0x7c, 0x33, 0x43, 0x5d, 0x30, 0xa4, 0xaa, 0x8a, 0xd2, 0x7c, 0x48, 0xd5, 0x76,
+	0xd3, 0xc0, 0xa3, 0x96, 0x18, 0x93, 0x23, 0xc6, 0xba, 0x50, 0x55, 0x34, 0x1a, 0x3c, 0xaa, 0x0a,
+	0x6c, 0x9f, 0xaa, 0xfe, 0x0e, 0x83, 0x57, 0x55, 0x5f, 0x23, 0x21, 0x5e, 0xd5, 0x36, 0xc3, 0xd2,
+	0xaf, 0x7a, 0xfd, 0x35, 0x11, 0xa1, 0x2e, 0x16, 0x6d, 0x42, 0xef, 0x24, 0x3a, 0xb4, 0x08, 0x27,
+	0x1f, 0x5e, 0x55, 0x16, 0xb7, 0x1b, 0xa5, 0xaf, 0x48, 0x0b, 0xe0, 0x54, 0xd9, 0x96, 0xe8, 0xcf,
+	0xfa, 0xd8, 0x1c, 0x4e, 0x28, 0x8e, 0xcf, 0x53, 0x94, 0xcf, 0x79, 0x59, 0xe6, 0x7c, 0x8a, 0xfb,
+	0xc1, 0xc2, 0x3b, 0x5d, 0xbd, 0x6f, 0x4b, 0x70, 0x8e, 0x18, 0xda, 0x43, 0x61, 0xb1, 0x69, 0x59,
+	0xd8, 0x10, 0x7d, 0x00, 0x34, 0x15, 0xcd, 0xc7, 0x6d, 0xcc, 0xc4, 0x49, 0xa2, 0x50, 0x49, 0xce,
+	0xa2, 0x43, 0x24, 0x41, 0x1f, 0x48, 0x30, 0x11, 0x10, 0xe3, 0xb1, 0xf1, 0xbf, 0x4d, 0xf9, 0xff,
+	0x2f, 0x7a, 0xa9, 0x33, 0xff, 0xa2, 0x28, 0xf5, 0x07, 0xe7, 0xdc, 0x16, 0xc9, 0x23, 0xf4, 0x23,
+	0x09, 0x4e, 0x47, 0xcb, 0x68, 0x77, 0x21, 0xe4, 0x85, 0x43, 0x85, 0xa4, 0x11, 0xcb, 0x53, 0x1a,
+	0x74, 0xb1, 0x0b, 0x41, 0x17, 0xb4, 0x4f, 0x3e, 0xcf, 0xf7, 0x7c, 0xf6, 0x79, 0xbe, 0xe7, 0xab,
+	0xcf, 0xf3, 0xd2, 0x9b, 0x07, 0x79, 0xe9, 0x97, 0x07, 0x79, 0xe9, 0xf7, 0x07, 0x79, 0xe9, 0x93,
+	0x83, 0xbc, 0xf4, 0xa7, 0x83, 0xbc, 0xf4, 0xe5, 0x41, 0xbe, 0xe7, 0xab, 0x83, 0xbc, 0xf4, 0x93,
+	0x2f, 0xf2, 0x3d, 0x9f, 0x7c, 0x91, 0xef, 0xf9, 0xec, 0x8b, 0x7c, 0xcf, 0x6b, 0x85, 0x1d, 0xdd,
+	0xd9, 0x6d, 0x6e, 0x15, 0xaa, 0x66, 0xbd, 0xb8, 0x5d, 0x33, 0xdf, 0x68, 0x36, 0x8a, 0xbb, 0x58,
+	0xd5, 0x6a, 0xd8, 0xb6, 0xd5, 0x86, 0x6e, 0x17, 0x77, 0xcc, 0xab, 0xb6, 0xf6, 0x80, 0xfd, 0x17,
+	0xae, 0xb8, 0x37, 0xbb, 0x95, 0xa6, 0x77, 0xf6, 0x6b, 0xff, 0x08, 0x00, 0x00, 0xff, 0xff, 0xc7,
+	0x68, 0x45, 0x54, 0x21, 0x37, 0x00, 0x00,
 }
 
 func (x OrderStatus) String() string {
@@ -3515,9 +4483,6 @@ func (this *UpdateInventoryItemRequest) Equal(that interface{}) bool {
 	if this.ProductId != that1.ProductId {
 		return false
 	}
-	if this.ItemId != that1.ItemId {
-		return false
-	}
 	if !this.Amount.Equal(that1.Amount) {
 		return false
 	}
@@ -3555,9 +4520,6 @@ func (this *InventoryItem) Equal(that interface{}) bool {
 		return false
 	}
 	if !this.CreatedAt.Equal(that1.CreatedAt) {
-		return false
-	}
-	if this.ItemId != that1.ItemId {
 		return false
 	}
 	if !this.Amount.Equal(that1.Amount) {
@@ -4317,16 +5279,22 @@ func (this *ListOrdersRequest) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
+	if this.OrderId != that1.OrderId {
+		return false
+	}
+	if len(this.Status) != len(that1.Status) {
+		return false
+	}
+	for i := range this.Status {
+		if this.Status[i] != that1.Status[i] {
+			return false
+		}
+	}
 	if this.MerchantId != that1.MerchantId {
 		return false
 	}
-	if len(this.Filter) != len(that1.Filter) {
+	if this.StoreId != that1.StoreId {
 		return false
-	}
-	for i := range this.Filter {
-		if !this.Filter[i].Equal(that1.Filter[i]) {
-			return false
-		}
 	}
 	return true
 }
@@ -4474,14 +5442,14 @@ func (this *CustomerList) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Manager) Equal(that interface{}) bool {
+func (this *ContentModelGetRequest) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Manager)
+	that1, ok := that.(*ContentModelGetRequest)
 	if !ok {
-		that2, ok := that.(Manager)
+		that2, ok := that.(ContentModelGetRequest)
 		if ok {
 			that1 = &that2
 		} else {
@@ -4493,32 +5461,701 @@ func (this *Manager) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.Id != that1.Id {
+	if this.ContentModelId != that1.ContentModelId {
 		return false
 	}
-	if this.Name != that1.Name {
+	if this.ContentModelVersionId != that1.ContentModelVersionId {
 		return false
 	}
-	if len(this.Users) != len(that1.Users) {
-		return false
+	return true
+}
+func (this *ContentModelVersion) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
 	}
-	for i := range this.Users {
-		if this.Users[i] != that1.Users[i] {
+
+	that1, ok := that.(*ContentModelVersion)
+	if !ok {
+		that2, ok := that.(ContentModelVersion)
+		if ok {
+			that1 = &that2
+		} else {
 			return false
 		}
 	}
-	if this.InvitedById != that1.InvitedById {
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
 		return false
 	}
-	if len(this.Merchants) != len(that1.Merchants) {
+	if this.ContentModelId != that1.ContentModelId {
 		return false
 	}
-	for i := range this.Merchants {
-		if !this.Merchants[i].Equal(that1.Merchants[i]) {
+	if this.ContentModelVersionId != that1.ContentModelVersionId {
+		return false
+	}
+	if !this.CreatedAt.Equal(that1.CreatedAt) {
+		return false
+	}
+	if this.PreviousVersionId != that1.PreviousVersionId {
+		return false
+	}
+	if this.NextVersionId != that1.NextVersionId {
+		return false
+	}
+	if !this.Schema.Equal(that1.Schema) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelUpdateRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelUpdateRequest)
+	if !ok {
+		that2, ok := that.(ContentModelUpdateRequest)
+		if ok {
+			that1 = &that2
+		} else {
 			return false
 		}
 	}
-	if this.Thumbnail != that1.Thumbnail {
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.ContentModelId != that1.ContentModelId {
+		return false
+	}
+	if !this.Schema.Equal(that1.Schema) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelVersionList) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelVersionList)
+	if !ok {
+		that2, ok := that.(ContentModelVersionList)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Versions) != len(that1.Versions) {
+		return false
+	}
+	for i := range this.Versions {
+		if !this.Versions[i].Equal(that1.Versions[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *ContentModelMetaInfo) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelMetaInfo)
+	if !ok {
+		that2, ok := that.(ContentModelMetaInfo)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Title != that1.Title {
+		return false
+	}
+	if this.Description != that1.Description {
+		return false
+	}
+	if this.CustomId != that1.CustomId {
+		return false
+	}
+	if this.Comment != that1.Comment {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement)
+	if !ok {
+		that2, ok := that.(ContentModelElement)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if that1.Type == nil {
+		if this.Type != nil {
+			return false
+		}
+	} else if this.Type == nil {
+		return false
+	} else if !this.Type.Equal(that1.Type) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement_Object) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement_Object)
+	if !ok {
+		that2, ok := that.(ContentModelElement_Object)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Object.Equal(that1.Object) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement_Array) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement_Array)
+	if !ok {
+		that2, ok := that.(ContentModelElement_Array)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Array.Equal(that1.Array) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement_Int) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement_Int)
+	if !ok {
+		that2, ok := that.(ContentModelElement_Int)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Int.Equal(that1.Int) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement_Double) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement_Double)
+	if !ok {
+		that2, ok := that.(ContentModelElement_Double)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Double.Equal(that1.Double) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement_String_) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement_String_)
+	if !ok {
+		that2, ok := that.(ContentModelElement_String_)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.String_.Equal(that1.String_) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelElement_Bool) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelElement_Bool)
+	if !ok {
+		that2, ok := that.(ContentModelElement_Bool)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Bool.Equal(that1.Bool) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField)
+	if !ok {
+		that2, ok := that.(ContentModelField)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if this.Key != that1.Key {
+		return false
+	}
+	if that1.Type == nil {
+		if this.Type != nil {
+			return false
+		}
+	} else if this.Type == nil {
+		return false
+	} else if !this.Type.Equal(that1.Type) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField_Object) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField_Object)
+	if !ok {
+		that2, ok := that.(ContentModelField_Object)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Object.Equal(that1.Object) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField_Array) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField_Array)
+	if !ok {
+		that2, ok := that.(ContentModelField_Array)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Array.Equal(that1.Array) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField_Int) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField_Int)
+	if !ok {
+		that2, ok := that.(ContentModelField_Int)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Int.Equal(that1.Int) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField_Double) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField_Double)
+	if !ok {
+		that2, ok := that.(ContentModelField_Double)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Double.Equal(that1.Double) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField_String_) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField_String_)
+	if !ok {
+		that2, ok := that.(ContentModelField_String_)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.String_.Equal(that1.String_) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelField_Bool) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelField_Bool)
+	if !ok {
+		that2, ok := that.(ContentModelField_Bool)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Bool.Equal(that1.Bool) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelObject) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelObject)
+	if !ok {
+		that2, ok := that.(ContentModelObject)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if len(this.Fields) != len(that1.Fields) {
+		return false
+	}
+	for i := range this.Fields {
+		if !this.Fields[i].Equal(that1.Fields[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *ContentModelArray) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelArray)
+	if !ok {
+		that2, ok := that.(ContentModelArray)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if !this.ItemSchema.Equal(that1.ItemSchema) {
+		return false
+	}
+	return true
+}
+func (this *ContentModelInteger) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelInteger)
+	if !ok {
+		that2, ok := that.(ContentModelInteger)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if !this.Default.Equal(that1.Default) {
+		return false
+	}
+	if !this.Minimum.Equal(that1.Minimum) {
+		return false
+	}
+	if !this.Maximum.Equal(that1.Maximum) {
+		return false
+	}
+	if len(this.Enum) != len(that1.Enum) {
+		return false
+	}
+	for i := range this.Enum {
+		if this.Enum[i] != that1.Enum[i] {
+			return false
+		}
+	}
+	return true
+}
+func (this *ContentModelDouble) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelDouble)
+	if !ok {
+		that2, ok := that.(ContentModelDouble)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if !this.Default.Equal(that1.Default) {
+		return false
+	}
+	if !this.Minimum.Equal(that1.Minimum) {
+		return false
+	}
+	if !this.Maximum.Equal(that1.Maximum) {
+		return false
+	}
+	if len(this.Enum) != len(that1.Enum) {
+		return false
+	}
+	for i := range this.Enum {
+		if this.Enum[i] != that1.Enum[i] {
+			return false
+		}
+	}
+	return true
+}
+func (this *ContentModelString) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelString)
+	if !ok {
+		that2, ok := that.(ContentModelString)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if !this.Default.Equal(that1.Default) {
+		return false
+	}
+	if this.Regex != that1.Regex {
+		return false
+	}
+	if len(this.Enum) != len(that1.Enum) {
+		return false
+	}
+	for i := range this.Enum {
+		if this.Enum[i] != that1.Enum[i] {
+			return false
+		}
+	}
+	return true
+}
+func (this *ContentModelBool) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ContentModelBool)
+	if !ok {
+		that2, ok := that.(ContentModelBool)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !this.Meta.Equal(that1.Meta) {
+		return false
+	}
+	if !this.Default.Equal(that1.Default) {
 		return false
 	}
 	return true
@@ -4720,12 +6357,11 @@ func (this *UpdateInventoryItemRequest) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 10)
+	s := make([]string, 0, 9)
 	s = append(s, "&v1.UpdateInventoryItemRequest{")
 	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "InventoryId: "+fmt.Sprintf("%#v", this.InventoryId)+",\n")
 	s = append(s, "ProductId: "+fmt.Sprintf("%#v", this.ProductId)+",\n")
-	s = append(s, "ItemId: "+fmt.Sprintf("%#v", this.ItemId)+",\n")
 	if this.Amount != nil {
 		s = append(s, "Amount: "+fmt.Sprintf("%#v", this.Amount)+",\n")
 	}
@@ -4737,7 +6373,7 @@ func (this *InventoryItem) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 12)
+	s := make([]string, 0, 11)
 	s = append(s, "&v1.InventoryItem{")
 	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
 	s = append(s, "ProductId: "+fmt.Sprintf("%#v", this.ProductId)+",\n")
@@ -4745,7 +6381,6 @@ func (this *InventoryItem) GoString() string {
 	if this.CreatedAt != nil {
 		s = append(s, "CreatedAt: "+fmt.Sprintf("%#v", this.CreatedAt)+",\n")
 	}
-	s = append(s, "ItemId: "+fmt.Sprintf("%#v", this.ItemId)+",\n")
 	if this.Amount != nil {
 		s = append(s, "Amount: "+fmt.Sprintf("%#v", this.Amount)+",\n")
 	}
@@ -5152,22 +6787,12 @@ func (this *ListOrdersRequest) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 6)
+	s := make([]string, 0, 8)
 	s = append(s, "&v1.ListOrdersRequest{")
+	s = append(s, "OrderId: "+fmt.Sprintf("%#v", this.OrderId)+",\n")
+	s = append(s, "Status: "+fmt.Sprintf("%#v", this.Status)+",\n")
 	s = append(s, "MerchantId: "+fmt.Sprintf("%#v", this.MerchantId)+",\n")
-	keysForFilter := make([]string, 0, len(this.Filter))
-	for k, _ := range this.Filter {
-		keysForFilter = append(keysForFilter, k)
-	}
-	github_com_gogo_protobuf_sortkeys.Strings(keysForFilter)
-	mapStringForFilter := "map[string]*v1.ExpressionList{"
-	for _, k := range keysForFilter {
-		mapStringForFilter += fmt.Sprintf("%#v: %#v,", k, this.Filter[k])
-	}
-	mapStringForFilter += "}"
-	if this.Filter != nil {
-		s = append(s, "Filter: "+mapStringForFilter+",\n")
-	}
+	s = append(s, "StoreId: "+fmt.Sprintf("%#v", this.StoreId)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -5231,20 +6856,304 @@ func (this *CustomerList) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *Manager) GoString() string {
+func (this *ContentModelGetRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&v1.ContentModelGetRequest{")
+	s = append(s, "ContentModelId: "+fmt.Sprintf("%#v", this.ContentModelId)+",\n")
+	s = append(s, "ContentModelVersionId: "+fmt.Sprintf("%#v", this.ContentModelVersionId)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelVersion) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 10)
-	s = append(s, "&v1.Manager{")
-	s = append(s, "Id: "+fmt.Sprintf("%#v", this.Id)+",\n")
-	s = append(s, "Name: "+fmt.Sprintf("%#v", this.Name)+",\n")
-	s = append(s, "Users: "+fmt.Sprintf("%#v", this.Users)+",\n")
-	s = append(s, "InvitedById: "+fmt.Sprintf("%#v", this.InvitedById)+",\n")
-	if this.Merchants != nil {
-		s = append(s, "Merchants: "+fmt.Sprintf("%#v", this.Merchants)+",\n")
+	s = append(s, "&v1.ContentModelVersion{")
+	s = append(s, "ContentModelId: "+fmt.Sprintf("%#v", this.ContentModelId)+",\n")
+	s = append(s, "ContentModelVersionId: "+fmt.Sprintf("%#v", this.ContentModelVersionId)+",\n")
+	if this.CreatedAt != nil {
+		s = append(s, "CreatedAt: "+fmt.Sprintf("%#v", this.CreatedAt)+",\n")
 	}
-	s = append(s, "Thumbnail: "+fmt.Sprintf("%#v", this.Thumbnail)+",\n")
+	s = append(s, "PreviousVersionId: "+fmt.Sprintf("%#v", this.PreviousVersionId)+",\n")
+	s = append(s, "NextVersionId: "+fmt.Sprintf("%#v", this.NextVersionId)+",\n")
+	if this.Schema != nil {
+		s = append(s, "Schema: "+fmt.Sprintf("%#v", this.Schema)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelUpdateRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&v1.ContentModelUpdateRequest{")
+	s = append(s, "ContentModelId: "+fmt.Sprintf("%#v", this.ContentModelId)+",\n")
+	if this.Schema != nil {
+		s = append(s, "Schema: "+fmt.Sprintf("%#v", this.Schema)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelVersionList) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&v1.ContentModelVersionList{")
+	if this.Versions != nil {
+		s = append(s, "Versions: "+fmt.Sprintf("%#v", this.Versions)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelMetaInfo) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&v1.ContentModelMetaInfo{")
+	s = append(s, "Title: "+fmt.Sprintf("%#v", this.Title)+",\n")
+	s = append(s, "Description: "+fmt.Sprintf("%#v", this.Description)+",\n")
+	s = append(s, "CustomId: "+fmt.Sprintf("%#v", this.CustomId)+",\n")
+	s = append(s, "Comment: "+fmt.Sprintf("%#v", this.Comment)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelElement) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 11)
+	s = append(s, "&v1.ContentModelElement{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.Type != nil {
+		s = append(s, "Type: "+fmt.Sprintf("%#v", this.Type)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelElement_Object) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelElement_Object{` +
+		`Object:` + fmt.Sprintf("%#v", this.Object) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelElement_Array) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelElement_Array{` +
+		`Array:` + fmt.Sprintf("%#v", this.Array) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelElement_Int) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelElement_Int{` +
+		`Int:` + fmt.Sprintf("%#v", this.Int) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelElement_Double) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelElement_Double{` +
+		`Double:` + fmt.Sprintf("%#v", this.Double) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelElement_String_) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelElement_String_{` +
+		`String_:` + fmt.Sprintf("%#v", this.String_) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelElement_Bool) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelElement_Bool{` +
+		`Bool:` + fmt.Sprintf("%#v", this.Bool) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelField) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 12)
+	s = append(s, "&v1.ContentModelField{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	s = append(s, "Key: "+fmt.Sprintf("%#v", this.Key)+",\n")
+	if this.Type != nil {
+		s = append(s, "Type: "+fmt.Sprintf("%#v", this.Type)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelField_Object) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelField_Object{` +
+		`Object:` + fmt.Sprintf("%#v", this.Object) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelField_Array) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelField_Array{` +
+		`Array:` + fmt.Sprintf("%#v", this.Array) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelField_Int) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelField_Int{` +
+		`Int:` + fmt.Sprintf("%#v", this.Int) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelField_Double) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelField_Double{` +
+		`Double:` + fmt.Sprintf("%#v", this.Double) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelField_String_) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelField_String_{` +
+		`String_:` + fmt.Sprintf("%#v", this.String_) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelField_Bool) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&v1.ContentModelField_Bool{` +
+		`Bool:` + fmt.Sprintf("%#v", this.Bool) + `}`}, ", ")
+	return s
+}
+func (this *ContentModelObject) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&v1.ContentModelObject{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.Fields != nil {
+		s = append(s, "Fields: "+fmt.Sprintf("%#v", this.Fields)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelArray) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&v1.ContentModelArray{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.ItemSchema != nil {
+		s = append(s, "ItemSchema: "+fmt.Sprintf("%#v", this.ItemSchema)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelInteger) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 9)
+	s = append(s, "&v1.ContentModelInteger{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.Default != nil {
+		s = append(s, "Default: "+fmt.Sprintf("%#v", this.Default)+",\n")
+	}
+	if this.Minimum != nil {
+		s = append(s, "Minimum: "+fmt.Sprintf("%#v", this.Minimum)+",\n")
+	}
+	if this.Maximum != nil {
+		s = append(s, "Maximum: "+fmt.Sprintf("%#v", this.Maximum)+",\n")
+	}
+	s = append(s, "Enum: "+fmt.Sprintf("%#v", this.Enum)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelDouble) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 9)
+	s = append(s, "&v1.ContentModelDouble{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.Default != nil {
+		s = append(s, "Default: "+fmt.Sprintf("%#v", this.Default)+",\n")
+	}
+	if this.Minimum != nil {
+		s = append(s, "Minimum: "+fmt.Sprintf("%#v", this.Minimum)+",\n")
+	}
+	if this.Maximum != nil {
+		s = append(s, "Maximum: "+fmt.Sprintf("%#v", this.Maximum)+",\n")
+	}
+	s = append(s, "Enum: "+fmt.Sprintf("%#v", this.Enum)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelString) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&v1.ContentModelString{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.Default != nil {
+		s = append(s, "Default: "+fmt.Sprintf("%#v", this.Default)+",\n")
+	}
+	s = append(s, "Regex: "+fmt.Sprintf("%#v", this.Regex)+",\n")
+	s = append(s, "Enum: "+fmt.Sprintf("%#v", this.Enum)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ContentModelBool) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&v1.ContentModelBool{")
+	if this.Meta != nil {
+		s = append(s, "Meta: "+fmt.Sprintf("%#v", this.Meta)+",\n")
+	}
+	if this.Default != nil {
+		s = append(s, "Default: "+fmt.Sprintf("%#v", this.Default)+",\n")
+	}
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -6671,6 +8580,238 @@ var _CustomerService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "v1/admin_api.proto",
 }
 
+// ContentModelServiceClient is the client API for ContentModelService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ContentModelServiceClient interface {
+	// CreateContentModel creates brand new content model for a particular user
+	CreateContentModel(ctx context.Context, in *ContentModelObject, opts ...grpc.CallOption) (*ContentModelVersion, error)
+	// UpdateContentModel creates new version of the content model.
+	// This does not change instances of the model which are tied to the previous versions of the model.
+	UpdateContentModel(ctx context.Context, in *ContentModelVersion, opts ...grpc.CallOption) (*ContentModelVersion, error)
+	// GetContentModelCurrentVersion retrieves the latest version of the content model.
+	GetContentModelCurrentVersion(ctx context.Context, in *ContentModelGetRequest, opts ...grpc.CallOption) (*ContentModelVersion, error)
+	// GetContentModelVersion retrieves a specific version of the content model.
+	// Requires both content model ID and content model version ID
+	GetContentModelVersion(ctx context.Context, in *ContentModelGetRequest, opts ...grpc.CallOption) (*ContentModelVersion, error)
+	// GetContentModelVersions retrieves list of all content model version IDs.
+	// Response is ordered in descending order starting from current (latest) ending with the first version
+	GetContentModelVersions(ctx context.Context, in *ContentModelGetRequest, opts ...grpc.CallOption) (*ContentModelVersionList, error)
+}
+
+type contentModelServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewContentModelServiceClient(cc *grpc.ClientConn) ContentModelServiceClient {
+	return &contentModelServiceClient{cc}
+}
+
+func (c *contentModelServiceClient) CreateContentModel(ctx context.Context, in *ContentModelObject, opts ...grpc.CallOption) (*ContentModelVersion, error) {
+	out := new(ContentModelVersion)
+	err := c.cc.Invoke(ctx, "/admin.v1.ContentModelService/CreateContentModel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentModelServiceClient) UpdateContentModel(ctx context.Context, in *ContentModelVersion, opts ...grpc.CallOption) (*ContentModelVersion, error) {
+	out := new(ContentModelVersion)
+	err := c.cc.Invoke(ctx, "/admin.v1.ContentModelService/UpdateContentModel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentModelServiceClient) GetContentModelCurrentVersion(ctx context.Context, in *ContentModelGetRequest, opts ...grpc.CallOption) (*ContentModelVersion, error) {
+	out := new(ContentModelVersion)
+	err := c.cc.Invoke(ctx, "/admin.v1.ContentModelService/GetContentModelCurrentVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentModelServiceClient) GetContentModelVersion(ctx context.Context, in *ContentModelGetRequest, opts ...grpc.CallOption) (*ContentModelVersion, error) {
+	out := new(ContentModelVersion)
+	err := c.cc.Invoke(ctx, "/admin.v1.ContentModelService/GetContentModelVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentModelServiceClient) GetContentModelVersions(ctx context.Context, in *ContentModelGetRequest, opts ...grpc.CallOption) (*ContentModelVersionList, error) {
+	out := new(ContentModelVersionList)
+	err := c.cc.Invoke(ctx, "/admin.v1.ContentModelService/GetContentModelVersions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ContentModelServiceServer is the server API for ContentModelService service.
+type ContentModelServiceServer interface {
+	// CreateContentModel creates brand new content model for a particular user
+	CreateContentModel(context.Context, *ContentModelObject) (*ContentModelVersion, error)
+	// UpdateContentModel creates new version of the content model.
+	// This does not change instances of the model which are tied to the previous versions of the model.
+	UpdateContentModel(context.Context, *ContentModelVersion) (*ContentModelVersion, error)
+	// GetContentModelCurrentVersion retrieves the latest version of the content model.
+	GetContentModelCurrentVersion(context.Context, *ContentModelGetRequest) (*ContentModelVersion, error)
+	// GetContentModelVersion retrieves a specific version of the content model.
+	// Requires both content model ID and content model version ID
+	GetContentModelVersion(context.Context, *ContentModelGetRequest) (*ContentModelVersion, error)
+	// GetContentModelVersions retrieves list of all content model version IDs.
+	// Response is ordered in descending order starting from current (latest) ending with the first version
+	GetContentModelVersions(context.Context, *ContentModelGetRequest) (*ContentModelVersionList, error)
+}
+
+// UnimplementedContentModelServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedContentModelServiceServer struct {
+}
+
+func (*UnimplementedContentModelServiceServer) CreateContentModel(ctx context.Context, req *ContentModelObject) (*ContentModelVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateContentModel not implemented")
+}
+func (*UnimplementedContentModelServiceServer) UpdateContentModel(ctx context.Context, req *ContentModelVersion) (*ContentModelVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateContentModel not implemented")
+}
+func (*UnimplementedContentModelServiceServer) GetContentModelCurrentVersion(ctx context.Context, req *ContentModelGetRequest) (*ContentModelVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetContentModelCurrentVersion not implemented")
+}
+func (*UnimplementedContentModelServiceServer) GetContentModelVersion(ctx context.Context, req *ContentModelGetRequest) (*ContentModelVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetContentModelVersion not implemented")
+}
+func (*UnimplementedContentModelServiceServer) GetContentModelVersions(ctx context.Context, req *ContentModelGetRequest) (*ContentModelVersionList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetContentModelVersions not implemented")
+}
+
+func RegisterContentModelServiceServer(s *grpc.Server, srv ContentModelServiceServer) {
+	s.RegisterService(&_ContentModelService_serviceDesc, srv)
+}
+
+func _ContentModelService_CreateContentModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentModelObject)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentModelServiceServer).CreateContentModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.ContentModelService/CreateContentModel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentModelServiceServer).CreateContentModel(ctx, req.(*ContentModelObject))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ContentModelService_UpdateContentModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentModelVersion)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentModelServiceServer).UpdateContentModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.ContentModelService/UpdateContentModel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentModelServiceServer).UpdateContentModel(ctx, req.(*ContentModelVersion))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ContentModelService_GetContentModelCurrentVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentModelGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentModelServiceServer).GetContentModelCurrentVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.ContentModelService/GetContentModelCurrentVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentModelServiceServer).GetContentModelCurrentVersion(ctx, req.(*ContentModelGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ContentModelService_GetContentModelVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentModelGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentModelServiceServer).GetContentModelVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.ContentModelService/GetContentModelVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentModelServiceServer).GetContentModelVersion(ctx, req.(*ContentModelGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ContentModelService_GetContentModelVersions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContentModelGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentModelServiceServer).GetContentModelVersions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/admin.v1.ContentModelService/GetContentModelVersions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentModelServiceServer).GetContentModelVersions(ctx, req.(*ContentModelGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _ContentModelService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "admin.v1.ContentModelService",
+	HandlerType: (*ContentModelServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateContentModel",
+			Handler:    _ContentModelService_CreateContentModel_Handler,
+		},
+		{
+			MethodName: "UpdateContentModel",
+			Handler:    _ContentModelService_UpdateContentModel_Handler,
+		},
+		{
+			MethodName: "GetContentModelCurrentVersion",
+			Handler:    _ContentModelService_GetContentModelCurrentVersion_Handler,
+		},
+		{
+			MethodName: "GetContentModelVersion",
+			Handler:    _ContentModelService_GetContentModelVersion_Handler,
+		},
+		{
+			MethodName: "GetContentModelVersions",
+			Handler:    _ContentModelService_GetContentModelVersions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "v1/admin_api.proto",
+}
+
 func (m *Merchant) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -7441,13 +9582,6 @@ func (m *UpdateInventoryItemRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 		i--
 		dAtA[i] = 0x92
 	}
-	if len(m.ItemId) > 0 {
-		i -= len(m.ItemId)
-		copy(dAtA[i:], m.ItemId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ItemId)))
-		i--
-		dAtA[i] = 0x2a
-	}
 	if len(m.ProductId) > 0 {
 		i -= len(m.ProductId)
 		copy(dAtA[i:], m.ProductId)
@@ -7522,13 +9656,6 @@ func (m *InventoryItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0x52
-	}
-	if len(m.ItemId) > 0 {
-		i -= len(m.ItemId)
-		copy(dAtA[i:], m.ItemId)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ItemId)))
-		i--
-		dAtA[i] = 0x2a
 	}
 	if m.CreatedAt != nil {
 		{
@@ -8793,36 +10920,42 @@ func (m *ListOrdersRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Filter) > 0 {
-		for k := range m.Filter {
-			v := m.Filter[k]
-			baseI := i
-			if v != nil {
-				{
-					size, err := v.MarshalToSizedBuffer(dAtA[:i])
-					if err != nil {
-						return 0, err
-					}
-					i -= size
-					i = encodeVarintAdminApi(dAtA, i, uint64(size))
-				}
-				i--
-				dAtA[i] = 0x12
-			}
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintAdminApi(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x52
-		}
+	if len(m.StoreId) > 0 {
+		i -= len(m.StoreId)
+		copy(dAtA[i:], m.StoreId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.StoreId)))
+		i--
+		dAtA[i] = 0x5a
 	}
 	if len(m.MerchantId) > 0 {
 		i -= len(m.MerchantId)
 		copy(dAtA[i:], m.MerchantId)
 		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.MerchantId)))
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.Status) > 0 {
+		dAtA20 := make([]byte, len(m.Status)*10)
+		var j19 int
+		for _, num := range m.Status {
+			for num >= 1<<7 {
+				dAtA20[j19] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j19++
+			}
+			dAtA20[j19] = uint8(num)
+			j19++
+		}
+		i -= j19
+		copy(dAtA[i:], dAtA20[:j19])
+		i = encodeVarintAdminApi(dAtA, i, uint64(j19))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.OrderId) > 0 {
+		i -= len(m.OrderId)
+		copy(dAtA[i:], m.OrderId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.OrderId)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -9009,7 +11142,7 @@ func (m *CustomerList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *Manager) Marshal() (dAtA []byte, err error) {
+func (m *ContentModelGetRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -9019,27 +11152,174 @@ func (m *Manager) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Manager) MarshalTo(dAtA []byte) (int, error) {
+func (m *ContentModelGetRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Manager) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ContentModelGetRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Thumbnail) > 0 {
-		i -= len(m.Thumbnail)
-		copy(dAtA[i:], m.Thumbnail)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Thumbnail)))
+	if len(m.ContentModelVersionId) > 0 {
+		i -= len(m.ContentModelVersionId)
+		copy(dAtA[i:], m.ContentModelVersionId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ContentModelVersionId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContentModelId) > 0 {
+		i -= len(m.ContentModelId)
+		copy(dAtA[i:], m.ContentModelId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ContentModelId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelVersion) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelVersion) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelVersion) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Schema != nil {
+		{
+			size, err := m.Schema.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.NextVersionId) > 0 {
+		i -= len(m.NextVersionId)
+		copy(dAtA[i:], m.NextVersionId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.NextVersionId)))
 		i--
 		dAtA[i] = 0x32
 	}
-	if len(m.Merchants) > 0 {
-		for iNdEx := len(m.Merchants) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PreviousVersionId) > 0 {
+		i -= len(m.PreviousVersionId)
+		copy(dAtA[i:], m.PreviousVersionId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.PreviousVersionId)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.CreatedAt != nil {
+		{
+			size, err := m.CreatedAt.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.ContentModelVersionId) > 0 {
+		i -= len(m.ContentModelVersionId)
+		copy(dAtA[i:], m.ContentModelVersionId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ContentModelVersionId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContentModelId) > 0 {
+		i -= len(m.ContentModelId)
+		copy(dAtA[i:], m.ContentModelId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ContentModelId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelUpdateRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelUpdateRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelUpdateRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Schema != nil {
+		{
+			size, err := m.Schema.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.ContentModelId) > 0 {
+		i -= len(m.ContentModelId)
+		copy(dAtA[i:], m.ContentModelId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.ContentModelId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelVersionList) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelVersionList) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelVersionList) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Versions) > 0 {
+		for iNdEx := len(m.Versions) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.Merchants[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Versions[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -9047,36 +11327,781 @@ func (m *Manager) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 				i = encodeVarintAdminApi(dAtA, i, uint64(size))
 			}
 			i--
-			dAtA[i] = 0x2a
+			dAtA[i] = 0xa
 		}
 	}
-	if len(m.InvitedById) > 0 {
-		i -= len(m.InvitedById)
-		copy(dAtA[i:], m.InvitedById)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.InvitedById)))
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelMetaInfo) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelMetaInfo) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelMetaInfo) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Comment) > 0 {
+		i -= len(m.Comment)
+		copy(dAtA[i:], m.Comment)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Comment)))
 		i--
 		dAtA[i] = 0x22
 	}
-	if len(m.Users) > 0 {
-		for iNdEx := len(m.Users) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Users[iNdEx])
-			copy(dAtA[i:], m.Users[iNdEx])
-			i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Users[iNdEx])))
-			i--
-			dAtA[i] = 0x1a
-		}
+	if len(m.CustomId) > 0 {
+		i -= len(m.CustomId)
+		copy(dAtA[i:], m.CustomId)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.CustomId)))
+		i--
+		dAtA[i] = 0x1a
 	}
-	if len(m.Name) > 0 {
-		i -= len(m.Name)
-		copy(dAtA[i:], m.Name)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Name)))
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Description)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Id)))
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelElement) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelElement) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Type != nil {
+		{
+			size := m.Type.Size()
+			i -= size
+			if _, err := m.Type.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelElement_Object) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement_Object) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Object != nil {
+		{
+			size, err := m.Object.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelElement_Array) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement_Array) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Array != nil {
+		{
+			size, err := m.Array.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x5a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelElement_Int) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement_Int) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Int != nil {
+		{
+			size, err := m.Int.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x62
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelElement_Double) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement_Double) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Double != nil {
+		{
+			size, err := m.Double.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x6a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelElement_String_) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement_String_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.String_ != nil {
+		{
+			size, err := m.String_.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x72
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelElement_Bool) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelElement_Bool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Bool != nil {
+		{
+			size, err := m.Bool.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x7a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelField) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelField) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Type != nil {
+		{
+			size := m.Type.Size()
+			i -= size
+			if _, err := m.Type.MarshalTo(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if len(m.Key) > 0 {
+		i -= len(m.Key)
+		copy(dAtA[i:], m.Key)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Key)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelField_Object) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField_Object) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Object != nil {
+		{
+			size, err := m.Object.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelField_Array) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField_Array) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Array != nil {
+		{
+			size, err := m.Array.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x5a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelField_Int) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField_Int) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Int != nil {
+		{
+			size, err := m.Int.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x62
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelField_Double) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField_Double) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Double != nil {
+		{
+			size, err := m.Double.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x6a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelField_String_) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField_String_) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.String_ != nil {
+		{
+			size, err := m.String_.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x72
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelField_Bool) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelField_Bool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.Bool != nil {
+		{
+			size, err := m.Bool.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x7a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ContentModelObject) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelObject) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelObject) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Fields) > 0 {
+		for iNdEx := len(m.Fields) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Fields[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintAdminApi(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelArray) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelArray) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelArray) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.ItemSchema != nil {
+		{
+			size, err := m.ItemSchema.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelInteger) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelInteger) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelInteger) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Enum) > 0 {
+		dAtA42 := make([]byte, len(m.Enum)*10)
+		var j41 int
+		for _, num1 := range m.Enum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA42[j41] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j41++
+			}
+			dAtA42[j41] = uint8(num)
+			j41++
+		}
+		i -= j41
+		copy(dAtA[i:], dAtA42[:j41])
+		i = encodeVarintAdminApi(dAtA, i, uint64(j41))
+		i--
+		dAtA[i] = 0x6a
+	}
+	if m.Maximum != nil {
+		{
+			size, err := m.Maximum.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x62
+	}
+	if m.Minimum != nil {
+		{
+			size, err := m.Minimum.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x5a
+	}
+	if m.Default != nil {
+		{
+			size, err := m.Default.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelDouble) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelDouble) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelDouble) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Enum) > 0 {
+		for iNdEx := len(m.Enum) - 1; iNdEx >= 0; iNdEx-- {
+			f47 := math.Float64bits(float64(m.Enum[iNdEx]))
+			i -= 8
+			encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(f47))
+		}
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Enum)*8))
+		i--
+		dAtA[i] = 0x6a
+	}
+	if m.Maximum != nil {
+		{
+			size, err := m.Maximum.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x62
+	}
+	if m.Minimum != nil {
+		{
+			size, err := m.Minimum.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x5a
+	}
+	if m.Default != nil {
+		{
+			size, err := m.Default.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelString) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelString) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelString) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Enum) > 0 {
+		for iNdEx := len(m.Enum) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Enum[iNdEx])
+			copy(dAtA[i:], m.Enum[iNdEx])
+			i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Enum[iNdEx])))
+			i--
+			dAtA[i] = 0x62
+		}
+	}
+	if len(m.Regex) > 0 {
+		i -= len(m.Regex)
+		copy(dAtA[i:], m.Regex)
+		i = encodeVarintAdminApi(dAtA, i, uint64(len(m.Regex)))
+		i--
+		dAtA[i] = 0x5a
+	}
+	if m.Default != nil {
+		{
+			size, err := m.Default.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ContentModelBool) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ContentModelBool) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ContentModelBool) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Default != nil {
+		{
+			size, err := m.Default.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x52
+	}
+	if m.Meta != nil {
+		{
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintAdminApi(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -9449,10 +12474,6 @@ func (m *UpdateInventoryItemRequest) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.ItemId)
-	if l > 0 {
-		n += 1 + l + sovAdminApi(uint64(l))
-	}
 	if m.Amount != nil {
 		l = m.Amount.Size()
 		n += 2 + l + sovAdminApi(uint64(l))
@@ -9483,10 +12504,6 @@ func (m *InventoryItem) Size() (n int) {
 	}
 	if m.CreatedAt != nil {
 		l = m.CreatedAt.Size()
-		n += 1 + l + sovAdminApi(uint64(l))
-	}
-	l = len(m.ItemId)
-	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
 	if m.Amount != nil {
@@ -10049,22 +13066,24 @@ func (m *ListOrdersRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = len(m.OrderId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if len(m.Status) > 0 {
+		l = 0
+		for _, e := range m.Status {
+			l += sovAdminApi(uint64(e))
+		}
+		n += 1 + sovAdminApi(uint64(l)) + l
+	}
 	l = len(m.MerchantId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	if len(m.Filter) > 0 {
-		for k, v := range m.Filter {
-			_ = k
-			_ = v
-			l = 0
-			if v != nil {
-				l = v.Size()
-				l += 1 + sovAdminApi(uint64(l))
-			}
-			mapEntrySize := 1 + len(k) + sovAdminApi(uint64(len(k))) + l
-			n += mapEntrySize + 1 + sovAdminApi(uint64(mapEntrySize))
-		}
+	l = len(m.StoreId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
 	}
 	return n
 }
@@ -10147,38 +13166,428 @@ func (m *CustomerList) Size() (n int) {
 	return n
 }
 
-func (m *Manager) Size() (n int) {
+func (m *ContentModelGetRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Id)
+	l = len(m.ContentModelId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	l = len(m.Name)
+	l = len(m.ContentModelVersionId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	if len(m.Users) > 0 {
-		for _, s := range m.Users {
-			l = len(s)
-			n += 1 + l + sovAdminApi(uint64(l))
-		}
+	return n
+}
+
+func (m *ContentModelVersion) Size() (n int) {
+	if m == nil {
+		return 0
 	}
-	l = len(m.InvitedById)
+	var l int
+	_ = l
+	l = len(m.ContentModelId)
 	if l > 0 {
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
-	if len(m.Merchants) > 0 {
-		for _, e := range m.Merchants {
+	l = len(m.ContentModelVersionId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.CreatedAt != nil {
+		l = m.CreatedAt.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.PreviousVersionId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.NextVersionId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Schema != nil {
+		l = m.Schema.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+
+func (m *ContentModelUpdateRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContentModelId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Schema != nil {
+		l = m.Schema.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+
+func (m *ContentModelVersionList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Versions) > 0 {
+		for _, e := range m.Versions {
 			l = e.Size()
 			n += 1 + l + sovAdminApi(uint64(l))
 		}
 	}
-	l = len(m.Thumbnail)
+	return n
+}
+
+func (m *ContentModelMetaInfo) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Title)
 	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.CustomId)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.Comment)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+
+func (m *ContentModelElement) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Type != nil {
+		n += m.Type.Size()
+	}
+	return n
+}
+
+func (m *ContentModelElement_Object) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Object != nil {
+		l = m.Object.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelElement_Array) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Array != nil {
+		l = m.Array.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelElement_Int) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Int != nil {
+		l = m.Int.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelElement_Double) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Double != nil {
+		l = m.Double.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelElement_String_) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.String_ != nil {
+		l = m.String_.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelElement_Bool) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Bool != nil {
+		l = m.Bool.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelField) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.Key)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Type != nil {
+		n += m.Type.Size()
+	}
+	return n
+}
+
+func (m *ContentModelField_Object) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Object != nil {
+		l = m.Object.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelField_Array) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Array != nil {
+		l = m.Array.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelField_Int) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Int != nil {
+		l = m.Int.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelField_Double) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Double != nil {
+		l = m.Double.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelField_String_) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.String_ != nil {
+		l = m.String_.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelField_Bool) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Bool != nil {
+		l = m.Bool.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+func (m *ContentModelObject) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if len(m.Fields) > 0 {
+		for _, e := range m.Fields {
+			l = e.Size()
+			n += 1 + l + sovAdminApi(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *ContentModelArray) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.ItemSchema != nil {
+		l = m.ItemSchema.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	return n
+}
+
+func (m *ContentModelInteger) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Default != nil {
+		l = m.Default.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Minimum != nil {
+		l = m.Minimum.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Maximum != nil {
+		l = m.Maximum.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if len(m.Enum) > 0 {
+		l = 0
+		for _, e := range m.Enum {
+			l += sovAdminApi(uint64(e))
+		}
+		n += 1 + sovAdminApi(uint64(l)) + l
+	}
+	return n
+}
+
+func (m *ContentModelDouble) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Default != nil {
+		l = m.Default.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Minimum != nil {
+		l = m.Minimum.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Maximum != nil {
+		l = m.Maximum.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if len(m.Enum) > 0 {
+		n += 1 + sovAdminApi(uint64(len(m.Enum)*8)) + len(m.Enum)*8
+	}
+	return n
+}
+
+func (m *ContentModelString) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Default != nil {
+		l = m.Default.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	l = len(m.Regex)
+	if l > 0 {
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if len(m.Enum) > 0 {
+		for _, s := range m.Enum {
+			l = len(s)
+			n += 1 + l + sovAdminApi(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *ContentModelBool) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Meta != nil {
+		l = m.Meta.Size()
+		n += 1 + l + sovAdminApi(uint64(l))
+	}
+	if m.Default != nil {
+		l = m.Default.Size()
 		n += 1 + l + sovAdminApi(uint64(l))
 	}
 	return n
@@ -10395,7 +13804,6 @@ func (this *UpdateInventoryItemRequest) String() string {
 		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
 		`InventoryId:` + fmt.Sprintf("%v", this.InventoryId) + `,`,
 		`ProductId:` + fmt.Sprintf("%v", this.ProductId) + `,`,
-		`ItemId:` + fmt.Sprintf("%v", this.ItemId) + `,`,
 		`Amount:` + strings.Replace(fmt.Sprintf("%v", this.Amount), "Amount", "v1.Amount", 1) + `,`,
 		`Count:` + fmt.Sprintf("%v", this.Count) + `,`,
 		`}`,
@@ -10411,7 +13819,6 @@ func (this *InventoryItem) String() string {
 		`ProductId:` + fmt.Sprintf("%v", this.ProductId) + `,`,
 		`InventoryId:` + fmt.Sprintf("%v", this.InventoryId) + `,`,
 		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "types.Timestamp", 1) + `,`,
-		`ItemId:` + fmt.Sprintf("%v", this.ItemId) + `,`,
 		`Amount:` + strings.Replace(fmt.Sprintf("%v", this.Amount), "Amount", "v1.Amount", 1) + `,`,
 		`Count:` + fmt.Sprintf("%v", this.Count) + `,`,
 		`Product:` + strings.Replace(this.Product.String(), "Product", "Product", 1) + `,`,
@@ -10798,19 +14205,11 @@ func (this *ListOrdersRequest) String() string {
 	if this == nil {
 		return "nil"
 	}
-	keysForFilter := make([]string, 0, len(this.Filter))
-	for k, _ := range this.Filter {
-		keysForFilter = append(keysForFilter, k)
-	}
-	github_com_gogo_protobuf_sortkeys.Strings(keysForFilter)
-	mapStringForFilter := "map[string]*v1.ExpressionList{"
-	for _, k := range keysForFilter {
-		mapStringForFilter += fmt.Sprintf("%v: %v,", k, this.Filter[k])
-	}
-	mapStringForFilter += "}"
 	s := strings.Join([]string{`&ListOrdersRequest{`,
+		`OrderId:` + fmt.Sprintf("%v", this.OrderId) + `,`,
+		`Status:` + fmt.Sprintf("%v", this.Status) + `,`,
 		`MerchantId:` + fmt.Sprintf("%v", this.MerchantId) + `,`,
-		`Filter:` + mapStringForFilter + `,`,
+		`StoreId:` + fmt.Sprintf("%v", this.StoreId) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -10875,22 +14274,289 @@ func (this *CustomerList) String() string {
 	}, "")
 	return s
 }
-func (this *Manager) String() string {
+func (this *ContentModelGetRequest) String() string {
 	if this == nil {
 		return "nil"
 	}
-	repeatedStringForMerchants := "[]*Merchant{"
-	for _, f := range this.Merchants {
-		repeatedStringForMerchants += strings.Replace(f.String(), "Merchant", "Merchant", 1) + ","
+	s := strings.Join([]string{`&ContentModelGetRequest{`,
+		`ContentModelId:` + fmt.Sprintf("%v", this.ContentModelId) + `,`,
+		`ContentModelVersionId:` + fmt.Sprintf("%v", this.ContentModelVersionId) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelVersion) String() string {
+	if this == nil {
+		return "nil"
 	}
-	repeatedStringForMerchants += "}"
-	s := strings.Join([]string{`&Manager{`,
-		`Id:` + fmt.Sprintf("%v", this.Id) + `,`,
-		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
-		`Users:` + fmt.Sprintf("%v", this.Users) + `,`,
-		`InvitedById:` + fmt.Sprintf("%v", this.InvitedById) + `,`,
-		`Merchants:` + repeatedStringForMerchants + `,`,
-		`Thumbnail:` + fmt.Sprintf("%v", this.Thumbnail) + `,`,
+	s := strings.Join([]string{`&ContentModelVersion{`,
+		`ContentModelId:` + fmt.Sprintf("%v", this.ContentModelId) + `,`,
+		`ContentModelVersionId:` + fmt.Sprintf("%v", this.ContentModelVersionId) + `,`,
+		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "types.Timestamp", 1) + `,`,
+		`PreviousVersionId:` + fmt.Sprintf("%v", this.PreviousVersionId) + `,`,
+		`NextVersionId:` + fmt.Sprintf("%v", this.NextVersionId) + `,`,
+		`Schema:` + strings.Replace(this.Schema.String(), "ContentModelObject", "ContentModelObject", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelUpdateRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelUpdateRequest{`,
+		`ContentModelId:` + fmt.Sprintf("%v", this.ContentModelId) + `,`,
+		`Schema:` + strings.Replace(this.Schema.String(), "ContentModelObject", "ContentModelObject", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelVersionList) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForVersions := "[]*ContentModelVersion{"
+	for _, f := range this.Versions {
+		repeatedStringForVersions += strings.Replace(f.String(), "ContentModelVersion", "ContentModelVersion", 1) + ","
+	}
+	repeatedStringForVersions += "}"
+	s := strings.Join([]string{`&ContentModelVersionList{`,
+		`Versions:` + repeatedStringForVersions + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelMetaInfo) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelMetaInfo{`,
+		`Title:` + fmt.Sprintf("%v", this.Title) + `,`,
+		`Description:` + fmt.Sprintf("%v", this.Description) + `,`,
+		`CustomId:` + fmt.Sprintf("%v", this.CustomId) + `,`,
+		`Comment:` + fmt.Sprintf("%v", this.Comment) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement_Object) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement_Object{`,
+		`Object:` + strings.Replace(fmt.Sprintf("%v", this.Object), "ContentModelObject", "ContentModelObject", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement_Array) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement_Array{`,
+		`Array:` + strings.Replace(fmt.Sprintf("%v", this.Array), "ContentModelArray", "ContentModelArray", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement_Int) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement_Int{`,
+		`Int:` + strings.Replace(fmt.Sprintf("%v", this.Int), "ContentModelInteger", "ContentModelInteger", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement_Double) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement_Double{`,
+		`Double:` + strings.Replace(fmt.Sprintf("%v", this.Double), "ContentModelDouble", "ContentModelDouble", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement_String_) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement_String_{`,
+		`String_:` + strings.Replace(fmt.Sprintf("%v", this.String_), "ContentModelString", "ContentModelString", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelElement_Bool) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelElement_Bool{`,
+		`Bool:` + strings.Replace(fmt.Sprintf("%v", this.Bool), "ContentModelBool", "ContentModelBool", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Key:` + fmt.Sprintf("%v", this.Key) + `,`,
+		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField_Object) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField_Object{`,
+		`Object:` + strings.Replace(fmt.Sprintf("%v", this.Object), "ContentModelObject", "ContentModelObject", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField_Array) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField_Array{`,
+		`Array:` + strings.Replace(fmt.Sprintf("%v", this.Array), "ContentModelArray", "ContentModelArray", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField_Int) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField_Int{`,
+		`Int:` + strings.Replace(fmt.Sprintf("%v", this.Int), "ContentModelInteger", "ContentModelInteger", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField_Double) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField_Double{`,
+		`Double:` + strings.Replace(fmt.Sprintf("%v", this.Double), "ContentModelDouble", "ContentModelDouble", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField_String_) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField_String_{`,
+		`String_:` + strings.Replace(fmt.Sprintf("%v", this.String_), "ContentModelString", "ContentModelString", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelField_Bool) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelField_Bool{`,
+		`Bool:` + strings.Replace(fmt.Sprintf("%v", this.Bool), "ContentModelBool", "ContentModelBool", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelObject) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForFields := "[]*ContentModelField{"
+	for _, f := range this.Fields {
+		repeatedStringForFields += strings.Replace(f.String(), "ContentModelField", "ContentModelField", 1) + ","
+	}
+	repeatedStringForFields += "}"
+	s := strings.Join([]string{`&ContentModelObject{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Fields:` + repeatedStringForFields + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelArray) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelArray{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`ItemSchema:` + strings.Replace(this.ItemSchema.String(), "ContentModelElement", "ContentModelElement", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelInteger) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelInteger{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Default:` + strings.Replace(fmt.Sprintf("%v", this.Default), "Int64Value", "types.Int64Value", 1) + `,`,
+		`Minimum:` + strings.Replace(fmt.Sprintf("%v", this.Minimum), "Int64Value", "types.Int64Value", 1) + `,`,
+		`Maximum:` + strings.Replace(fmt.Sprintf("%v", this.Maximum), "Int64Value", "types.Int64Value", 1) + `,`,
+		`Enum:` + fmt.Sprintf("%v", this.Enum) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelDouble) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelDouble{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Default:` + strings.Replace(fmt.Sprintf("%v", this.Default), "DoubleValue", "types.DoubleValue", 1) + `,`,
+		`Minimum:` + strings.Replace(fmt.Sprintf("%v", this.Minimum), "DoubleValue", "types.DoubleValue", 1) + `,`,
+		`Maximum:` + strings.Replace(fmt.Sprintf("%v", this.Maximum), "DoubleValue", "types.DoubleValue", 1) + `,`,
+		`Enum:` + fmt.Sprintf("%v", this.Enum) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelString) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelString{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Default:` + strings.Replace(fmt.Sprintf("%v", this.Default), "StringValue", "types.StringValue", 1) + `,`,
+		`Regex:` + fmt.Sprintf("%v", this.Regex) + `,`,
+		`Enum:` + fmt.Sprintf("%v", this.Enum) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ContentModelBool) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ContentModelBool{`,
+		`Meta:` + strings.Replace(this.Meta.String(), "ContentModelMetaInfo", "ContentModelMetaInfo", 1) + `,`,
+		`Default:` + strings.Replace(fmt.Sprintf("%v", this.Default), "BoolValue", "types.BoolValue", 1) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -13395,38 +17061,6 @@ func (m *UpdateInventoryItemRequest) Unmarshal(dAtA []byte) error {
 			}
 			m.ProductId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ItemId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ItemId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 50:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
@@ -13666,38 +17300,6 @@ func (m *InventoryItem) Unmarshal(dAtA []byte) error {
 			if err := m.CreatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ItemId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ItemId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 10:
 			if wireType != 2 {
@@ -18232,6 +21834,107 @@ func (m *ListOrdersRequest) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OrderId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OrderId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType == 0 {
+				var v OrderStatus
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowAdminApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= OrderStatus(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.Status = append(m.Status, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowAdminApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthAdminApi
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthAdminApi
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				if elementCount != 0 && len(m.Status) == 0 {
+					m.Status = make([]OrderStatus, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v OrderStatus
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowAdminApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= OrderStatus(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.Status = append(m.Status, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
+			}
+		case 10:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MerchantId", wireType)
 			}
 			var stringLen uint64
@@ -18262,11 +21965,11 @@ func (m *ListOrdersRequest) Unmarshal(dAtA []byte) error {
 			}
 			m.MerchantId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 10:
+		case 11:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Filter", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field StoreId", wireType)
 			}
-			var msglen int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowAdminApi
@@ -18276,120 +21979,23 @@ func (m *ListOrdersRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				msglen |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			if msglen < 0 {
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
 				return ErrInvalidLengthAdminApi
 			}
-			postIndex := iNdEx + msglen
+			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
 				return ErrInvalidLengthAdminApi
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Filter == nil {
-				m.Filter = make(map[string]*v1.ExpressionList)
-			}
-			var mapkey string
-			var mapvalue *v1.ExpressionList
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowAdminApi
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					var stringLenmapkey uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowAdminApi
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						stringLenmapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intStringLenmapkey := int(stringLenmapkey)
-					if intStringLenmapkey < 0 {
-						return ErrInvalidLengthAdminApi
-					}
-					postStringIndexmapkey := iNdEx + intStringLenmapkey
-					if postStringIndexmapkey < 0 {
-						return ErrInvalidLengthAdminApi
-					}
-					if postStringIndexmapkey > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-					iNdEx = postStringIndexmapkey
-				} else if fieldNum == 2 {
-					var mapmsglen int
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowAdminApi
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapmsglen |= int(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					if mapmsglen < 0 {
-						return ErrInvalidLengthAdminApi
-					}
-					postmsgIndex := iNdEx + mapmsglen
-					if postmsgIndex < 0 {
-						return ErrInvalidLengthAdminApi
-					}
-					if postmsgIndex > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = &v1.ExpressionList{}
-					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
-						return err
-					}
-					iNdEx = postmsgIndex
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := skipAdminApi(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if skippy < 0 {
-						return ErrInvalidLengthAdminApi
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.Filter[mapkey] = mapvalue
+			m.StoreId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -18925,7 +22531,7 @@ func (m *CustomerList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Manager) Unmarshal(dAtA []byte) error {
+func (m *ContentModelGetRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -18948,15 +22554,15 @@ func (m *Manager) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Manager: wiretype end group for non-group")
+			return fmt.Errorf("proto: ContentModelGetRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Manager: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ContentModelGetRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ContentModelId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -18984,11 +22590,11 @@ func (m *Manager) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Id = string(dAtA[iNdEx:postIndex])
+			m.ContentModelId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ContentModelVersionId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -19016,75 +22622,128 @@ func (m *Manager) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Name = string(dAtA[iNdEx:postIndex])
+			m.ContentModelVersionId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelVersion) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelVersion: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelVersion: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContentModelId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContentModelId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContentModelVersionId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContentModelVersionId = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Users", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Users = append(m.Users, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InvitedById", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowAdminApi
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthAdminApi
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.InvitedById = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Merchants", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -19111,14 +22770,16 @@ func (m *Manager) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Merchants = append(m.Merchants, &Merchant{})
-			if err := m.Merchants[len(m.Merchants)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if m.CreatedAt == nil {
+				m.CreatedAt = &types.Timestamp{}
+			}
+			if err := m.CreatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
-		case 6:
+		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Thumbnail", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PreviousVersionId", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -19146,7 +22807,2180 @@ func (m *Manager) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Thumbnail = string(dAtA[iNdEx:postIndex])
+			m.PreviousVersionId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NextVersionId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NextVersionId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Schema", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Schema == nil {
+				m.Schema = &ContentModelObject{}
+			}
+			if err := m.Schema.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelUpdateRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelUpdateRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelUpdateRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContentModelId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContentModelId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Schema", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Schema == nil {
+				m.Schema = &ContentModelObject{}
+			}
+			if err := m.Schema.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelVersionList) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelVersionList: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelVersionList: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Versions", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Versions = append(m.Versions, &ContentModelVersion{})
+			if err := m.Versions[len(m.Versions)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelMetaInfo) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelMetaInfo: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelMetaInfo: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CustomId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CustomId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Comment", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Comment = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelElement) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelElement: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelElement: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Object", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelObject{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelElement_Object{v}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Array", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelArray{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelElement_Array{v}
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Int", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelInteger{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelElement_Int{v}
+			iNdEx = postIndex
+		case 13:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Double", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelDouble{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelElement_Double{v}
+			iNdEx = postIndex
+		case 14:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field String_", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelString{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelElement_String_{v}
+			iNdEx = postIndex
+		case 15:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Bool", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelBool{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelElement_Bool{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelField) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelField: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelField: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Object", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelObject{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelField_Object{v}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Array", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelArray{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelField_Array{v}
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Int", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelInteger{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelField_Int{v}
+			iNdEx = postIndex
+		case 13:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Double", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelDouble{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelField_Double{v}
+			iNdEx = postIndex
+		case 14:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field String_", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelString{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelField_String_{v}
+			iNdEx = postIndex
+		case 15:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Bool", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := &ContentModelBool{}
+			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			m.Type = &ContentModelField_Bool{v}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelObject) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelObject: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelObject: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Fields", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Fields = append(m.Fields, &ContentModelField{})
+			if err := m.Fields[len(m.Fields)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelArray) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelArray: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelArray: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ItemSchema", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ItemSchema == nil {
+				m.ItemSchema = &ContentModelElement{}
+			}
+			if err := m.ItemSchema.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelInteger) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelInteger: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelInteger: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Default", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Default == nil {
+				m.Default = &types.Int64Value{}
+			}
+			if err := m.Default.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Minimum", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Minimum == nil {
+				m.Minimum = &types.Int64Value{}
+			}
+			if err := m.Minimum.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Maximum", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Maximum == nil {
+				m.Maximum = &types.Int64Value{}
+			}
+			if err := m.Maximum.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 13:
+			if wireType == 0 {
+				var v int64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowAdminApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				m.Enum = append(m.Enum, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowAdminApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthAdminApi
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthAdminApi
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				var count int
+				for _, integer := range dAtA[iNdEx:postIndex] {
+					if integer < 128 {
+						count++
+					}
+				}
+				elementCount = count
+				if elementCount != 0 && len(m.Enum) == 0 {
+					m.Enum = make([]int64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v int64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowAdminApi
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						v |= int64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					m.Enum = append(m.Enum, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Enum", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelDouble) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelDouble: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelDouble: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Default", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Default == nil {
+				m.Default = &types.DoubleValue{}
+			}
+			if err := m.Default.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Minimum", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Minimum == nil {
+				m.Minimum = &types.DoubleValue{}
+			}
+			if err := m.Minimum.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Maximum", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Maximum == nil {
+				m.Maximum = &types.DoubleValue{}
+			}
+			if err := m.Maximum.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 13:
+			if wireType == 1 {
+				var v uint64
+				if (iNdEx + 8) > l {
+					return io.ErrUnexpectedEOF
+				}
+				v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				v2 := float64(math.Float64frombits(v))
+				m.Enum = append(m.Enum, v2)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowAdminApi
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return ErrInvalidLengthAdminApi
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return ErrInvalidLengthAdminApi
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				elementCount = packedLen / 8
+				if elementCount != 0 && len(m.Enum) == 0 {
+					m.Enum = make([]float64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint64
+					if (iNdEx + 8) > l {
+						return io.ErrUnexpectedEOF
+					}
+					v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+					iNdEx += 8
+					v2 := float64(math.Float64frombits(v))
+					m.Enum = append(m.Enum, v2)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field Enum", wireType)
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelString) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelString: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelString: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Default", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Default == nil {
+				m.Default = &types.StringValue{}
+			}
+			if err := m.Default.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Regex", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Regex = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Enum", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Enum = append(m.Enum, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipAdminApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ContentModelBool) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowAdminApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ContentModelBool: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ContentModelBool: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Meta == nil {
+				m.Meta = &ContentModelMetaInfo{}
+			}
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 10:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Default", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowAdminApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthAdminApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Default == nil {
+				m.Default = &types.BoolValue{}
+			}
+			if err := m.Default.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

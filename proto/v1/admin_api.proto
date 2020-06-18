@@ -7,6 +7,7 @@ option go_package = "github.com/flowup/headlessapis/go-sdk/admin/v1";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "v1/common.proto";
 
 service MerchantService {
@@ -645,4 +646,178 @@ message Manager {
     string invited_by_id = 4;
     repeated Merchant merchants = 5;
     string thumbnail = 6;
+}
+
+service ContentModelService {
+    // CreateContentModel creates brand new content model for a particular user
+    rpc CreateContentModel (ContentModelObject) returns (ContentModelVersion) {
+        option (google.api.http) = {
+            post: "/models"
+            body: "*"
+        };
+    }
+
+    // UpdateContentModel creates new version of the content model.
+    // This does not change instances of the model which are tied to the previous versions of the model.
+    rpc UpdateContentModel (ContentModelVersion) returns (ContentModelVersion) {
+        option (google.api.http) = {
+            put: "/models/{content_model_id}"
+            body: "*"
+        };
+    }
+
+    // GetContentModelCurrentVersion retrieves the latest version of the content model.
+    rpc GetContentModelCurrentVersion (ContentModelGetRequest) returns (ContentModelVersion) {
+        option (google.api.http) = {
+            get: "/models/{content_model_id}"
+        };
+    }
+
+    // GetContentModelVersion retrieves a specific version of the content model.
+    // Requires both content model ID and content model version ID
+    rpc GetContentModelVersion (ContentModelGetRequest) returns (ContentModelVersion) {
+        option (google.api.http) = {
+            get: "/models/{content_model_id}/versions/{content_model_version_id}"
+        };
+    }
+
+    // GetContentModelVersions retrieves list of all content model version IDs.
+    // Response is ordered in descending order starting from current (latest) ending with the first version
+    rpc GetContentModelVersions (ContentModelGetRequest) returns (ContentModelVersionList) {
+        option (google.api.http) = {
+            get: "/models/{content_model_id}/versions"
+        };
+    }
+}
+
+message ContentModelGetRequest {
+    // Content model ID
+    string content_model_id = 1;
+    // Version ID
+    string content_model_version_id = 2;
+}
+
+message ContentModelVersion {
+    // Content model ID
+    string content_model_id = 1;
+    // Version ID
+    string content_model_version_id = 2;
+    // Creation timestamp
+    google.protobuf.Timestamp created_at = 3;
+    // ID of the previous content model version
+    string previous_version_id = 5;
+    // ID of the newer content model version
+    string next_version_id = 6;
+
+    // Top level object schema
+    ContentModelObject schema = 10;
+}
+
+message ContentModelUpdateRequest {
+    // Content model ID
+    string content_model_id = 1;
+
+    // Top level object schema
+    ContentModelObject schema = 10;
+}
+
+message ContentModelVersionList {
+    // List of content model versions
+    repeated ContentModelVersion versions = 1;
+}
+
+message ContentModelMetaInfo {
+    // Name or a short description of the object
+    string title = 1;
+    // Descriptive text about the object
+    string description = 2;
+    // Custom globally unique identifier
+    // Unset by default but can be set and used as a reference to the element of the content model
+    string custom_id = 3;
+    // Comment left by the content modeler
+    string comment = 4;
+}
+
+message ContentModelElement {
+    // Element meta information
+    ContentModelMetaInfo meta = 1;
+    // Element type
+    oneof type {
+        ContentModelObject object = 10;
+        ContentModelArray array = 11;
+        ContentModelInteger int = 12;
+        ContentModelDouble double = 13;
+        ContentModelString string = 14;
+        ContentModelBool bool = 15;
+    }
+}
+
+message ContentModelField {
+    // Field meta information
+    ContentModelMetaInfo meta = 1;
+    // Field name, dictionary key
+    string key = 2;
+    // Field type and related attributes
+    oneof type {
+        ContentModelObject object = 10;
+        ContentModelArray array = 11;
+        ContentModelInteger int = 12;
+        ContentModelDouble double = 13;
+        ContentModelString string = 14;
+        ContentModelBool bool = 15;
+    }
+}
+
+message ContentModelObject {
+    // Object meta information
+    ContentModelMetaInfo meta = 1;
+    // List of object fields
+    repeated ContentModelField fields = 2;
+}
+
+message ContentModelArray {
+    ContentModelMetaInfo meta = 1;
+    // Schema of a array item
+    // Could be of any type
+    ContentModelElement item_schema = 2;
+}
+
+message ContentModelInteger {
+    ContentModelMetaInfo meta = 1;
+    // Default value for integer property
+    google.protobuf.Int64Value default = 10;
+    // Minimum integer value, defaults to negative infinity
+    google.protobuf.Int64Value minimum = 11;
+    // Maximum integer value, defaults to positive infinity
+    google.protobuf.Int64Value maximum = 12;
+    // Array of possible values for the property
+    repeated int64 enum = 13;
+}
+
+message ContentModelDouble {
+    ContentModelMetaInfo meta = 1;
+    // Default value of the floating point number
+    google.protobuf.DoubleValue default = 10;
+    // Minimum float value, defaults to negative infinity
+    google.protobuf.DoubleValue minimum = 11;
+    // Maximum float value, defaults to positive infinity
+    google.protobuf.DoubleValue maximum = 12;
+    // Array of possible values for the property
+    repeated double enum = 13;
+}
+
+message ContentModelString {
+    ContentModelMetaInfo meta = 1;
+    // Default value for string
+    google.protobuf.StringValue default = 10;
+    // Regular expression that defines a language to which the value of this property must belong
+    string regex = 11;
+    // Array of possible values for the property
+    repeated string enum = 12;
+}
+
+message ContentModelBool {
+    ContentModelMetaInfo meta = 1;
+    // Default value for boolean
+    google.protobuf.BoolValue default = 10;
 }

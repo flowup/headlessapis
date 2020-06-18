@@ -897,15 +897,15 @@ func request_InventoryService_UpdateInventoryItem_0(ctx context.Context, marshal
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "inventory_id", err)
 	}
 
-	val, ok = pathParams["product_id"]
+	val, ok = pathParams["item_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "item_id")
 	}
 
-	protoReq.ProductId, err = runtime.String(val)
+	protoReq.ItemId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "item_id", err)
 	}
 
 	msg, err := client.UpdateInventoryItem(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -954,15 +954,15 @@ func local_request_InventoryService_UpdateInventoryItem_0(ctx context.Context, m
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "inventory_id", err)
 	}
 
-	val, ok = pathParams["product_id"]
+	val, ok = pathParams["item_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "item_id")
 	}
 
-	protoReq.ProductId, err = runtime.String(val)
+	protoReq.ItemId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "item_id", err)
 	}
 
 	msg, err := server.UpdateInventoryItem(ctx, &protoReq)
@@ -1280,6 +1280,17 @@ func request_ProductService_UpdateProduct_0(ctx context.Context, marshaler runti
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
 	}
 
+	val, ok = pathParams["product_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+	}
+
+	protoReq.ProductId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+	}
+
 	msg, err := client.UpdateProduct(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -1313,6 +1324,17 @@ func local_request_ProductService_UpdateProduct_0(ctx context.Context, marshaler
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
+	}
+
+	val, ok = pathParams["product_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+	}
+
+	protoReq.ProductId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
 	}
 
 	msg, err := server.UpdateProduct(ctx, &protoReq)
@@ -3620,7 +3642,7 @@ var (
 
 	pattern_InventoryService_ListInventoryItems_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchants", "merchant_id", "inventories", "inventory_id", "items"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_InventoryService_UpdateInventoryItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchants", "merchant_id", "inventories", "inventory_id", "items", "product_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_InventoryService_UpdateInventoryItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchants", "merchant_id", "inventories", "inventory_id", "items", "item_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -3821,7 +3843,7 @@ var (
 
 	pattern_ProductService_CreateProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchant_id", "products"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ProductService_UpdateProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchant_id", "products"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ProductService_UpdateProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"merchants", "merchant_id", "products", "product_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_ProductService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"merchants", "merchant_id", "products"}, "", runtime.AssumeColonVerbOpt(true)))
 

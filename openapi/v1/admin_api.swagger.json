@@ -213,7 +213,7 @@
         ]
       }
     },
-    "/merchants/{merchantId}/inventories/{inventoryId}/items/{productId}": {
+    "/merchants/{merchantId}/inventories/{inventoryId}/items/{itemId}": {
       "put": {
         "summary": "Updates data stored in inventory Firestore collection",
         "operationId": "InventoryService_UpdateInventoryItem",
@@ -245,7 +245,7 @@
             "type": "string"
           },
           {
-            "name": "productId",
+            "name": "itemId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -286,36 +286,6 @@
             "name": "merchantId",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "orderId",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "ORDER_STATUS_UNDEFINED",
-                "NOT_SUBMITTED",
-                "SUBMITTED",
-                "PAID",
-                "SENT",
-                "CANCEL"
-              ]
-            },
-            "collectionFormat": "multi"
-          },
-          {
-            "name": "storeId",
-            "in": "query",
-            "required": false,
             "type": "string"
           }
         ],
@@ -392,44 +362,6 @@
         "tags": [
           "ProductService"
         ]
-      },
-      "put": {
-        "summary": "UpdateProduct updates a product in the firestore for a particular merchant",
-        "operationId": "ProductService_UpdateProduct",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1Product"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "description": "Required. Id of the merchant to which the product is assigned",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateProductRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ProductService"
-        ]
       }
     },
     "/merchants/{merchantId}/products/{productId}": {
@@ -464,6 +396,50 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "ProductService"
+        ]
+      },
+      "put": {
+        "summary": "UpdateProduct updates a product in the firestore for a particular merchant",
+        "operationId": "ProductService_UpdateProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Product"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Required. Id of the merchant to which the product is assigned",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateProductRequest"
+            }
           }
         ],
         "tags": [
@@ -1805,6 +1781,9 @@
           "type": "string",
           "format": "date-time"
         },
+        "itemId": {
+          "type": "string"
+        },
         "amount": {
           "$ref": "#/definitions/v1Amount"
         },
@@ -2143,6 +2122,9 @@
           "type": "string"
         },
         "productId": {
+          "type": "string"
+        },
+        "itemId": {
           "type": "string"
         },
         "amount": {

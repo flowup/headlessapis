@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "gen-client": "api-client-generator -s ./openapi/v1/client_api.swagger.json -o web-sdks/ng/ -t all"
+    "gen-client": "api-client-generator -s ./openapi/v1/client_api.swagger.json -o web-sdks/ng/ -t all",
+    "gen-admin": "api-client-generator -s ./openapi/v1/admin_api.swagger.json -o web-sdks/admin -t all"
   },
   "repository": {
     "type": "git",

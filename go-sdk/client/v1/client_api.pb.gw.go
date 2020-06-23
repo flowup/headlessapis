@@ -178,7 +178,7 @@ var (
 )
 
 func request_InventoryItemService_ListStoreItems_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ProductFilter
+	var protoReq StoreItemFilter
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -223,7 +223,7 @@ func request_InventoryItemService_ListStoreItems_0(ctx context.Context, marshale
 }
 
 func local_request_InventoryItemService_ListStoreItems_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ProductFilter
+	var protoReq StoreItemFilter
 	var metadata runtime.ServerMetadata
 
 	var (

@@ -41,23 +41,23 @@ service StoreService {
     // Retrieves basic information about a given store
     rpc GetStore (GetStoreRequest) returns (Store) {
         option (google.api.http) = {
-            get: "/merchant/{merchant_id}/store/{store_id}"
+            get: "/merchants/{merchant_id}/store/{store_id}"
         };
     }
 }
 
 service InventoryItemService {
     // Lists all products for a given store with brief details
-    rpc ListProducts (ProductFilter) returns (StoreItemList) {
+    rpc ListStoreItems (ProductFilter) returns (StoreItemList) {
         option (google.api.http) = {
-            get: "/merchant/{merchant_id}/store/{store_id}/product"
+            get: "/merchants/{merchant_id}/stores/{store_id}/items"
         };
     }
 
     // Retrieves more detailed information about the product
-    rpc GetProduct(GetProductRequest) returns (StoreItem) {
+    rpc GetItem(GetItemRequest) returns (StoreItem) {
         option (google.api.http) = {
-            get: "/merchant/{merchant_id}/store/{store_id}/product/{product_id}"
+            get: "/merchants/{merchant_id}/stores/{store_id}/items/{item_id}"
         };
     }
 }
@@ -95,6 +95,7 @@ message Product {
     string product_id = 1;
     string merchant_id = 2;
     string store_id = 3;
+    string item_id = 4;
 
     string name = 10;
     string description = 11;
@@ -105,8 +106,8 @@ message Product {
 }
 
 // Request for loading a product directly by its ID
-message GetProductRequest {
-    string product_id = 1;
+message GetItemRequest {
+    string item_id = 1;
     string merchant_id = 2;
     string store_id = 3;
 }
@@ -138,14 +139,14 @@ service OrderService {
     // In case there's no active order, an empty order is returned
     rpc GetActiveOrder (google.protobuf.Empty) returns (Order) {
         option (google.api.http) = {
-            get: "/order:active"
+            get: "/orders:active"
         };
     }
 
     // AddItemToOrder adds an item to the currently active order
     rpc AddItemToOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            post: "/order/{order_id}/item:add"
+            post: "/orders/{order_id}/items:add"
             body: "*"
         };
     }
@@ -153,7 +154,7 @@ service OrderService {
     // RemoveItemFromOrder removes an item from the currently active order
     rpc RemoveItemFromOrder (OrderItem) returns (Order) {
         option (google.api.http) = {
-            post: "/order/{order_id}/item:remove"
+            post: "/orders/{order_id}/items:remove"
             body: "*"
         };
     }
@@ -162,7 +163,7 @@ service OrderService {
     // otherwise returns errors why the creation failed
     rpc SubmitOrder (Order) returns (Order) {
         option (google.api.http) = {
-            post: "/order"
+            post: "/orders"
             body: "*"
         };
     }
@@ -170,7 +171,7 @@ service OrderService {
     // ListOrders returns all orders that the client has access to
     rpc ListOrders (OrderFilter) returns (OrderList) {
         option (google.api.http) = {
-            get: "/order"
+            get: "/orders"
         };
     }
 }

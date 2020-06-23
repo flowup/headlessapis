@@ -322,6 +322,7 @@ message AddInventoryItemRequest {
     string merchant_id = 1;
     string inventory_id = 2;
     string product_id = 3;
+    string item_id = 4;
 
     common.v1.Amount amount = 50;
     uint32 count = 51;

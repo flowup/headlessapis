@@ -51,7 +51,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1OrderList> {
-    const path = `/order`;
+    const path = `/orders`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -72,7 +72,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/order`;
+    const path = `/orders`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -91,7 +91,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/order/${args.orderId}/item:add`;
+    const path = `/orders/${args.orderId}/items:add`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -110,7 +110,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/order/${args.orderId}/item:remove`;
+    const path = `/orders/${args.orderId}/items:remove`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -125,7 +125,7 @@ export class OrderServiceAPIClient implements OrderServiceAPIClientInterface {
   getActiveOrder(
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Order> {
-    const path = `/order:active`;
+    const path = `/orders:active`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,

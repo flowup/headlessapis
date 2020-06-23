@@ -174,10 +174,10 @@ func local_request_StoreService_GetStore_0(ctx context.Context, marshaler runtim
 }
 
 var (
-	filter_InventoryItemService_ListProducts_0 = &utilities.DoubleArray{Encoding: map[string]int{"merchant_id": 0, "store_id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+	filter_InventoryItemService_ListStoreItems_0 = &utilities.DoubleArray{Encoding: map[string]int{"merchant_id": 0, "store_id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
-func request_InventoryItemService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_InventoryItemService_ListStoreItems_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
@@ -213,16 +213,16 @@ func request_InventoryItemService_ListProducts_0(ctx context.Context, marshaler 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InventoryItemService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InventoryItemService_ListStoreItems_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.ListProducts(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListStoreItems(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_InventoryItemService_ListProducts_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_InventoryItemService_ListStoreItems_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ProductFilter
 	var metadata runtime.ServerMetadata
 
@@ -255,16 +255,16 @@ func local_request_InventoryItemService_ListProducts_0(ctx context.Context, mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_InventoryItemService_ListProducts_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_InventoryItemService_ListStoreItems_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.ListProducts(ctx, &protoReq)
+	msg, err := server.ListStoreItems(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_InventoryItemService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_InventoryItemService_GetItem_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryItemServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetProductRequest
 	var metadata runtime.ServerMetadata
 
@@ -297,23 +297,23 @@ func request_InventoryItemService_GetProduct_0(ctx context.Context, marshaler ru
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
 	}
 
-	val, ok = pathParams["product_id"]
+	val, ok = pathParams["item_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "item_id")
 	}
 
-	protoReq.ProductId, err = runtime.String(val)
+	protoReq.ItemId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "item_id", err)
 	}
 
-	msg, err := client.GetProduct(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetItem(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_InventoryItemService_GetProduct_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_InventoryItemService_GetItem_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryItemServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetProductRequest
 	var metadata runtime.ServerMetadata
 
@@ -346,18 +346,18 @@ func local_request_InventoryItemService_GetProduct_0(ctx context.Context, marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "store_id", err)
 	}
 
-	val, ok = pathParams["product_id"]
+	val, ok = pathParams["item_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "product_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "item_id")
 	}
 
-	protoReq.ProductId, err = runtime.String(val)
+	protoReq.ItemId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "product_id", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "item_id", err)
 	}
 
-	msg, err := server.GetProduct(ctx, &protoReq)
+	msg, err := server.GetItem(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -668,7 +668,7 @@ func RegisterStoreServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 func RegisterInventoryItemServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server InventoryItemServiceServer) error {
 
-	mux.Handle("GET", pattern_InventoryItemService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryItemService_ListStoreItems_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -677,18 +677,18 @@ func RegisterInventoryItemServiceHandlerServer(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_InventoryItemService_ListProducts_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_InventoryItemService_ListStoreItems_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryItemService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_ListStoreItems_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_InventoryItemService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryItemService_GetItem_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -697,14 +697,14 @@ func RegisterInventoryItemServiceHandlerServer(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_InventoryItemService_GetProduct_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_InventoryItemService_GetItem_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryItemService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_GetItem_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -974,7 +974,7 @@ func RegisterStoreServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_StoreService_GetStore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"merchant", "merchant_id", "store", "store_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_StoreService_GetStore_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"merchants", "merchant_id", "store", "store_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -1019,7 +1019,7 @@ func RegisterInventoryItemServiceHandler(ctx context.Context, mux *runtime.Serve
 // "InventoryItemServiceClient" to call the correct interceptors.
 func RegisterInventoryItemServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client InventoryItemServiceClient) error {
 
-	mux.Handle("GET", pattern_InventoryItemService_ListProducts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryItemService_ListStoreItems_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -1028,18 +1028,18 @@ func RegisterInventoryItemServiceHandlerClient(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_InventoryItemService_ListProducts_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_InventoryItemService_ListStoreItems_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryItemService_ListProducts_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_ListStoreItems_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_InventoryItemService_GetProduct_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_InventoryItemService_GetItem_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -1048,14 +1048,14 @@ func RegisterInventoryItemServiceHandlerClient(ctx context.Context, mux *runtime
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_InventoryItemService_GetProduct_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_InventoryItemService_GetItem_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_InventoryItemService_GetProduct_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_InventoryItemService_GetItem_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1063,15 +1063,15 @@ func RegisterInventoryItemServiceHandlerClient(ctx context.Context, mux *runtime
 }
 
 var (
-	pattern_InventoryItemService_ListProducts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchant", "merchant_id", "store", "store_id", "product"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_InventoryItemService_ListStoreItems_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"merchants", "merchant_id", "stores", "store_id", "items"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_InventoryItemService_GetProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchant", "merchant_id", "store", "store_id", "product", "product_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_InventoryItemService_GetItem_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"merchants", "merchant_id", "stores", "store_id", "items", "item_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_InventoryItemService_ListProducts_0 = runtime.ForwardResponseMessage
+	forward_InventoryItemService_ListStoreItems_0 = runtime.ForwardResponseMessage
 
-	forward_InventoryItemService_GetProduct_0 = runtime.ForwardResponseMessage
+	forward_InventoryItemService_GetItem_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterOrderServiceHandlerFromEndpoint is same as RegisterOrderServiceHandler but
@@ -1216,15 +1216,15 @@ func RegisterOrderServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_OrderService_GetActiveOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"order"}, "active", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_GetActiveOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"orders"}, "active", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_AddItemToOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"order", "order_id", "item"}, "add", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_AddItemToOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"orders", "order_id", "items"}, "add", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_RemoveItemFromOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"order", "order_id", "item"}, "remove", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_RemoveItemFromOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"orders", "order_id", "items"}, "remove", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_SubmitOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"order"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_SubmitOrder_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"orders"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_OrderService_ListOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"order"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_OrderService_ListOrders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"orders"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

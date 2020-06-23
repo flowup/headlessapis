@@ -52,7 +52,7 @@ export class StoreServiceAPIClient implements StoreServiceAPIClientInterface {
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1Store> {
-    const path = `/merchant/${args.merchantId}/store/${args.storeId}`;
+    const path = `/merchants/${args.merchantId}/store/${args.storeId}`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,

@@ -45,14 +45,14 @@ export class InventoryItemServiceAPIClient implements InventoryItemServiceAPICli
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  listProducts(
+  listStoreItems(
     args: {
       merchantId: string,
       storeId: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItemList> {
-    const path = `/merchant/${args.merchantId}/store/${args.storeId}/product`;
+    const path = `/merchants/${args.merchantId}/stores/${args.storeId}/items`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,
@@ -64,15 +64,15 @@ export class InventoryItemServiceAPIClient implements InventoryItemServiceAPICli
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  getProduct(
+  getItem(
     args: {
       merchantId: string,
       storeId: string,
-      productId: string,
+      itemId: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItem> {
-    const path = `/merchant/${args.merchantId}/store/${args.storeId}/product/${args.productId}`;
+    const path = `/merchants/${args.merchantId}/stores/${args.storeId}/items/${args.itemId}`;
     const options: APIHttpOptions = {
       ...this.options,
       ...requestHttpOptions,

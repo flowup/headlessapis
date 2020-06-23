@@ -9,7 +9,7 @@ export interface InventoryItemServiceAPIClientInterface {
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  listProducts(
+  listStoreItems(
     args: {
       merchantId: string,
       storeId: string,
@@ -20,11 +20,11 @@ export interface InventoryItemServiceAPIClientInterface {
   /**
    * Response generated for [ 200 ] HTTP response code.
    */
-  getProduct(
+  getItem(
     args: {
       merchantId: string,
       storeId: string,
-      productId: string,
+      itemId: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItem>;

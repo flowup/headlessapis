@@ -4,6 +4,7 @@ export interface V1Product {
   attributes?: { [key: string]: string };
   description?: string;
   images?: string[];
+  itemId?: string;
   labels?: { [key: string]: string };
   merchantId?: string;
   name?: string;

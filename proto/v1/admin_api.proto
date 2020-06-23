@@ -278,7 +278,7 @@ service InventoryItemService {
     // Adds an inventory item into the inventory of a merchant.
     rpc AddInventoryItem (AddInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
-            post: "/merchants/{merchant_id}/inventories/{inventory_id}/items"
+            post: "/merchants/{merchant_id}/stores/{store_id}/inventories/{inventory_id}/products/{product_id}/items"
             body: "*"
         };
     }
@@ -293,7 +293,7 @@ service InventoryItemService {
     // Updates data stored in inventory Firestore collection
     rpc UpdateInventoryItem (UpdateInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
-            put: "/merchants/{merchant_id}/inventories/{inventory_id}/items/{item_id}"
+            put: "/merchants/{merchant_id}/items/{item_id}"
             body: "*"
         };
     }
@@ -323,6 +323,7 @@ message AddInventoryItemRequest {
     string inventory_id = 2;
     string product_id = 3;
     string item_id = 4;
+    string store_id = 5;
 
     common.v1.Amount amount = 50;
     uint32 count = 51;
@@ -333,7 +334,8 @@ message UpdateInventoryItemRequest {
     string merchant_id = 1;
     string inventory_id = 2;
     string product_id = 3;
-    string item_id = 5;
+    string item_id = 4;
+    string store_id = 5;
 
     common.v1.Amount amount = 50;
     uint32 count = 51;
@@ -346,6 +348,7 @@ message InventoryItem {
     string inventory_id = 3;
     google.protobuf.Timestamp created_at = 4;
     string item_id = 5;
+    string store_id = 6;
 
     common.v1.Amount amount = 10;
     uint32 count = 11;

@@ -649,6 +649,7 @@ message Manager {
 }
 
 service ContentModelService {
+
     // CreateContentModel creates brand new content model for a particular user
     rpc CreateContentModel (ContentModelObject) returns (ContentModelVersion) {
         option (google.api.http) = {
@@ -673,6 +674,13 @@ service ContentModelService {
         };
     }
 
+    // ListContentModelCurrentVersions retrieves the latest version of all the content models belonging to a merchant.
+    rpc ListContentModelCurrentVersions (ListContentModelCurrentVersionsRequest) returns (ContentModelVersionList) {
+        option (google.api.http) = {
+            get: "/models/{merchant_id}"
+        };
+    }
+
     // GetContentModelVersion retrieves a specific version of the content model.
     // Requires both content model ID and content model version ID
     rpc GetContentModelVersion (ContentModelGetRequest) returns (ContentModelVersion) {
@@ -688,6 +696,11 @@ service ContentModelService {
             get: "/models/{content_model_id}/versions"
         };
     }
+}
+
+message ListContentModelCurrentVersionsRequest {
+    // Merchant ID to whom the content models belong to
+    string merchant_id = 1;
 }
 
 message ContentModelGetRequest {

@@ -4,6 +4,10 @@
     "title": "v1/client_api.proto",
     "version": "version not set"
   },
+  "schemes": [
+    "http",
+    "https"
+  ],
   "consumes": [
     "application/json"
   ],
@@ -13,18 +17,12 @@
   "paths": {
     "/account:signIn": {
       "post": {
-        "operationId": "AuthService_SignInWithPassword",
+        "operationId": "SignInWithPassword",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Customer"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -45,18 +43,12 @@
     },
     "/account:signUp": {
       "post": {
-        "operationId": "AuthService_SignUpWithPassword",
+        "operationId": "SignUpWithPassword",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Customer"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -77,19 +69,12 @@
     },
     "/merchant/{merchantId}/store/{storeId}": {
       "get": {
-        "summary": "Retrieves basic information about a given store",
-        "operationId": "StoreService_GetStore",
+        "operationId": "GetStore",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Store"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -114,19 +99,12 @@
     },
     "/merchant/{merchantId}/store/{storeId}/product": {
       "get": {
-        "summary": "Lists all products for a given store with brief details",
-        "operationId": "InventoryItemService_ListProducts",
+        "operationId": "ListProducts",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1StoreItemList"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -151,19 +129,12 @@
     },
     "/merchant/{merchantId}/store/{storeId}/product/{productId}": {
       "get": {
-        "summary": "Retrieves more detailed information about the product",
-        "operationId": "InventoryItemService_GetProduct",
+        "operationId": "GetProduct",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1StoreItem"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -195,18 +166,12 @@
     "/order": {
       "get": {
         "summary": "ListOrders returns all orders that the client has access to",
-        "operationId": "OrderService_ListOrders",
+        "operationId": "ListOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1OrderList"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -224,18 +189,12 @@
       },
       "post": {
         "summary": "SubmitOrder submits the order to the system and creates it if it's possible,\notherwise returns errors why the creation failed",
-        "operationId": "OrderService_SubmitOrder",
+        "operationId": "SubmitOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -256,19 +215,12 @@
     },
     "/order/{orderId}/item:add": {
       "post": {
-        "summary": "AddItemToOrder adds an item to the currently active order",
-        "operationId": "OrderService_AddItemToOrder",
+        "operationId": "AddItemToOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -296,18 +248,12 @@
     "/order/{orderId}/item:remove": {
       "post": {
         "summary": "RemoveItemFromOrder removes an item from the currently active order",
-        "operationId": "OrderService_RemoveItemFromOrder",
+        "operationId": "RemoveItemFromOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -334,19 +280,12 @@
     },
     "/order:active": {
       "get": {
-        "summary": "GetActiveOrder returns the current order that the client has active.\nIn case there's no active order, an empty order is returned",
-        "operationId": "OrderService_GetActiveOrder",
+        "operationId": "GetActiveOrder",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1Order"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -357,39 +296,6 @@
     }
   },
   "definitions": {
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "typeUrl": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "runtimeError": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "type": "string"
-        },
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
     "v1Amount": {
       "type": "object",
       "properties": {

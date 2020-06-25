@@ -234,6 +234,18 @@ service InventoryService {
             get: "/merchants/{merchant_id}/inventories"
         };
     }
+
+    rpc ItemEvent (common.v1.PubsubPushNotification) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/item-event"
+        };
+    }
+
+    rpc StoreEvent (common.v1.PubsubPushNotification) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/store-event"
+        };
+    }
 }
 
 // Message containing inventory data useful for backoffice app

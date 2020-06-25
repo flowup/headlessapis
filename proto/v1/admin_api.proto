@@ -677,7 +677,7 @@ service ContentModelService {
     // ListContentModelCurrentVersions retrieves the latest version of all the content models belonging to a merchant.
     rpc ListContentModelCurrentVersions (ListContentModelCurrentVersionsRequest) returns (ContentModelVersionList) {
         option (google.api.http) = {
-            get: "/models/{merchant_id}"
+            get: "/models/merchants/{merchant_id}"
         };
     }
 

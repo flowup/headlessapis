@@ -4414,7 +4414,7 @@ var (
 
 	pattern_ContentModelService_GetContentModelCurrentVersion_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"models", "content_model_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_ContentModelService_ListContentModelCurrentVersions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"models", "merchant_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ContentModelService_ListContentModelCurrentVersions_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"models", "merchants", "merchant_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_ContentModelService_GetContentModelVersion_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"models", "content_model_id", "versions", "content_model_version_id"}, "", runtime.AssumeColonVerbOpt(true)))
 

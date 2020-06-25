@@ -956,6 +956,32 @@
         ]
       }
     },
+    "/models/merchants/{merchantId}": {
+      "get": {
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "ListContentModelCurrentVersions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersionList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID to whom the content models belong to",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      }
+    },
     "/models/{contentModelId}": {
       "get": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
@@ -1077,32 +1103,6 @@
           {
             "name": "contentModelVersionId",
             "description": "Version ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
-    "/models/{merchantId}": {
-      "get": {
-        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
-        "operationId": "ListContentModelCurrentVersions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersionList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "description": "Merchant ID to whom the content models belong to",
             "in": "path",
             "required": true,
             "type": "string"

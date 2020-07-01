@@ -38,3 +38,28 @@ message RepeatedString {
 message ExpressionList {
     repeated Expression items = 1;
 }
+
+// A message data and its attributes.
+message PubsubMessage {
+    // The message payload. For JSON requests, the value of this field must be
+    // base64-encoded.
+    bytes data = 1;
+
+    // Optional attributes for this message.
+    map<string, string> attributes = 2;
+
+    // ID of this message assigned by the server at publication time. Guaranteed
+    // to be unique within the topic. This value may be read by a subscriber
+    // that receives a PubsubMessage via a Pull call or a push delivery. It must
+    // not be populated by a publisher in a Publish call.
+    string message_id = 3;
+}
+
+message PubsubPushNotification {
+    // Pubsub message.
+    PubsubMessage message = 1;
+
+    // The name of the Pubsub subscription that pushed the current notification.
+    // Format is `projects/{project}/subscriptions/{subscription}`.
+    string subscription = 2;
+}

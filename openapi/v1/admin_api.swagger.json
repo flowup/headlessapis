@@ -15,6 +15,23 @@
     "application/json"
   ],
   "paths": {
+    "/item-event": {
+      "post": {
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "ItemEvent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          }
+        },
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
     "/merchants": {
       "get": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
@@ -113,6 +130,93 @@
         ]
       }
     },
+    "/merchants/{merchantId}/inventories": {
+      "get": {
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "ListInventories",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1InventoryList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      },
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateInventory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Inventory"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateInventoryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/inventories/{inventoryId}": {
+      "get": {
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "GetInventory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Inventory"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "inventoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
     "/merchants/{merchantId}/inventories/{inventoryId}/items": {
       "get": {
         "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
@@ -140,48 +244,11 @@
           }
         ],
         "tags": [
-          "InventoryService"
-        ]
-      },
-      "post": {
-        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "AddInventoryItem",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1InventoryItem"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "inventoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1AddInventoryItemRequest"
-            }
-          }
-        ],
-        "tags": [
-          "InventoryService"
+          "InventoryItemService"
         ]
       }
     },
-    "/merchants/{merchantId}/inventories/{inventoryId}/items/{itemId}": {
+    "/merchants/{merchantId}/items/{itemId}": {
       "put": {
         "summary": "GetMerchants returns a list of merchants the user has access to",
         "operationId": "UpdateInventoryItem",
@@ -196,12 +263,6 @@
         "parameters": [
           {
             "name": "merchantId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "inventoryId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -222,7 +283,7 @@
           }
         ],
         "tags": [
-          "InventoryService"
+          "InventoryItemService"
         ]
       }
     },
@@ -617,6 +678,57 @@
         ],
         "tags": [
           "StoreService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/stores/{storeId}/inventories/{inventoryId}/products/{productId}/items": {
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "AddInventoryItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1InventoryItem"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "inventoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddInventoryItemRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryItemService"
         ]
       }
     },
@@ -1112,6 +1224,23 @@
           "ContentModelService"
         ]
       }
+    },
+    "/store-event": {
+      "post": {
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "StoreEvent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          }
+        },
+        "tags": [
+          "InventoryService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -1125,6 +1254,12 @@
           "type": "string"
         },
         "productId": {
+          "type": "string"
+        },
+        "itemId": {
+          "type": "string"
+        },
+        "storeId": {
           "type": "string"
         },
         "amount": {
@@ -1397,6 +1532,27 @@
         }
       }
     },
+    "v1CreateInventoryRequest": {
+      "type": "object",
+      "properties": {
+        "inventoryId": {
+          "type": "string"
+        },
+        "merchantId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      },
+      "title": "Message used for creation of an inventory object"
+    },
     "v1CreateOrderRequest": {
       "type": "object",
       "properties": {
@@ -1565,6 +1721,32 @@
       },
       "title": "List of expressions"
     },
+    "v1Inventory": {
+      "type": "object",
+      "properties": {
+        "inventoryId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "inventoryItemCount": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Message containing inventory data useful for backoffice app"
+    },
     "v1InventoryItem": {
       "type": "object",
       "properties": {
@@ -1582,6 +1764,9 @@
           "format": "date-time"
         },
         "itemId": {
+          "type": "string"
+        },
+        "storeId": {
           "type": "string"
         },
         "amount": {
@@ -1607,6 +1792,18 @@
           }
         }
       }
+    },
+    "v1InventoryList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Inventory"
+          }
+        }
+      },
+      "title": "List of inventory items"
     },
     "v1Merchant": {
       "type": "object",
@@ -1813,6 +2010,28 @@
     "v1ProviderList": {
       "type": "object"
     },
+    "v1PubsubMessage": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "format": "byte",
+          "description": "The message payload. For JSON requests, the value of this field must be\nbase64-encoded."
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Optional attributes for this message."
+        },
+        "messageId": {
+          "type": "string",
+          "description": "ID of this message assigned by the server at publication time. Guaranteed\nto be unique within the topic. This value may be read by a subscriber\nthat receives a PubsubMessage via a Pull call or a push delivery. It must\nnot be populated by a publisher in a Publish call."
+        }
+      },
+      "description": "A message data and its attributes."
+    },
     "v1RepeatedString": {
       "type": "object",
       "properties": {
@@ -1925,6 +2144,9 @@
           "type": "string"
         },
         "itemId": {
+          "type": "string"
+        },
+        "storeId": {
           "type": "string"
         },
         "amount": {

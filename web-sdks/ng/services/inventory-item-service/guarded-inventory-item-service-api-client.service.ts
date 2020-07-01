@@ -22,26 +22,26 @@ export class GuardedInventoryItemServiceAPIClient extends InventoryItemServiceAP
     super(httpClient, domain, options);
   }
 
-  listProducts(
+  listStoreItems(
     args: {
       merchantId: string,
       storeId: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItemList> {
-    return super.listProducts(args, requestHttpOptions)
+    return super.listStoreItems(args, requestHttpOptions)
       .pipe(tap((res: any) => guards.isV1StoreItemList(res) || console.error(`TypeGuard for response 'V1StoreItemList' caught inconsistency.`, res)));
   }
 
-  getProduct(
+  getItem(
     args: {
       merchantId: string,
       storeId: string,
-      productId: string,
+      itemId: string,
     },
     requestHttpOptions?: HttpOptions
   ): Observable<models.V1StoreItem> {
-    return super.getProduct(args, requestHttpOptions)
+    return super.getItem(args, requestHttpOptions)
       .pipe(tap((res: any) => guards.isV1StoreItem(res) || console.error(`TypeGuard for response 'V1StoreItem' caught inconsistency.`, res)));
   }
 

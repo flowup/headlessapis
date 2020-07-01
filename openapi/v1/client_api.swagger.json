@@ -67,7 +67,7 @@
         ]
       }
     },
-    "/merchant/{merchantId}/store/{storeId}": {
+    "/merchants/{merchantId}/store/{storeId}": {
       "get": {
         "operationId": "GetStore",
         "responses": {
@@ -97,9 +97,9 @@
         ]
       }
     },
-    "/merchant/{merchantId}/store/{storeId}/product": {
+    "/merchants/{merchantId}/stores/{storeId}/items": {
       "get": {
-        "operationId": "ListProducts",
+        "operationId": "ListStoreItems",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -127,9 +127,9 @@
         ]
       }
     },
-    "/merchant/{merchantId}/store/{storeId}/product/{productId}": {
+    "/merchants/{merchantId}/stores/{storeId}/items/{itemId}": {
       "get": {
-        "operationId": "GetProduct",
+        "operationId": "GetItem",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -152,7 +152,7 @@
             "type": "string"
           },
           {
-            "name": "productId",
+            "name": "itemId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -163,7 +163,7 @@
         ]
       }
     },
-    "/order": {
+    "/orders": {
       "get": {
         "summary": "ListOrders returns all orders that the client has access to",
         "operationId": "ListOrders",
@@ -213,7 +213,7 @@
         ]
       }
     },
-    "/order/{orderId}/item:add": {
+    "/orders/{orderId}/items:add": {
       "post": {
         "operationId": "AddItemToOrder",
         "responses": {
@@ -245,7 +245,7 @@
         ]
       }
     },
-    "/order/{orderId}/item:remove": {
+    "/orders/{orderId}/items:remove": {
       "post": {
         "summary": "RemoveItemFromOrder removes an item from the currently active order",
         "operationId": "RemoveItemFromOrder",
@@ -278,7 +278,7 @@
         ]
       }
     },
-    "/order:active": {
+    "/orders:active": {
       "get": {
         "operationId": "GetActiveOrder",
         "responses": {
@@ -443,6 +443,9 @@
           "type": "string"
         },
         "storeId": {
+          "type": "string"
+        },
+        "itemId": {
           "type": "string"
         },
         "name": {

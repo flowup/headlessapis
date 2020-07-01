@@ -210,13 +210,87 @@ message StoreList {
     repeated Store items = 1;
 }
 
-// Inventory service is implementing storing concrete products (Item model) that are
-// in N:1 relationship with Product model.
+// InventoryService implements methods over individual inventories
 service InventoryService {
+    // CreateInventory creates the inventory for the particular merchant and returns
+    // the inventory object back to the caller
+    rpc CreateInventory (CreateInventoryRequest) returns (Inventory) {
+        option (google.api.http) = {
+            post: "/merchants/{merchant_id}/inventories"
+            body: "*"
+        };
+    }
+
+    // Loads single inventory from a given merchant
+    rpc GetInventory (GetInventoryRequest) returns (Inventory) {
+        option (google.api.http) = {
+            get: "/merchants/{merchant_id}/inventories/{inventory_id}"
+        };
+    }
+
+    // Loads all inventories of a merchant
+    rpc ListInventories (ListInventoriesRequest) returns (InventoryList) {
+        option (google.api.http) = {
+            get: "/merchants/{merchant_id}/inventories"
+        };
+    }
+
+    rpc ItemEvent (common.v1.PubsubPushNotification) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/item-event"
+        };
+    }
+
+    rpc StoreEvent (common.v1.PubsubPushNotification) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/store-event"
+        };
+    }
+}
+
+// Message containing inventory data useful for backoffice app
+message Inventory {
+    string inventory_id = 1;
+    google.protobuf.Timestamp created_at = 2;
+    string name = 3;
+    string description = 4;
+    string address = 5;
+    uint32 inventory_item_count = 6;
+}
+
+// List of inventory items
+message InventoryList {
+    repeated Inventory items = 1;
+}
+
+// Message used for creation of an inventory object
+message CreateInventoryRequest {
+    string inventory_id = 1;
+    string merchant_id = 2;
+    string name = 3;
+    string description = 4;
+    string address = 5;
+}
+
+// Message used for retrieving a single inventory
+message GetInventoryRequest {
+    string inventory_id = 1;
+    string merchant_id = 2;
+}
+
+// Message used for retrieving multiple inventories
+message ListInventoriesRequest {
+    string merchant_id = 1;
+}
+
+
+// InventoryItem service is implementing storing concrete products (Item model) that are
+// in N:1 relationship with Product model.
+service InventoryItemService {
     // Adds an inventory item into the inventory of a merchant.
     rpc AddInventoryItem (AddInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
-            post: "/merchants/{merchant_id}/inventories/{inventory_id}/items"
+            post: "/merchants/{merchant_id}/stores/{store_id}/inventories/{inventory_id}/products/{product_id}/items"
             body: "*"
         };
     }
@@ -231,7 +305,7 @@ service InventoryService {
     // Updates data stored in inventory Firestore collection
     rpc UpdateInventoryItem (UpdateInventoryItemRequest) returns (InventoryItem) {
         option (google.api.http) = {
-            put: "/merchants/{merchant_id}/inventories/{inventory_id}/items/{item_id}"
+            put: "/merchants/{merchant_id}/items/{item_id}"
             body: "*"
         };
     }
@@ -260,6 +334,8 @@ message AddInventoryItemRequest {
     string merchant_id = 1;
     string inventory_id = 2;
     string product_id = 3;
+    string item_id = 4;
+    string store_id = 5;
 
     common.v1.Amount amount = 50;
     uint32 count = 51;
@@ -270,7 +346,8 @@ message UpdateInventoryItemRequest {
     string merchant_id = 1;
     string inventory_id = 2;
     string product_id = 3;
-    string item_id = 5;
+    string item_id = 4;
+    string store_id = 5;
 
     common.v1.Amount amount = 50;
     uint32 count = 51;
@@ -283,6 +360,7 @@ message InventoryItem {
     string inventory_id = 3;
     google.protobuf.Timestamp created_at = 4;
     string item_id = 5;
+    string store_id = 6;
 
     common.v1.Amount amount = 10;
     uint32 count = 11;

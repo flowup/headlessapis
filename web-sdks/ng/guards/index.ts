@@ -108,6 +108,8 @@ export function isV1Product(arg: any): arg is models.V1Product {
     ( typeof arg.description === 'undefined' || typeof arg.description === 'string' ) &&
     // images?: string[]
     ( typeof arg.images === 'undefined' || (Array.isArray(arg.images) && arg.images.every((item: unknown) => typeof item === 'string')) ) &&
+    // itemId?: string
+    ( typeof arg.itemId === 'undefined' || typeof arg.itemId === 'string' ) &&
     // labels?: { [key: string]: string }
     ( typeof arg.labels === 'undefined' || typeof arg.labels === 'string' ) &&
     // merchantId?: string

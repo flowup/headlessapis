@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/flowup/headlessapis#readme",
   "devDependencies": {
-    "api-client-generator": "^4.6.2"
+    "api-client-generator": "^4.7.0"
   }
 }

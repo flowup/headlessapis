@@ -1041,33 +1041,6 @@
         ]
       }
     },
-    "/models": {
-      "post": {
-        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "CreateContentModel",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersion"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelObject"
-            }
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
     "/models/merchants/{merchantId}": {
       "get": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
@@ -1225,6 +1198,40 @@
         ]
       }
     },
+    "/models/{merchantId}": {
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateContentModel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersion"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      }
+    },
     "/store-event": {
       "post": {
         "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
@@ -1307,6 +1314,19 @@
           "type": "boolean",
           "format": "boolean",
           "title": "Default value for boolean"
+        }
+      }
+    },
+    "v1ContentModelCreateRequest": {
+      "type": "object",
+      "properties": {
+        "merchantId": {
+          "type": "string",
+          "title": "Merchant ID"
+        },
+        "object": {
+          "$ref": "#/definitions/v1ContentModelObject",
+          "title": "Object to create"
         }
       }
     },

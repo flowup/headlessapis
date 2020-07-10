@@ -2389,7 +2389,7 @@ func local_request_CustomerService_GetCustomers_0(ctx context.Context, marshaler
 }
 
 func request_ContentModelService_CreateContentModel_0(ctx context.Context, marshaler runtime.Marshaler, client ContentModelServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ContentModelObject
+	var protoReq ContentModelCreateRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2398,6 +2398,24 @@ func request_ContentModelService_CreateContentModel_0(ctx context.Context, marsh
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["merchant_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
 	}
 
 	msg, err := client.CreateContentModel(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -2406,7 +2424,7 @@ func request_ContentModelService_CreateContentModel_0(ctx context.Context, marsh
 }
 
 func local_request_ContentModelService_CreateContentModel_0(ctx context.Context, marshaler runtime.Marshaler, server ContentModelServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ContentModelObject
+	var protoReq ContentModelCreateRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2415,6 +2433,24 @@ func local_request_ContentModelService_CreateContentModel_0(ctx context.Context,
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["merchant_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "merchant_id")
+	}
+
+	protoReq.MerchantId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "merchant_id", err)
 	}
 
 	msg, err := server.CreateContentModel(ctx, &protoReq)
@@ -4970,7 +5006,7 @@ func RegisterContentModelServiceHandlerClient(ctx context.Context, mux *runtime.
 }
 
 var (
-	pattern_ContentModelService_CreateContentModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"models"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_ContentModelService_CreateContentModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"models", "merchant_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_ContentModelService_UpdateContentModel_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"models", "content_model_id"}, "", runtime.AssumeColonVerbOpt(true)))
 

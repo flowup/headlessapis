@@ -287,6 +287,223 @@
         ]
       }
     },
+    "/merchants/{merchantId}/models": {
+      "get": {
+        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
+        "operationId": "ListContentModelCurrentVersions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersionList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID to whom the content models belong to",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      },
+      "post": {
+        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
+        "operationId": "CreateContentModel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersion"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/models/{contentModelId}": {
+      "get": {
+        "summary": "GetMerchants returns a list of merchants the user has access to",
+        "operationId": "GetContentModelCurrentVersion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersion"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelId",
+            "description": "Content model ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelVersionId",
+            "description": "Version ID.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      },
+      "put": {
+        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
+        "operationId": "UpdateContentModel",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersion"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelId",
+            "description": "Content model ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/models/{contentModelId}/versions": {
+      "get": {
+        "summary": "GetUsers returns all users present in the merchant",
+        "operationId": "GetContentModelVersions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersionList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelId",
+            "description": "Content model ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelVersionId",
+            "description": "Version ID.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      }
+    },
+    "/merchants/{merchantId}/models/{contentModelId}/versions/{contentModelVersionId}": {
+      "get": {
+        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
+        "operationId": "GetContentModelVersion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ContentModelVersion"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "merchantId",
+            "description": "Merchant ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelId",
+            "description": "Content model ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "contentModelVersionId",
+            "description": "Version ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ContentModelService"
+        ]
+      }
+    },
     "/merchants/{merchantId}/orders": {
       "get": {
         "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
@@ -1041,197 +1258,6 @@
         ]
       }
     },
-    "/models/merchants/{merchantId}": {
-      "get": {
-        "summary": "InviteUserDry validates the provided user for existence. correct email,\nand other required fields by user invitation process",
-        "operationId": "ListContentModelCurrentVersions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersionList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "description": "Merchant ID to whom the content models belong to",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
-    "/models/{contentModelId}": {
-      "get": {
-        "summary": "GetMerchants returns a list of merchants the user has access to",
-        "operationId": "GetContentModelCurrentVersion",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersion"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "contentModelId",
-            "description": "Content model ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "contentModelVersionId",
-            "description": "Version ID.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      },
-      "put": {
-        "summary": "CreateMerchant creates a merchant in the database and returns the object\nback with populated data",
-        "operationId": "UpdateContentModel",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersion"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "contentModelId",
-            "description": "Content model ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersion"
-            }
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
-    "/models/{contentModelId}/versions": {
-      "get": {
-        "summary": "GetUsers returns all users present in the merchant",
-        "operationId": "GetContentModelVersions",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersionList"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "contentModelId",
-            "description": "Content model ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "contentModelVersionId",
-            "description": "Version ID.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
-    "/models/{contentModelId}/versions/{contentModelVersionId}": {
-      "get": {
-        "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
-        "operationId": "GetContentModelVersion",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersion"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "contentModelId",
-            "description": "Content model ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "contentModelVersionId",
-            "description": "Version ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
-    "/models/{merchantId}": {
-      "post": {
-        "summary": "CreateMerchantDry runs validation on the server side and returns\nerrors that need to be corrected to successfully create the merchant",
-        "operationId": "CreateContentModel",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelVersion"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "merchantId",
-            "description": "Merchant ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1ContentModelCreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "ContentModelService"
-        ]
-      }
-    },
     "/store-event": {
       "post": {
         "summary": "InviteUser creates a user account for the user in case it didn't exist before.\nOtherwise it invites the user into the merchant",
@@ -1507,6 +1533,23 @@
             "type": "string"
           },
           "title": "Array of possible values for the property"
+        }
+      }
+    },
+    "v1ContentModelUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "contentModelId": {
+          "type": "string",
+          "title": "Content model ID"
+        },
+        "merchantId": {
+          "type": "string",
+          "title": "Merchant ID"
+        },
+        "schema": {
+          "$ref": "#/definitions/v1ContentModelObject",
+          "title": "Top level object schema"
         }
       }
     },

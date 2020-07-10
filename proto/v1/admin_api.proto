@@ -729,9 +729,9 @@ message Manager {
 service ContentModelService {
 
     // CreateContentModel creates brand new content model for a particular user
-    rpc CreateContentModel (ContentModelObject) returns (ContentModelVersion) {
+    rpc CreateContentModel (ContentModelCreateRequest) returns (ContentModelVersion) {
         option (google.api.http) = {
-            post: "/models"
+            post: "/models/{merchant_id}"
             body: "*"
         };
     }
@@ -786,6 +786,13 @@ message ContentModelGetRequest {
     string content_model_id = 1;
     // Version ID
     string content_model_version_id = 2;
+}
+
+message ContentModelCreateRequest {
+    // Merchant ID
+    string merchant_id = 1;
+    // Object to create
+    ContentModelObject object = 2;
 }
 
 message ContentModelVersion {

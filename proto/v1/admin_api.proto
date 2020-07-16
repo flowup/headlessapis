@@ -729,18 +729,18 @@ message Manager {
 service ContentModelService {
 
     // CreateContentModel creates brand new content model for a particular user
-    rpc CreateContentModel (ContentModelObject) returns (ContentModelVersion) {
+    rpc CreateContentModel (ContentModelCreateRequest) returns (ContentModelVersion) {
         option (google.api.http) = {
-            post: "/models"
+            post: "/merchants/{merchant_id}/models"
             body: "*"
         };
     }
 
     // UpdateContentModel creates new version of the content model.
     // This does not change instances of the model which are tied to the previous versions of the model.
-    rpc UpdateContentModel (ContentModelVersion) returns (ContentModelVersion) {
+    rpc UpdateContentModel (ContentModelUpdateRequest) returns (ContentModelVersion) {
         option (google.api.http) = {
-            put: "/models/{content_model_id}"
+            put: "/merchants/{merchant_id}/models/{content_model_id}"
             body: "*"
         };
     }
@@ -748,14 +748,14 @@ service ContentModelService {
     // GetContentModelCurrentVersion retrieves the latest version of the content model.
     rpc GetContentModelCurrentVersion (ContentModelGetRequest) returns (ContentModelVersion) {
         option (google.api.http) = {
-            get: "/models/{content_model_id}"
+            get: "/merchants/{merchant_id}/models/{content_model_id}"
         };
     }
 
     // ListContentModelCurrentVersions retrieves the latest version of all the content models belonging to a merchant.
     rpc ListContentModelCurrentVersions (ListContentModelCurrentVersionsRequest) returns (ContentModelVersionList) {
         option (google.api.http) = {
-            get: "/models/merchants/{merchant_id}"
+            get: "/merchants/{merchant_id}/models"
         };
     }
 
@@ -763,7 +763,7 @@ service ContentModelService {
     // Requires both content model ID and content model version ID
     rpc GetContentModelVersion (ContentModelGetRequest) returns (ContentModelVersion) {
         option (google.api.http) = {
-            get: "/models/{content_model_id}/versions/{content_model_version_id}"
+            get: "/merchants/{merchant_id}/models/{content_model_id}/versions/{content_model_version_id}"
         };
     }
 
@@ -771,7 +771,7 @@ service ContentModelService {
     // Response is ordered in descending order starting from current (latest) ending with the first version
     rpc GetContentModelVersions (ContentModelGetRequest) returns (ContentModelVersionList) {
         option (google.api.http) = {
-            get: "/models/{content_model_id}/versions"
+            get: "/merchants/{merchant_id}/models/{content_model_id}/versions"
         };
     }
 }
@@ -786,6 +786,15 @@ message ContentModelGetRequest {
     string content_model_id = 1;
     // Version ID
     string content_model_version_id = 2;
+    // Merchant ID
+    string merchant_id = 3;
+}
+
+message ContentModelCreateRequest {
+    // Merchant ID
+    string merchant_id = 1;
+    // Object to create
+    ContentModelObject object = 2;
 }
 
 message ContentModelVersion {
@@ -807,6 +816,8 @@ message ContentModelVersion {
 message ContentModelUpdateRequest {
     // Content model ID
     string content_model_id = 1;
+    // Merchant ID
+    string merchant_id = 2;
 
     // Top level object schema
     ContentModelObject schema = 10;
